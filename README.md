@@ -1,5 +1,6 @@
-# CS_546_Movie_Reviews
-CS_546 Project: Movie Review website ("talkies.com")
+# CS_546_product
+CS_546 Project: Product marketplace
+
 
 ---------------------------------------------------------------------
 Team Members
