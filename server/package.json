@@ -4,9 +4,11 @@
   "description": "A product marketplace to discover trending saas products",
   "main": "app.js",
   "scripts": {
+    "start": "node app.js",
+    "devStart": "nodemon app.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
-  "author": "",
+  "author": "Sassbook",
   "license": "ISC",
   "dependencies": {
     "express": "^4.17.1",
