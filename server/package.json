@@ -4,6 +4,8 @@
   "description": "A product marketplace to discover trending saas products",
   "main": "app.js",
   "scripts": {
+    "start": "node app.js",
+    "devStart": "nodemon app.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "",
