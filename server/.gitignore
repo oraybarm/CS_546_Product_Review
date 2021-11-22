@@ -5,19 +5,12 @@
 /.pnp
 .pnp.js
 package-lock.json
-node_modules/
-jspm_packages/
 
 # testing
 /coverage
 
 # production
 /build
-
-# dotenv environment variables file
-.env
-.env.test
-.env*.local
 
 # misc
 .DS_Store
@@ -31,11 +24,3 @@ yarn-debug.log*
 yarn-error.log*
 
 package-lock.json
-.vscode-test
-
-
-# Output of 'npm pack'
-*.tgz
-
-# Yarn Integrity file
-.yarn-integrity

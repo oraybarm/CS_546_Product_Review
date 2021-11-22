@@ -1,19 +1,29 @@
 {
-  "name": "saasbook",
+  "name": "cs-546-lab-10",
   "version": "1.0.0",
-  "description": "A product marketplace to discover trending saas products",
+  "description": "CS 546 lab 10 authentication",
   "main": "app.js",
   "scripts": {
     "start": "node app.js",
     "devStart": "nodemon app.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
-  "author": "Sassbook",
+  "author": "Leo Baby Jacob",
   "license": "ISC",
   "dependencies": {
+    "bcrypt": "^5.0.1",
+    "bcryptjs": "^2.4.3",
+    "btoa": "^1.2.1",
+    "cookie-parser": "^1.4.6",
+    "dotenv": "^10.0.0",
     "express": "^4.17.1",
-    "lodash": "^4.17.21",
+    "express-handlebars": "^6.0.1",
+    "express-jwt": "^6.1.0",
+    "express-session": "^1.17.2",
+    "express-validator": "^6.13.0",
+    "formidable": "^2.0.1",
     "mongodb": "^4.1.4",
+    "multer": "^1.4.3",
     "nodemon": "^2.0.15"
   }
 }
