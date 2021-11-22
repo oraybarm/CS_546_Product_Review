@@ -3,7 +3,8 @@ exports.authMiddleware = (req, res, next) => {
     next();
   } else {
     res.status(403).render("error", {
-      error: "user is not logged in",
+      errors: ["Page restricted: Please login to proceed"],
+      loginError: true,
       title: "Error",
     });
   }
