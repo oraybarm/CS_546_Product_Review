@@ -1,0 +1,19 @@
+<div class="profileContainer">
+  <div>{{name}}</div>
+  <!-- <div>{{src}}</div> -->
+  <img src="{{src}}" class="rounded-circle" />
+  <form
+    action="/private/profile/update"
+    method="post"
+    enctype="multipart/form-data"
+  >
+    <label for="name">Name</label>
+    <input type="text" name="name" id="name" value="{{name}}" />
+    <label for="email">Email</label>
+    <input type="text" name="email" id="email" value="{{email}}" />
+    <label for="password">Password</label>
+    <input type="password" name="password" id="password" />
+    <input type="file" id="file" name="photo" />
+    <button type="submit" name="Submit">Submit</button>
+  </form>
+</div>

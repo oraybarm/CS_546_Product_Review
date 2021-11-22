@@ -1,0 +1,163 @@
+<div class="container" id="container">
+  <div class="form-container sign-up-container">
+    <form
+      class="row g-3 needs-validation"
+      novalidate
+      id="signUpForm"
+      action="/users/signup"
+      method="post"
+    >
+      <h1>Sign Up</h1>
+      <div class="col-md-12 position-relative">
+        <label for="name" class="form-label">First name</label>
+        <input
+          type="text"
+          class="form-control"
+          id="validationNameField"
+          name="name"
+          required
+          placeholder="Please enter your name"
+        />
+
+        <div class="invalid-feedback">
+          Please provide a valid Name(at least two characters, no special
+          characters allowed).
+        </div>
+      </div>
+      <div class="col-md-12 position-relative">
+        <label for="email" class="form-label">Email</label>
+        <input
+          type="text"
+          class="form-control"
+          id="validationEmailField"
+          name="email"
+          required
+          placeholder="Please enter an email"
+        />
+
+        <div
+          class="invalid-feedback"
+          data-bs-toggle="tooltip"
+          data-bs-placement="right"
+          title="Tooltip on right"
+        >
+          Please provide a valid email address
+        </div>
+      </div>
+      <div class="col-md-12 position-relative">
+        <label for="password" class="form-label">Email</label>
+        <input
+          type="password"
+          class="form-control"
+          id="validationPasswordField"
+          name="password"
+          required
+          placeholder="Please enter a password"
+        />
+
+        <div
+          class="invalid-feedback"
+          data-bs-toggle="tooltip"
+          data-bs-placement="right"
+          title="Tooltip on right"
+        >
+          Please provide a valid password ( at least 6 characters, no spaces
+          allowed )
+        </div>
+      </div>
+      <div class="col-md-12 position-relative">
+        {{!--
+        <label for="validationEmailField" class="form-label">Email</label> --}}
+        <input
+          type="password"
+          class="form-control"
+          id="validationReEnterPasswordField"
+          required
+          placeholder="Please renter the password"
+        />
+
+        <div
+          class="invalid-feedback"
+          data-bs-toggle="tooltip"
+          data-bs-placement="right"
+        >
+          Passwords do not match
+        </div>
+      </div>
+      <div class="col-12">
+        <button type="submit">Sign Up</button>
+      </div>
+    </form>
+  </div>
+  <div class="form-container sign-in-container">
+    {{!-- Sign in format --}}
+    <form
+      class="row g-3 needs-validation"
+      novalidate
+      id="signInForm"
+      action="/users/login"
+      method="post"
+    >
+      <h1>Sign in</h1>
+      <div class="col-md-12 position-relative">
+        <label for="email" class="form-label">Email</label>
+        <input
+          type="text"
+          class="form-control"
+          id="signInValidationEmailField"
+          name="email"
+          required
+          placeholder="Please enter an email"
+        />
+
+        <div
+          class="invalid-feedback"
+          data-bs-toggle="tooltip"
+          data-bs-placement="right"
+          title="Tooltip on right"
+        >
+          Please provide a valid email address to sign in
+        </div>
+      </div>
+      <div class="col-md-12 position-relative">
+        <label for="password" class="form-label">Password</label>
+        <input
+          type="text"
+          class="form-control"
+          id="signInValidationPasswordField"
+          name="password"
+          required
+          placeholder="Please enter your password"
+        />
+        <div class="valid-feedback">
+          Looks good!
+        </div>
+        <div
+          class="invalid-feedback"
+          data-bs-toggle="tooltip"
+          data-bs-placement="right"
+          title="Tooltip on right"
+        >
+          Please provide a valid password
+        </div>
+      </div>
+      {{!-- <a href="#">Forgot your password?</a> --}}
+      <button>Sign In</button>
+    </form>
+  </div>
+  <div class="overlay-container">
+    <div class="overlay">
+      <div class="overlay-panel overlay-left">
+        <h1>Welcome Back!</h1>
+        <p>To keep connected with us please login with your personal info</p>
+        <button class="ghost" id="signIn">Sign In</button>
+      </div>
+      <div class="overlay-panel overlay-right">
+        <h1>Hello, World!</h1>
+        <p>Enter your personal details and start journey with us</p>
+        <button class="ghost" id="signUp">Sign Up</button>
+      </div>
+    </div>
+  </div>
+</div>
+<script src="/public/js/auth.js" />
