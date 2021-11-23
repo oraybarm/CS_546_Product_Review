@@ -281,3 +281,22 @@ footer a {
   background-color: #ff4b2b;
   color: #fff;
 }
+
+.bg-403 {
+  font-size: 440px;
+  font-family: var(--font-display);
+  animation-delay: 1s + 2 * 2s;
+  z-index: 0;
+  background: linear-gradient(
+    to top,
+    rgba(32, 38, 40, 0) 25%,
+    rgba(49, 57, 61, 1) 100%
+  );
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  transform: translateX(-3%) translateY(-8%) translateZ(-100px) skewY(-3deg)
+    scale(0.2);
+  position: absolute;
+  pointer-events: none;
+  transition: transform 1200ms var(--acc-back);
+}

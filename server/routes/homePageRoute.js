@@ -10,7 +10,6 @@ router.get("/", (req, res) => {
 });
 
 router.get("/home", (req, res) => {
-  console.log("in home page", req.session);
   res.render("homePage/homePage", {
     title: "Home",
     authenticated: req.session.user ? true : false,

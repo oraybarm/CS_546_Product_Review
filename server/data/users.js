@@ -87,8 +87,6 @@ module.exports = {
       name: name || user.name,
     };
 
-    console.log(`updatedUserData`, updatedUserData);
-
     // check if there's no change
     // if so then modified count will be 0
     // so instead of updating the user, we return the user

@@ -27,7 +27,6 @@ router.get("/home", (req, res) => {
 router.get("/profile", authMiddleware, async (req, res) => {
   const user = await getUser(req.session.user);
   const { nothingToUpdate, updateSuccessful } = req.session;
-  console.log(`user.photo`, user.photo);
   const src = !_.isEmpty(user.photo)
     ? `/public/images/upload/${user.photo}`
     : "/public/images/guest-user.jpg";
@@ -84,11 +83,9 @@ router.post(
         const user = await getUser(req.session.user);
         //destructure the fields
         let { name = user.name, email = user.email, password } = req.body;
-        console.log(`{name, email}`, { name, email });
         isValidString(name, "username");
         isValidString(email, "email");
         if (password.length > 0) {
-          console.log("here");
           isValidString(password, "password");
           password = password.trim();
           isValidPassword(password);

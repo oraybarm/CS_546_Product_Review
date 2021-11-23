@@ -13,9 +13,6 @@
 
   const datachecksigninAttr = container.getAttribute("data-checksignin");
   const datachecksignupAttr = container.getAttribute("data-checksignup");
-  console.log(`datachecksigninAttr`, datachecksigninAttr);
-  console.log(`datachecksignupAttr`, datachecksignupAttr);
-
   if (datachecksigninAttr.length > 0) {
     container.classList.remove("right-panel-active");
   }

@@ -10,7 +10,6 @@ const { authMiddleware } = require("../middlewares/auth");
 const router = express.Router();
 
 router.get("/", (req, res) => {
-  console.log("here in /");
   if (req.session.user) {
     res.redirect("/private");
   } else {
@@ -46,7 +45,6 @@ router.get("/signup", (req, res) => {
 router.post("/signup", async (req, res) => {
   try {
     let { name, email, password } = req.body;
-    console.log("{name, email, password} :>> ", { name, email, password });
     isValidString(name, "name");
     isValidString(email, "email");
     isValidString(password, "password");
@@ -63,7 +61,6 @@ router.post("/signup", async (req, res) => {
     req.session.isAdmin = newUser.isAdmin;
     res.redirect("/");
   } catch (error) {
-    console.log("error :>> ", error);
     if (error.code === 500) {
       return res.status(error.code).render("auth/login", {
         authenticated: false,
