@@ -7,6 +7,7 @@ const {
   defaultNewUser,
   isValidObject,
   isValidPicture,
+  saltRounds,
 } = require("../utils");
 const bcrypt = require("bcrypt");
 const users = mongoCollection.users;
@@ -27,7 +28,8 @@ module.exports = {
     if (userData) {
       throw "User already exists";
     }
-    const hash = await bcrypt.hash(password, 10);
+    const hash = await bcrypt.hash(password, saltRounds);
+
     const user = await userCollection.insertOne({
       name,
       email,
@@ -50,7 +52,6 @@ module.exports = {
     const user = await userCollection.findOne({ email });
     if (!user) throw "Either the email or password is invalid";
     const passwordCorrect = await bcrypt.compare(password, user.password);
-    console.log("passwordCorrect :>> ", passwordCorrect);
     if (!passwordCorrect) throw "Either the email or password is invalid";
     return { authenticated: true, user };
   },
@@ -73,19 +74,31 @@ module.exports = {
     isValidEmail(email);
     isValidUsername(name);
     if (password.length > 0) {
-      console.log(`password`, password);
       isValidString(password, "password", 1);
       password = password.trim();
       isValidPassword(password);
     }
     photo && isValidString(photo, "photo", 1);
     // hash password before saving
-    const hash = await bcrypt.hash(password, 10);
+    const hash = await bcrypt.hash(password, saltRounds);
     const updatedUserData = {
-      password: hash || user.password,
+      password: password.length > 0 ? hash : user.password,
       photo: photo || user.photo,
       name: name || user.name,
     };
+
+    console.log(`updatedUserData`, updatedUserData);
+
+    // check if there's no change
+    // if so then modified count will be 0
+    // so instead of updating the user, we return the user
+    if (
+      updatedUserData.password === user.password &&
+      updatedUserData.photo === user.photo &&
+      updatedUserData.name === user.name
+    ) {
+      return { user, updated: true };
+    }
 
     const updatedInfo = await userCollection.updateOne(
       { email: email },

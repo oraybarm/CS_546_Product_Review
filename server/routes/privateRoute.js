@@ -91,7 +91,7 @@ router.post(
         userDataToUpdate.name = name;
         userDataToUpdate.email = req.session.user;
         userDataToUpdate.password = password;
-        userDataToUpdate.photo = req.file.filename;
+        userDataToUpdate.photo = req.file?.filename;
 
         console.log("userDataToUpdate :>> ", userDataToUpdate);
         const updatedUser = await updateUser(userDataToUpdate);
@@ -99,10 +99,11 @@ router.post(
           // TODO: display the error
           return res.status(400).json({});
         } else {
-          res.render("profile/profile", {
-            authenticated: true,
-            successMessage: "Successfully updated user",
-          });
+          // res.render("profile/profile", {
+          //   authenticated: true,
+          //   successMessage: "Successfully updated user",
+          // });
+          res.redirect("/private/profile");
         }
       } catch (error) {
         console.log(error);
