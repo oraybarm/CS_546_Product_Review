@@ -26,10 +26,18 @@ router.get("/home", (req, res) => {
 
 router.get("/profile", authMiddleware, async (req, res) => {
   const user = await getUser(req.session.user);
-  console.log("user :>> ", user.name);
-  //   const src = "data:image/gif;base64," + btoa(user.photo.data);
-  const src = `/public/images/${user.photo}`;
-  console.log(`src`, src);
+  const { nothingToUpdate, updateSuccessful } = req.session;
+  console.log(`user.photo`, user.photo);
+  const src = !_.isEmpty(user.photo)
+    ? `/public/images/upload/${user.photo}`
+    : "/public/images/guest-user.jpg";
+  let toastMessage;
+  if (updateSuccessful) {
+    toastMessage = "Update successful";
+  }
+  if (nothingToUpdate) {
+    toastMessage = "Nothing to update here";
+  }
   res.render("profile/profile", {
     authenticated: true,
     user: req.session.user,
@@ -37,13 +45,16 @@ router.get("/profile", authMiddleware, async (req, res) => {
     src,
     name: user.name,
     email: user.email,
+    nothingToUpdate,
+    updateSuccessful,
+    toastMessage,
   });
 });
 
 const storage = multer.diskStorage({
   //destination for files
   destination: function (request, file, callback) {
-    callback(null, "./public/images");
+    callback(null, "./public/images/upload");
   },
 
   //add back the extension
@@ -93,7 +104,16 @@ router.post(
         userDataToUpdate.password = password;
         userDataToUpdate.photo = req.file?.filename;
 
-        console.log("userDataToUpdate :>> ", userDataToUpdate);
+        if (
+          userDataToUpdate.name === user.name &&
+          userDataToUpdate.email === user.email &&
+          userDataToUpdate.password === "" &&
+          (!userDataToUpdate.photo || userDataToUpdate.photo === user.photo)
+        ) {
+          req.session.nothingToUpdate = true;
+          req.session.updateSuccessful = false;
+          return res.redirect("/private/profile");
+        }
         const updatedUser = await updateUser(userDataToUpdate);
         if (!updatedUser.updated) {
           // TODO: display the error
@@ -103,6 +123,8 @@ router.post(
           //   authenticated: true,
           //   successMessage: "Successfully updated user",
           // });
+          req.session.updateSuccessful = true;
+          req.session.nothingToUpdate = false;
           res.redirect("/private/profile");
         }
       } catch (error) {

@@ -268,3 +268,16 @@ footer a {
   width: 30%;
   height: 30.01%;
 }
+
+.profileContainer {
+  position: relative;
+}
+
+.toast {
+  position: fixed;
+  top: 15%;
+  right: 0;
+  width: 20%;
+  background-color: #ff4b2b;
+  color: #fff;
+}
