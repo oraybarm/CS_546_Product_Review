@@ -66,3 +66,5 @@ exports.defaultNewUser = {
   likedProducts: [],
   photo: {},
 };
+
+exports.saltRounds = 12;
