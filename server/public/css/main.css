@@ -261,4 +261,10 @@ footer a {
   height: 150px;
   border-radius: 50%;
 }
-/* style="width: 60px; height: 60px;" */
+
+.notFound {
+  left: 0%;
+  top: -0.00510204%;
+  width: 30%;
+  height: 30.01%;
+}

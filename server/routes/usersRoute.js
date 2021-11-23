@@ -70,6 +70,8 @@ router.post("/signup", async (req, res) => {
         error: error,
         status: 500,
         title: "Signup",
+        signInError: "",
+        signUpError: error,
       });
     }
     return res.status(400).render("auth/login", {
@@ -77,6 +79,8 @@ router.post("/signup", async (req, res) => {
       error: error,
       status: 400,
       title: "Signup",
+      signInError: "",
+      signUpError: error,
     });
   }
 });
@@ -106,6 +110,8 @@ router.post("/login", async (req, res) => {
         error: error.message,
         status: 500,
         title: "Login",
+        signInError: error,
+        signUpError: "",
       });
     }
     return res.status(400).render("auth/login", {
@@ -113,6 +119,8 @@ router.post("/login", async (req, res) => {
       error: error,
       status: 400,
       title: "Login",
+      signInError: error,
+      signUpError: "",
     });
   }
 });
