@@ -142,6 +142,10 @@ module.exports = {
 
     return user.reviews;
   },
+  async getLikedProductsByUser(id){
+    const user = await this.getUserById(id);
+    return user.liked_products;
+  }
 
 
 };
