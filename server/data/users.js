@@ -11,7 +11,8 @@ const {
 } = require("../utils");
 const bcrypt = require("bcrypt");
 const users = mongoCollection.users;
-
+const {ObjectId} = require("mongodb"); 
+      
 module.exports = {
   async createUser(name, email, password) {
     isValidString(name, "username");
@@ -123,4 +124,29 @@ module.exports = {
     if (!user) throw "User does not exist";
     return user;
   },
+  async getUserById(id){
+    if(typeof id === "undefined") throw "id is not provided";
+    if(typeof id != "string") throw "id is not a string";
+    if(id.trim().length === 0) throw "id is an empty string";
+
+    if(!ObjectId.isValid(id)) throw "id is not a valid objectId";
+    
+    let parsedId = ObjectId(id);
+    const userCollection = await users();
+    const user = await userCollection.findOne({_id:parsedId});
+    if(user === null) throw "No User with that id is found.";
+
+    return user;
+  },
+  async getReviewsByUserId(id){
+    const user = await this.getUserById(id);
+
+    return user.reviews;
+  },
+  async getLikedProductsByUser(id){
+    const user = await this.getUserById(id);
+    return user.liked_products;
+  }
+
+
 };
