@@ -137,6 +137,11 @@ module.exports = {
 
     return user;
   },
-  
+  async getReviewsByUserId(id){
+    const user = await this.getUserById(id);
+
+    return user.reviews;
+  },
+
 
 };
