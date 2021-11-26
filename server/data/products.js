@@ -44,6 +44,14 @@ function checkID(id) {
     throw "Error: Provided ID is not valid argument (data)";
 }
 let exportedMethods = {
+  async getProductById(product_Id) {
+    checkID(product_Id);
+    objId_product = ObjectId(product_Id);
+    const prod_List = await products();
+    const prodId = await products.findOne({ _id: objId_product });
+    if (prodId === null) throw "No product found";
+    return prodId;
+  },
   //addProduct method
   // Need to still check how images will be added to this
   async addProduct(
@@ -79,12 +87,16 @@ let exportedMethods = {
   //
   // This a helper function is used to increment the like counter by 1
   //
-  async updateCount(product_Id) {
+  async updateCount(product_Id, action) {
     objId = ObjectId(product_Id);
     const productCollection = await products();
     const product_Id = await productCollection.findOne({ _id: objId });
     if (restaurantID === null) throw "No restaurant with this ID";
-    let updated_Like = parseInt(product_Id.likes) + 1;
+    if (action === true) {
+      let updated_Like = parseInt(product_Id.likes) + 1;
+    } else {
+      let updated_Like = parseInt(product_Id.likes) - 1;
+    }
     const updated_detials = { likes: updated_Like };
     const updated = await productCollection.updateOne({
       _id: objId,
@@ -107,10 +119,12 @@ let exportedMethods = {
     if (typeof textToSearch !== "string")
       throw "Error: The input is not a string";
     textToSearch = textToSearch.toLowerCase();
+    const query = new RegExp(textToSearch, "i");
     const productCollection = await products();
+
     const productByName = await productCollection
       .find({
-        product_Name: { $regex: /.`${tagSearch}`/i },
+        product_Name: { $regex: query },
       })
       .toArray()
       .sort(productByName.likes);
@@ -125,10 +139,11 @@ let exportedMethods = {
   async getProductbyTag(tagSearch) {
     if (typeof tagSearch !== "string") throw "Error: The input is not a string";
     tagSearch = tagSearch.toLowerCase();
+    const query = new RegExp(textToSearch, "i");
     const productCollection = await products();
     const productByTag = await productCollection
       .find({
-        tags: { $regex: /.`${tagSearch}`/i },
+        tags: { $regex: query },
       })
       .toArray()
       .sort(productByTag.likes);
@@ -139,7 +154,7 @@ let exportedMethods = {
   //
   // This function will delete a product
   //
-  /*async deleteProduct(user_Id, product_Id) {
+  async deleteProduct(user_Id, product_Id) {
     checkID(user_Id);
     checkID(product_Id);
     objId_user = ObjectId(user_Id);
@@ -147,6 +162,7 @@ let exportedMethods = {
     const prooductCollection = await products();
     const delProduct = await productCollection.findOne({ _id: objId_product });
     if (!delProduct) throw "Error:Product not found!";
+    updateCount(objId_product, false);
     // we need to authenticate the user tryig to delete the product info
 
     if (removed.deletedCount == 0) {
@@ -154,7 +170,6 @@ let exportedMethods = {
     } else {
       return `${delProduct.name} has been successfully deleted!`;
     }
-
-  },*/
+  },
 };
 module.exports = exportedMethods;
