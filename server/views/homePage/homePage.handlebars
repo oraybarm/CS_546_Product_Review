@@ -1,3 +1,14 @@
 {{!-- {{need to look into how to add the search results array here. Making a small change to push to base branch. Mistake on my (Sacheth) end}} --}}
 
 <div class="jumbotron">Home Page content here</div>
+<div class= "search results">
+    {{#each products}}
+    <div class="card" >
+        <h2>{{this.product_Name}}</h2>
+        <p>{{this.likes}}</p>
+        <p>{{this.rating}}</p>
+        <p>{{this.tags}}</p>
+        <br/>
+    </div>
+    {{/each}}
+</div>

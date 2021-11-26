@@ -44,24 +44,44 @@
             >
           </li>
         </ul>
-        <form class="form-flex flex-row bg-dark">
+        {{!<form class="form-flex flex-row bg-dark">
           <input
             class="form-control mr-sm-2"
             type="search"
-            placeholder="Search by name"
-            aria-label="SearchbyName"
+            placeholder="Search"
+            aria-label="Search"
           />
-          <button class="btn btn-outline-danger" type="submit">
-            Search
+
+          -- Error to fix: Dropdown does not appear 
+          <li class="btn btn-primary dropdown-toggle"  type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-expanded="false">
+            Search Type
+            <b class="caret"></b>
           </button>
-          <form class="form-flex flex-row bg-dark">
+          <ul class="dropdown-menu" role="menu" aria-labelledby="dropdownMenuButton">
+            <li><a href="#">By Name</a></li>
+            <li><a href="#">By Tag</a></li>
+          </ul>
+          --}}
+        <form class="form-flex flex-row bg-dark d-flex align-items-center position-relative" >
+          <div class="input-group mb-3 ">
+          <div class="input-group-prepend d-flex align-items-center position-relative">
+            <select class="form-select" id="searchSelect" aria-label="Default select example">
+              <option selected>Search product by</option>
+              <option value="1">By Name</option>
+              <option value="2">By Tag</option>
+            </select>
+          </div>
           <input
-            class="form-control mr-sm-2"
-            type="search"
-            placeholder="Search by tag"
-            aria-label="Searchby"
+            type="text"
+            class="form-control"
+            placeholder="Search bar"
+            name="search"
+            aria-label="Search bar"
+            aria-describedby="basic-addon1"
           />
-          <button class="btn btn-outline-danger" type="submit">
+          <i class="fas fa-search homeSearch"></i>
+        </div>
+          <button class="btn btn-outline-danger d-flex align-items-center" type="submit" href="/product/search">
             Search
           </button>
         </form>
