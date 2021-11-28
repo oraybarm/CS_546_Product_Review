@@ -1,0 +1,124 @@
+<div class="jumbotronq w-75 d-flex flex-column align-items-center">
+    <div
+        class="toast"
+        role="alert"
+        aria-live="assertive"
+        aria-atomic="true"
+        id="toast"
+    >
+        <div class="toast-body"></div>
+    </div>
+    <header>
+        <p>Engage more about this discussion</p>
+    </header>
+    <div class="scontainer w-75" data-id="{{post._id}}">
+        <div class="card">
+            <div class="header d-flex flex-row align-items-center px-4">
+                <img
+                    src="{{src}}"
+                    class="rounded-circle avatar h-10"
+                    alt="{{name}}"
+                />
+                <div
+                    class="post-content d-flex flex-column align-items-start w-100"
+                >
+                    <h3 offset="3">{{title}}</h3>
+                </div>
+            </div>
+
+            <div offset="3" class=" card-body border-top px-4 py-0">
+                <div class="stat-class d-flex w-50 justify-content-between">
+                    <div
+                        class="likes d-flex align-items-center justify-content-between"
+                    >
+                        <p class="d-inline flex-column postLikes mx-1">
+                            {{post.likes.length}}
+                        </p>
+                        <p class="ml-2">likes</p>
+                    </div>
+                    <div
+                        class="comments d-flex align-items-center justify-content-between"
+                    >
+                        <p class="d-inline flex-column commentCount mx-1">
+                            {{post.replies.length}}
+                        </p>
+                        <p class="ml-2">replies</p>
+                    </div>
+                </div>
+            </div>
+            <!-- // like section -->
+            {{#if authenticated}}
+            <div
+                offset="3"
+                class=" card-body border-top px-4 py-2 d-flex flex-row justify-content-between w-100"
+            >
+                <button class="btn btn-outline-danger likePost">
+                    <i class="fa fa-thumbs-up"></i>
+                </button>
+                <button class="btn btn-outline-danger">
+                    <i class="fa fa-comment"></i>
+                </button>
+            </div>
+            {{/if}}
+            <!-- // like section end -->
+            <p class="reply-error m-0 mr-5"></p>
+            <div
+                offset="3"
+                class=" card-body border-top px-4 py-2 d-flex flex-row  align-items-baseline justify-content-between w-100"
+            >
+                {{#if authenticated}}
+                <input
+                    class="rounded mr-3 replyText"
+                    type="text"
+                    placeholder="Replying as yourself"
+                />
+                <button class=" postReply btn btn-outline-danger ml-3">
+                    <i class="fa fa-paper-plane"></i>
+                </button>
+                {{else}}
+                <input
+                    disabled
+                    class="rounded mr-3 replyText disbaled"
+                    type="text"
+                    placeholder="Login to reply"
+                />
+                <button
+                    disabled
+                    class=" postReply btn btn-outline-danger ml-3 disabled"
+                >
+                    <i class="fa fa-paper-plane"></i>
+                </button>
+                {{/if}}
+            </div>
+        </div>
+    </div>
+</div>
+<div class="d-flex w-75 align-items-center justify-between">
+    <div class="border-6 border-danger w-50"></div>
+    <span class="m-4">Replies</span>
+    <div class="border-6 border-danger w-50"></div>
+</div>
+<div class="s w-75 mb-10">
+    {{#each replies}}
+    <div class="p-3 d-flex flex-row align-items-start postReply">
+        <div
+            class="user d-flex w-10 flex-column align-items-center justify-content-between mx-4"
+        >
+            <img
+                src="/public/images/upload/{{user.photo}}"
+                class="absolute-avatar"
+                alt="{{user.photo}}"
+            />
+            <p class="name my-0">{{user.name}}</p>
+        </div>
+        <h3 class="reply">{{reply}}</h3>
+    </div>
+    {{/each}}
+</div>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+<script
+    src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"
+    integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p"
+    crossorigin="anonymous"
+></script>
+<script src="/public/js/community.js"></script>
