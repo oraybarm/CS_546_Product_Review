@@ -1,0 +1,126 @@
+<body>
+    {{!-- <h1>Just test my dbfunctions!</h1>
+    <form action="/reviews/" method="POST" id="login-form">
+    <label for="review" style="color:rgb(205, 183, 247);">Review</label>
+    <input type="text" id="review" name="review" value="{{review}}">
+    <input type="text" id="rating" name="rating" value="{{rating}}">
+    <button type="submit" id="ok">Submit</button>
+    </form> --}}
+    <div id="box">
+        <div class="box_top">
+            <ul>
+			<li class="rate"></li>
+			<li class="rate"></li>
+			<li class="rate"></li>
+			<li class="rate"></li>
+			<li class="rate"></li>
+		    </ul>
+            <div id="rater"></div>
+            <textarea id="comment" cols="80" rows="10" placeholder="Please write your review"></textarea>
+            <button id="btn">Submit</button>
+        </div>
+        <ul id="comment_content">
+        </ul>
+    </div>
+    <div id="reviewpart">
+        <ul>
+            <li><img class="userimg" src="../../public/images/guest-user.jpg"></li>
+            <li><p>This product is a very good product!</p></li>
+            <li><img src="../../public/images/3.png"></li>
+            <hr>
+            <li><img class="userimg" src="../../public/images/guest-user.jpg"></li>
+            <li><p>This product is a perfect product!</p></li>
+            <li><img src="../../public/images/4.png"></li>
+            <hr>
+            {{#if hasPost}}
+            {{#each posts}}
+            <li><img class="userimg" src="../../public/images/guest-user.jpg"></li>
+            <li><p>I feel regret to buy this!</p></li>
+            <li><img src="../../public/images/1.png"></li>
+            <hr>
+            {{/each}}
+            {{else}}
+            <li>
+                <p class="not-found">No review right now.</p>
+            </li>
+            {{/if}}
+        </ul>
+    </div>
+     
+    <script type="text/javascript">
+        window.onload = function () {
+            // listen
+            $('btn').onclick = function (){
+                // get input content 
+                var content = $("comment").value;
+                console.log(content);
+                if (content.length===0){
+                    alert("Please Write your review!");
+                    return;
+                }
+                var newLi = document.createElement("li");
+                newLi.innerHTML = `${content}<br/><img src="../../public/images/${rateval+1}.png"><a href="javascript:void(0)">Delete</a>`
+                // $("comment_content").appendChild(newLi);   //Method 1
+                $("comment_content").insertBefore(newLi,$("comment_content").children[0]);  //Method 2
+
+                // clear the input
+                $("comment").value="";
+                // Delete review
+                var delBtns = document.getElementsByTagName("a");
+                for (var i=0;i<delBtns.length;i++){
+                    delBtns[i].onclick = function (){
+                        this.parentNode.remove();
+                    }
+                }
+            }
+
+            // get event
+            function $(id) {
+                return typeof id === "string" ? document.getElementById(id) : null;
+            }
+        }
+    
+    </script>
+	<script type="text/javascript">
+		var oLi = document.getElementsByClassName("rate");
+		var oDiv = document.getElementById("rater");
+		var data = ["Very Negative","Negative","Mixed","Positive","Very Positive"];
+		var flag = false;
+		var index = 0;
+		var rateval=0;	
+		for(let i = 0;i < oLi.length;i++){
+			oLi[i].onmouseover = ()=>{//hover
+				//clear and add
+				for(let j = 0;j < oLi.length;j++){
+					oLi[j].style.backgroundPosition = "0 0";
+				}
+				for(let j = 0;j <= i;j++){
+					oLi[j].style.backgroundPosition = "0 -28px";
+				}
+			oDiv.innerHTML = data[i];
+			}
+			//mouse click event
+			oLi[i].onmouseout = ()=>{
+				//clear style
+				for(let j = 0;j < oLi.length;j++){
+					oLi[j].style.backgroundPosition = "0 0";
+				}
+				oDiv.innerHTML = "";
+				if(flag){//if clicked
+					for(let j = 0;j <= index;j++){
+					oLi[j].style.backgroundPosition = "0 -28px";
+				}
+				oDiv.innerHTML = data[index];
+				}
+					
+			}
+			oLi[i].onclick = function(){
+				flag =true;
+				index = i;
+                rateval=i;
+                oDiv.innerHTML = data[index];
+			}
+		}			
+	</script>
+
+</body>
