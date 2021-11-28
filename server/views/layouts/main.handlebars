@@ -90,33 +90,37 @@
                         Search
                     </button>
                 </form>
-                <ul class="navbar-nav flex-row offset-2">
-                    <li class="nav-item">
+                <ul
+                    class="navbar-nav flex-row offset-2 d-flex align-items-center"
+                >
+                    <li class="nav-item mx-3">
                         <button
-                            class=" btn  btn-outline-danger nav-link"
+                            class=" btn  btn-outline-danger"
                             href="/private/profile"
                         >
                             <i class="fa fa-user"></i>
                         </button>
                     </li>
                     {{#if authenticated}}
-                    <li class="nav-item">
-                        <button
-                            class="btn btn-outline-danger mx-3"
-                            href="/users/logout"
-                        >
-                            Logout
-                        </button>
+                    <li class="nav-item mx-2">
+                        <a class="" href="/users/logout">
+                            <button
+                                class="btn btn-outline-danger d-flex align-items-center"
+                            >
+                                Logout
+                            </button>
+                        </a>
                     </li>
                     {{else}}
-                    <li class="nav-item">
-                        <button
-                            class="btn btn-outline-danger mx-3"
-                            href="/users/signup"
-                            type="submit"
-                        >
-                            Login
-                        </button>
+                    <li class="nav-item mx-2">
+                        <a class="" href="/users/signup" type="submit">
+                            <button
+                                class="btn btn-outline-danger d-flex align-items-center"
+                            >
+                                Login
+                            </button>
+                        </a>
+
                         {{/if}}
                     </li>
                 </ul>
