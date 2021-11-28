@@ -92,25 +92,31 @@
                 </form>
                 <ul class="navbar-nav flex-row offset-2">
                     <li class="nav-item">
-                        <a class="nav-link" href="/private/profile">
+                        <button
+                            class=" btn  btn-outline-danger nav-link"
+                            href="/private/profile"
+                        >
                             <i class="fa fa-user"></i>
-                        </a>
+                        </button>
                     </li>
                     {{#if authenticated}}
                     <li class="nav-item">
-                        <a class="btn btn-outline-danger" href="/users/logout">
+                        <button
+                            class="btn btn-outline-danger mx-3"
+                            href="/users/logout"
+                        >
                             Logout
-                        </a>
+                        </button>
                     </li>
                     {{else}}
                     <li class="nav-item">
-                        <a
-                            class="btn btn-outline-danger"
+                        <button
+                            class="btn btn-outline-danger mx-3"
                             href="/users/signup"
                             type="submit"
                         >
                             Login
-                        </a>
+                        </button>
                         {{/if}}
                     </li>
                 </ul>
