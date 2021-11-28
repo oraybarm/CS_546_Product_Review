@@ -41,9 +41,9 @@
             const data = $.ajax(requestConfig).then((data) => {
                 const { _id, name, likes, replies, user } = data;
                 const newPost = `
-                <a href="community/post/${_id}">
+                <a href="community/post/${_id}" class="newPost">
                 <div className="col-md-4 border-grey w-100">
-                    <div class="card text-black bg-white mb-3 mt-4">
+                    <div class="newPostShadow text-black bg-white mb-3 mt-4">
                         <div class="card-header py-4">${name}</div>
                         <div
                             class="card-body d-flex justify-content-space-between h-50 py-0"

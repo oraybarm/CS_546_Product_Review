@@ -345,7 +345,8 @@ textarea.communityInput {
     margin-bottom: 20px;
 }
 
-.postReply {
+.postReply,
+.newPostShadow {
     box-shadow: rgba(0, 0, 0, 0.02) 0px 1px 3px 0px,
         rgba(27, 31, 35, 0.15) 0px 0px 0px 1px;
     margin-bottom: 20px;
@@ -393,4 +394,20 @@ p.post-error-confirmed {
 p.reply-error-confirmed {
     margin-left: 30% !important;
     width: 35%;
+}
+
+a.newPost {
+    animation: newPostShadow 5s linear 2s infinite alternate;
+}
+
+@keyframes newPostShadow {
+    0% {
+        background-color: red;
+    }
+    50% {
+        background-color: yellow;
+    }
+    100% {
+        background-color: green;
+    }
 }
