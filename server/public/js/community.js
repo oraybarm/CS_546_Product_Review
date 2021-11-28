@@ -1,6 +1,8 @@
 (function ($) {
     let postId;
     const newPostText = document.querySelector(".communityInput");
+    const replyError = document.querySelector(".reply-error");
+    const postError = document.querySelector(".post-error");
     const toastEl = document.querySelector(".toast");
     const toast = new bootstrap.Toast(toastEl, []);
 
@@ -14,10 +16,15 @@
     }
     if (newPostButton) {
         newPostButton.addEventListener("click", function () {
-            const newPostHTML = `
-            
-            `;
             let newPost = newPostText.value;
+            if (newPost.length <= 0) {
+                document.querySelector(".toast-body").innerHTML =
+                    "Please enter a valid reply";
+                toast.show();
+                postError.classList.add("post-error-confirmed");
+                postError.innerHTML = "Please enter a valid reply";
+                return;
+            }
             newPostText.value = "";
             let post = {
                 title: newPost,
@@ -63,21 +70,6 @@
                     "New discussion created";
                 toast.show();
             });
-            // fetch("/community", {
-            //     method: "POST",
-            //     headers: {
-            //         "Content-Type": "application/json",
-            //     },
-            //     body: JSON.stringify(post),
-            // }).then(function (response) {
-            //     if (response.ok) {
-            //         // TODO: find a way to dynamically refresh page without hard reloading
-            //         location.reload();
-            //         console.log("post successful");
-            //     } else {
-            //         console.log("post failed");
-            //     }
-            // });
         });
     }
 
@@ -92,7 +84,6 @@
 
             const data = $.ajax(requestConfig).then((data) => {
                 const { _id, name, likes, replies, user } = data;
-                console.log(`data in fe`, data);
                 const likeCounter = document.querySelector(".postLikes");
                 likeCounter.innerHTML = likes.length;
             });
@@ -100,12 +91,18 @@
     }
 
     if (replyText && postReply) {
-        if (replyText.value.length > 0) {
-            //TODO: disable the input button
-            return;
-        }
-
         postReply.addEventListener("click", function () {
+            replyError.innerHTML = "";
+            replyError.classList.remove("reply-error-confirmed");
+            console.log("replyText.value :>> ", replyText.value);
+            if (replyText.value.length <= 0) {
+                document.querySelector(".toast-body").innerHTML =
+                    "Please enter a valid reply";
+                toast.show();
+                replyError.classList.add("reply-error-confirmed");
+                replyError.innerHTML = "Please enter a valid reply";
+                return;
+            }
             const reply = replyText.value;
             replyText.value = "";
             let requestConfig = {

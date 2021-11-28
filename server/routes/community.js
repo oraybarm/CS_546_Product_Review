@@ -58,8 +58,8 @@ router.post("/", authMiddleware, async (req, res) => {
         req.session.updateSuccessful = true;
         return res.json(newPost);
     } catch (error) {
-        // TODO: handle error`
         console.log(`error`, error);
+        res.status(404).render("errorPage/404");
     }
 });
 
