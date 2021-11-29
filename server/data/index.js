@@ -6,4 +6,5 @@ module.exports = {
     users: usersData,
     products: data_Products,
     community: community,
+    reviews:reviewsData
 };
