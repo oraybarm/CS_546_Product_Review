@@ -1,51 +1,44 @@
-<body>
-    {{!-- <h1>Just test my dbfunctions!</h1>
-    <form action="/reviews/" method="POST" id="login-form">
-    <label for="review" style="color:rgb(205, 183, 247);">Review</label>
-    <input type="text" id="review" name="review" value="{{review}}">
-    <input type="text" id="rating" name="rating" value="{{rating}}">
-    <button type="submit" id="ok">Submit</button>
-    </form> --}}
-    <div id="box">
-        <div class="box_top">
-            <ul>
-			<li class="rate"></li>
-			<li class="rate"></li>
-			<li class="rate"></li>
-			<li class="rate"></li>
-			<li class="rate"></li>
-		    </ul>
-            <div id="rater"></div>
-            <textarea id="comment" cols="80" rows="10" placeholder="Please write your review"></textarea>
-            <button id="btn">Submit</button>
-        </div>
-        <ul id="comment_content">
-        </ul>
-    </div>
-    <div id="reviewpart">
+
+<div id="box">
+    <div class="box_top">
         <ul>
-            <li><img class="userimg" src="../../public/images/guest-user.jpg"></li>
-            <li><p>This product is a very good product!</p></li>
-            <li><img src="../../public/images/3.png"></li>
-            <hr>
-            <li><img class="userimg" src="../../public/images/guest-user.jpg"></li>
-            <li><p>This product is a perfect product!</p></li>
-            <li><img src="../../public/images/4.png"></li>
-            <hr>
-            {{#if hasPost}}
-            {{#each posts}}
-            <li><img class="userimg" src="../../public/images/guest-user.jpg"></li>
-            <li><p>I feel regret to buy this!</p></li>
-            <li><img src="../../public/images/1.png"></li>
-            <hr>
-            {{/each}}
-            {{else}}
-            <li>
-                <p class="not-found">No review right now.</p>
-            </li>
-            {{/if}}
-        </ul>
+		<li class="rate"></li>
+		<li class="rate"></li>
+		<li class="rate"></li>
+		<li class="rate"></li>
+		<li class="rate"></li>
+		</ul>
+        <div id="rater"></div>
+        <textarea id="comment" cols="80" rows="10" placeholder="Please write your review"></textarea>
+        <button id="btn">Submit</button>
     </div>
+    <ul id="comment_content">
+    </ul>
+</div>
+<div id="reviewpart">
+    <ul>
+        <li><img class="userimg" src="../../public/images/guest-user.jpg"></li>
+        <li><p>This product is a very good product!</p></li>
+        <li><img src="../../public/images/3.png"></li>
+        <hr>
+        <li><img class="userimg" src="../../public/images/guest-user.jpg"></li>
+        <li><p>This product is a perfect product!</p></li>
+        <li><img src="../../public/images/4.png"></li>
+        <hr>
+        {{#if hasPost}}
+        {{#each posts}}
+        <li><img class="userimg" src="../../public/images/guest-user.jpg"></li>
+        <li><p>I feel regret to buy this!</p></li>
+        <li><img src="../../public/images/1.png"></li>
+        <hr>
+        {{/each}}
+        {{else}}
+        <li>
+            <p class="not-found">No review right now.</p>
+        </li>
+        {{/if}}
+    </ul>
+</div>
      
     <script type="text/javascript">
         window.onload = function () {
@@ -122,5 +115,3 @@
 			}
 		}			
 	</script>
-
-</body>
