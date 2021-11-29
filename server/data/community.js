@@ -62,7 +62,12 @@ module.exports = {
         const newPostWithId = await communityCollection.findOne({ _id: newId });
         const usersCollection = await users();
         const user = await usersCollection.findOne({ _id: userId });
-        return { ...newPostWithId, user };
+        const parsedUser = {
+            name: user.name,
+            email: user.email,
+            photo: user.photo,
+        };
+        return { ...newPostWithId, user: parsedUser };
     },
 
     async getPost(postId) {
@@ -178,7 +183,6 @@ module.exports = {
         const userWithData = await usersCollection.findOne({ _id: userId });
 
         reply.user = { name: userWithData.name, photo: userWithData.photo };
-        console.log("reply :>> ", reply);
         return reply;
     },
 
@@ -220,7 +224,12 @@ module.exports = {
                 const user = await usersCollection.findOne({
                     _id: post.creator,
                 });
-                const newPost = { ...post, user };
+                const parsedUser = {
+                    name: user.name,
+                    email: user.email,
+                    photo: user.photo,
+                };
+                const newPost = { ...post, user: parsedUser };
                 return newPost;
             })
         );

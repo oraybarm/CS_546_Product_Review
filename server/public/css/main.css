@@ -375,8 +375,10 @@ textarea.communityInput {
 
 .disabled,
 textarea.disabled,
-button.disabled {
+button.disabled,
+input.disabled {
     background: #cacaca;
+    cursor: not-allowed;
 }
 
 button.disabled {
