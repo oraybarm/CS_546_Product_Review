@@ -20,15 +20,34 @@ router.post("/search", async (req, res) => {
           products: search_List,
         });
       } catch (e) {
-        return res.status(500).message(e.message);
+        return res.status(404).render("errorPage/noSearch");
       }
     }
     if (option.value === "By Tag") {
       try {
         let search_List = await products.getProductbyTag(body.search);
+        res.status(200).render("homePage/homePage", {
+          products: search_List,
+        });
       } catch (e) {
-        return res.status(500).send();
+        return res.status(404).render("errorPage/noSearch");
       }
     }
+  }
+});
+
+router.post("/addProduct", async (req, res) => {
+  if (!req.session.AuthCookie) {
+    res.status(401).redirect("/");
+  } else {
+    //check what all is required after making the front end form
+    const {
+      product_Name,
+      description,
+      website_Url,
+      // logo,
+      tags,
+      developer,
+    } = req.body;
   }
 });
