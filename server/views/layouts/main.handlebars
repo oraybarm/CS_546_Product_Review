@@ -96,12 +96,14 @@
                     class="navbar-nav flex-row offset-2 d-flex align-items-center"
                 >
                     <li class="nav-item mx-3">
-                        <button
-                            class=" btn  btn-outline-danger"
-                            href="/private/profile"
-                        >
-                            <i class="fa fa-user"></i>
-                        </button>
+                        <a href="/private/profile">
+                            <button
+                                class=" btn  btn-outline-danger"
+                                href="/private/profile"
+                            >
+                                <i class="fa fa-user"></i>
+                            </button>
+                        </a>
                     </li>
                     {{#if authenticated}}
                     <li class="nav-item mx-2">
