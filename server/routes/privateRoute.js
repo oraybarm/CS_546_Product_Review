@@ -99,7 +99,7 @@ router.post(
         userDataToUpdate.name = name;
         userDataToUpdate.email = req.session.user;
         userDataToUpdate.password = password;
-        userDataToUpdate.photo = req.file?.filename;
+        userDataToUpdate.photo = req.file.filename;
 
         if (
           userDataToUpdate.name === user.name &&
