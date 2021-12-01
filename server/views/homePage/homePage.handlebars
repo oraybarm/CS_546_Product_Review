@@ -1,7 +1,10 @@
 {{!-- {{need to look into how to add the search results array here. Making a small change to push to base branch. Mistake on my (Sacheth) end}} --}}
 
-<div class="jumbotron">Home Page content here</div>
-<div class= "search results">
+<div class="jumbotron">Home Page</div>
+{{#if error}}
+    <h2>error Test</h2>
+{{else}}
+    <div class= "Product List">
     {{#each products}}
     <div class="card" >
         <h2>{{this.product_Name}}</h2>
@@ -11,6 +14,7 @@
         <br/>
     </div>
     {{/each}}
-</div>
+    </div>
+{{/if}}
 <div id="chart"></div>
 <script src="../../public/js/chart.js"></script>

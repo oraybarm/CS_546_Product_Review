@@ -1,4 +1,4 @@
-const mongoCollections = require("../config/mongoCollections.js");
+const mongoCollections = require("../config/mongoCollection");
 const products = mongoCollections.products;
 let { ObjectId } = require("mongodb");
 
@@ -55,11 +55,20 @@ function checkID(id) {
     throw "Error: Provided ID is not valid argument (data)";
 }
 let exportedMethods = {
+  async getAllProducts() {
+    const productCollection = await products();
+    const prodList = await productCollection.find({}).limit(20).toArray();
+    const sorted = prodList.sort(prodList.likes);
+    if (prodList.length === 0) throw "Error:No products in the database";
+    console.log("get all test");
+    return sorted;
+  },
+
   async getProductById(product_Id) {
     checkID(product_Id);
     objId_product = ObjectId(product_Id);
     const prod_List = await products();
-    const prodId = await products.findOne({ _id: objId_product });
+    const prodId = await prod_List.findOne({ _id: objId_product });
     if (prodId === null) throw "No product found";
     return prodId;
   },
@@ -101,12 +110,13 @@ let exportedMethods = {
   async updateCount(product_Id, action) {
     objId = ObjectId(product_Id);
     const productCollection = await products();
-    const product_Id = await productCollection.findOne({ _id: objId });
+    const prod_Id = await productCollection.findOne({ _id: objId });
+    let updated_Like;
     if (restaurantID === null) throw "No restaurant with this ID";
     if (action === true) {
-      let updated_Like = parseInt(product_Id.likes) + 1;
+      updated_Like = parseInt(product_Id.likes) + 1;
     } else {
-      let updated_Like = parseInt(product_Id.likes) - 1;
+      updated_Like = parseInt(product_Id.likes) - 1;
     }
     const updated_detials = { likes: updated_Like };
     const updated = await productCollection.updateOne({
@@ -137,11 +147,11 @@ let exportedMethods = {
       .find({
         product_Name: { $regex: query },
       })
-      .toArray()
-      .sort(productByName.likes);
-    if (!productByName) throw "Error: No Matches";
+      .toArray();
 
-    return productByName;
+    if (!productByName) throw "Error: No Matches";
+    const sortedNameBylikes = productByName.sort(productByName.likes);
+    return sortedNameBylikes;
   },
 
   //
@@ -156,10 +166,10 @@ let exportedMethods = {
       .find({
         tags: { $regex: query },
       })
-      .toArray()
-      .sort(productByTag.likes);
+      .toArray();
     if (!productByTag) throw "Error: No Matches";
-    return productByTag;
+    const soredTagByLikes = productByTag.sort(productByTag.likes);
+    return soredTagByLikes;
   },
 
   //
