@@ -1,6 +1,6 @@
-const express = require("express");
+const express = require('express');
 const router = express.Router();
-const _ = require("lodash");
+const _ = require('lodash');
 const {
     getAllPosts,
     createPost,
@@ -10,35 +10,35 @@ const {
     replyToPost,
     getRepliesById,
     getPostRepliesWithUser,
-} = require("../data/community");
-const { getUser, getUserById } = require("../data/users");
-const { authMiddleware } = require("../middlewares/auth");
-const { isValidString, isValidObject, isValidObjectId } = require("../utils");
-const { ObjectId } = require("mongodb");
+} = require('../data/community');
+const { getUser, getUserById } = require('../data/users');
+const { authMiddleware } = require('../middlewares/auth');
+const { isValidString, isValidObject, isValidObjectId } = require('../utils');
+const { ObjectId } = require('mongodb');
 
-router.get("/", async (req, res) => {
+router.get('/', async (req, res) => {
     let posts, src;
     if (!req.session.user) {
-        src = "/public/images/guest-user.jpg";
+        src = '/public/images/guest-user.jpg';
         posts = await getPostsWithUser();
     } else {
         const user = await getUser(req.session.user);
         posts = await getPostsWithUser();
         src = !_.isEmpty(user.photo)
             ? `/public/images/upload/${user.photo}`
-            : "/public/images/guest-user.jpg";
+            : '/public/images/guest-user.jpg';
     }
-    console.log("authenticated :>> ", req.session.user ? true : false);
-    res.render("community/community", {
+    console.log('authenticated :>> ', req.session.user ? true : false);
+    res.render('community/community', {
         title: `Community ${posts.length}`,
         authenticated: req.session.user ? true : false,
-        user: req.session.user || "",
+        user: req.session.user || '',
         src,
         posts,
     });
 });
 
-router.post("/", authMiddleware, async (req, res) => {
+router.post('/', authMiddleware, async (req, res) => {
     try {
         const user = await getUser(req.session.user);
         const {
@@ -46,10 +46,10 @@ router.post("/", authMiddleware, async (req, res) => {
         } = req.body;
 
         if (!user) {
-            req.session.error = "You must be logged in to post";
-            return res.redirect("/community");
+            req.session.error = 'You must be logged in to post';
+            return res.redirect('/community');
         }
-        isValidString(title, "postName", 1);
+        isValidString(title, 'postName', 1);
         const post = {
             title,
             user,
@@ -59,28 +59,28 @@ router.post("/", authMiddleware, async (req, res) => {
         return res.json(newPost);
     } catch (error) {
         console.log(`error`, error);
-        res.status(404).render("errorPage/404");
+        res.status(404).render('errorPage/404');
     }
 });
 
-router.get("/post/:id", async (req, res) => {
+router.get('/post/:id', async (req, res) => {
     try {
         const { id } = req.params;
-        if (!id) throw "No postId provided";
+        if (!id) throw 'No postId provided';
         isValidObjectId(ObjectId(id));
 
         const post = await getPost(id);
-        if (!post) throw "No post found";
+        if (!post) throw 'No post found';
         const user = await getUserById(post.creator.toString());
         const src = !_.isEmpty(user.photo)
             ? `/public/images/upload/${user.photo}`
-            : "/public/images/guest-user.jpg";
+            : '/public/images/guest-user.jpg';
 
         const replies = await getPostRepliesWithUser(id);
-        res.render("community/post", {
+        res.render('community/post', {
             title: `${post.name}`,
             authenticated: req.session.user ? true : false,
-            user: req.session.user || "",
+            user: req.session.user || '',
             src,
             post,
             replies,
@@ -88,45 +88,45 @@ router.get("/post/:id", async (req, res) => {
         });
     } catch (error) {
         console.log(`error`, error);
-        res.status(404).render("errorPage/404");
+        res.status(404).render('errorPage/404');
     }
 });
 
-router.post("/post/:id/like", async (req, res) => {
+router.post('/post/:id/like', async (req, res) => {
     try {
         const { id } = req.params;
-        if (!id) throw "No postId provided";
+        if (!id) throw 'No postId provided';
         isValidObjectId(ObjectId(id));
 
         const post = await getPost(id);
-        if (!post) throw "No post found";
+        if (!post) throw 'No post found';
         const user = await getUser(req.session.user);
         const updatedLike = await likePost(id, user._id);
         return res.json(updatedLike);
     } catch (error) {
         console.log(`error in post like`, error);
-        res.status(404).render("errorPage/404");
+        res.status(404).render('errorPage/404');
     }
 });
 
-router.post("/post/:id/reply", async (req, res) => {
+router.post('/post/:id/reply', async (req, res) => {
     try {
         const { id } = req.params;
         const { reply } = req.body;
-        if (!id) throw "No postId provided";
+        if (!id) throw 'No postId provided';
         isValidObjectId(ObjectId(id));
 
         const post = await getPost(id);
-        if (!post) throw "No post found";
+        if (!post) throw 'No post found';
         const user = await getUser(req.session.user);
         const returnedReply = await replyToPost(id, user._id, reply);
         const lastReply = returnedReply.pop();
 
-        const replyWithUser = await getRepliesById(lastReply["_id"].toString());
+        const replyWithUser = await getRepliesById(lastReply['_id'].toString());
         return res.json({ replyWithUser, replyCount: returnedReply.length });
     } catch (error) {
         console.log(`error in post reply: `, error);
-        res.status(404).render("errorPage/404");
+        res.status(404).render('errorPage/404');
     }
 });
 

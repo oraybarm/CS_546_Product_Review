@@ -45,6 +45,7 @@ router.get('/profile', authMiddleware, async (req, res) => {
             email: user.email,
             nothingToUpdate,
             updateSuccessful,
+            error: req.session.error,
             toastMessage,
         });
     } catch (error) {
@@ -52,6 +53,7 @@ router.get('/profile', authMiddleware, async (req, res) => {
             authenticated: true,
             user: req.session.user,
             title: 'Profile',
+            error,
         });
     }
 });
@@ -110,6 +112,12 @@ router.post(
                 userDataToUpdate.email = req.session.user;
                 userDataToUpdate.password = password;
                 userDataToUpdate.photo = req.file?.filename;
+                // console.log(`req.file.mime`, req.file.mimetype);
+
+                if (req.file && !req.file?.mimetype.includes('image')) {
+                    req.session.error = 'Please upload an image';
+                    return res.redirect('/private/profile');
+                }
 
                 if (
                     userDataToUpdate.name === user.name &&
@@ -138,9 +146,8 @@ router.post(
                 }
             } catch (error) {
                 console.log(error);
-                res.status(400).json({
-                    error,
-                });
+                req.session.error = error;
+                return res.redirect('/private/profile');
             }
         } else {
             res.redirect('/');
