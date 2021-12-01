@@ -17,13 +17,31 @@
     <div>Hello {{name}}</div>
     <!-- <div>{{src}}</div> -->
     <img src="{{src}}" class="rounded-circle" alt="{{name}}" />
+    <h1>{{error}}</h1>
+    <div class="invalid-feedback">
+        {{error}}
+    </div>
     <form
         action="/private/profile/update"
         method="post"
         enctype="multipart/form-data"
+        class="needs-validation"
+        novalidate
     >
-        <label for="name">Name</label>
-        <input type="text" name="name" id="name" value="{{name}}" />
+        <div class="col-md-12 position-relative">
+            <label for="name" class="form-label">Name</label>
+            <input
+                type="text"
+                name="name"
+                id="name"
+                value="{{name}}"
+                class="form-control"
+            />
+            <div class="invalid-feedback">
+                Please provide a valid Name(at least two characters, no special
+                characters allowed).
+            </div>
+        </div>
         <label for="email">Email</label>
         <input
             type="text"
@@ -35,7 +53,15 @@
         />
         <label for="password">Password</label>
         <input type="password" name="password" id="password" />
-        <input type="file" id="file" name="photo" />
+        <div class="col-md-12 position-relative">
+            <label for="file" class="form-label"
+                >Upload a new profile picture</label
+            >
+            <input type="file" id="file" name="photo" class="form-control" />
+            <div class="invalid-feedback">
+                Files supported: jpg, jpeg, png Max file size: 2MB
+            </div>
+        </div>
         <button type="submit" name="Submit">Update</button>
     </form>
 </div>

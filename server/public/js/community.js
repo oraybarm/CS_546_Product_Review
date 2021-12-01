@@ -75,7 +75,6 @@
 
     if (likePostButton) {
         likePostButton.addEventListener("click", function () {
-            console.log(`postId`, postId);
             let requestConfig = {
                 method: "POST",
                 url: `/community/post/${postId}/like`,
@@ -94,7 +93,6 @@
         postReply.addEventListener("click", function () {
             replyError.innerHTML = "";
             replyError.classList.remove("reply-error-confirmed");
-            console.log("replyText.value :>> ", replyText.value);
             if (replyText.value.length <= 0) {
                 document.querySelector(".toast-body").innerHTML =
                     "Please enter a valid reply";
@@ -119,7 +117,6 @@
                     replyCount,
                 } = data;
 
-                console.log(`data in fe`, replyCount);
                 let commentCount = document.querySelector(".commentCount");
                 commentCount.innerHTML = replyCount + 1;
                 const newReplyHTML = `

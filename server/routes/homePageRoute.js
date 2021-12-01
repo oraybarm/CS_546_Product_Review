@@ -26,7 +26,7 @@ router.get("/", async (req, res) => {
   }
 });
 
-router.get("/home", (req, res) => {
+router.get("/home", async (req, res) => {
   try {
     let prodList = await productData.getAllProducts();
     res.status(200).render("homePage/homePage", {
