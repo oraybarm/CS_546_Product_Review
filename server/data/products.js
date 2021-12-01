@@ -36,10 +36,8 @@ function checkID(id) {
     if (!id) throw "Error: Please provide argument id";
     //if (typeof id !== "string") throw "Error:ID is not of string type.";
     if (typeof id === "string" && id.trim().length < 1) {
-        //console.log(typeof id);
         throw "Error: ID is a blank string has been passed as argument";
     }
-    //console.log(ObjectId.isValid(id));
     if (!ObjectId.isValid(id))
         throw "Error: Provided ID is not valid argument (data)";
 }
@@ -85,9 +83,7 @@ let exportedMethods = {
         if (insert_Prod.insertedCount === 0)
             throw "We are sorry. An error occured while adding the product. Please try again.";
         const dbId = await insert_Prod.insertedId;
-        //console.log(typeof dbId);
         const add_Product = await this.get(dbId.toString());
-        //console.log(typeof addRest);
         return add_Product;
     },
 

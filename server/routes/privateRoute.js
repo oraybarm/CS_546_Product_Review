@@ -1,45 +1,45 @@
-const express = require('express');
-const multer = require('multer');
-const { authMiddleware } = require('../middlewares/auth');
-const { updateUser, getUser } = require('../data/users');
+const express = require("express");
+const multer = require("multer");
+const { authMiddleware } = require("../middlewares/auth");
+const { updateUser, getUser } = require("../data/users");
 const router = express.Router();
-const path = require('path');
-const _ = require('lodash');
+const path = require("path");
+const _ = require("lodash");
 const {
     isValidPassword,
     isValidEmail,
     isValidUsername,
     isValidString,
-} = require('../utils');
+} = require("../utils");
 
 // TODO: there's a middleware to check isadmin inside middleware/private.js
 // we can use it for report user feature
-router.get('/home', (req, res) => {
-    res.render('homePage/homePage', {
+router.get("/home", (req, res) => {
+    res.render("homePage/homePage", {
         authenticated: true,
         user: req.session.user,
-        title: 'Home',
+        title: "Home",
     });
 });
 
-router.get('/profile', authMiddleware, async (req, res) => {
+router.get("/profile", authMiddleware, async (req, res) => {
     try {
         const user = await getUser(req.session.user);
         const { nothingToUpdate, updateSuccessful } = req.session;
         const src = !_.isEmpty(user.photo)
             ? `/public/images/upload/${user.photo}`
-            : '/public/images/guest-user.jpg';
+            : "/public/images/guest-user.jpg";
         let toastMessage;
         if (updateSuccessful) {
-            toastMessage = 'Update successful';
+            toastMessage = "Update successful";
         }
         if (nothingToUpdate) {
-            toastMessage = 'Nothing to update here';
+            toastMessage = "Nothing to update here";
         }
-        res.render('profile/profile', {
+        res.render("profile/profile", {
             authenticated: true,
             user: req.session.user,
-            title: 'Profile',
+            title: "Profile",
             src,
             name: user.name,
             email: user.email,
@@ -49,10 +49,10 @@ router.get('/profile', authMiddleware, async (req, res) => {
             toastMessage,
         });
     } catch (error) {
-        res.render('profile/profile', {
+        res.render("profile/profile", {
             authenticated: true,
             user: req.session.user,
-            title: 'Profile',
+            title: "Profile",
             error,
         });
     }
@@ -61,7 +61,7 @@ router.get('/profile', authMiddleware, async (req, res) => {
 const storage = multer.diskStorage({
     //destination for files
     destination: function (request, file, callback) {
-        callback(null, './public/images/upload');
+        callback(null, "./public/images/upload");
     },
 
     //add back the extension
@@ -79,9 +79,9 @@ const upload = multer({
 });
 
 router.post(
-    '/profile/update',
+    "/profile/update",
     authMiddleware,
-    upload.single('photo'),
+    upload.single("photo"),
     async (req, res) => {
         if (req.session.user) {
             // user is authenticated so update the profile
@@ -95,10 +95,10 @@ router.post(
                     email = user.email,
                     password,
                 } = req.body;
-                isValidString(name, 'username');
-                isValidString(email, 'email');
+                isValidString(name, "username");
+                isValidString(email, "email");
                 if (password.length > 0) {
-                    isValidString(password, 'password');
+                    isValidString(password, "password");
                     password = password.trim();
                     isValidPassword(password);
                 }
@@ -112,28 +112,27 @@ router.post(
                 userDataToUpdate.email = req.session.user;
                 userDataToUpdate.password = password;
                 userDataToUpdate.photo = req.file?.filename;
-                // console.log(`req.file.mime`, req.file.mimetype);
 
-                if (req.file && !req.file?.mimetype.includes('image')) {
-                    req.session.error = 'Please upload an image';
-                    return res.redirect('/private/profile');
+                if (req.file && !req.file?.mimetype.includes("image")) {
+                    req.session.error = "Please upload an image";
+                    return res.redirect("/private/profile");
                 }
 
                 if (
                     userDataToUpdate.name === user.name &&
                     userDataToUpdate.email === user.email &&
-                    userDataToUpdate.password === '' &&
+                    userDataToUpdate.password === "" &&
                     (!userDataToUpdate.photo ||
                         userDataToUpdate.photo === user.photo)
                 ) {
                     req.session.nothingToUpdate = true;
                     req.session.updateSuccessful = false;
-                    return res.redirect('/private/profile');
+                    return res.redirect("/private/profile");
                 }
                 const updatedUser = await updateUser(userDataToUpdate);
                 if (!updatedUser.updated) {
                     return res.status(400).json({
-                        error: 'An error occured could not update user',
+                        error: "An error occured could not update user",
                     });
                 } else {
                     // res.render("profile/profile", {
@@ -142,15 +141,15 @@ router.post(
                     // });
                     req.session.updateSuccessful = true;
                     req.session.nothingToUpdate = false;
-                    res.redirect('/private/profile');
+                    res.redirect("/private/profile");
                 }
             } catch (error) {
                 console.log(error);
                 req.session.error = error;
-                return res.redirect('/private/profile');
+                return res.redirect("/private/profile");
             }
         } else {
-            res.redirect('/');
+            res.redirect("/");
         }
     }
 );
