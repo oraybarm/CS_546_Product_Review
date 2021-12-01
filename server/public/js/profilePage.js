@@ -35,10 +35,7 @@
         var val = document.getElementById('file').value;
         const validImageTypes = ['image/gif', 'image/jpeg', 'image/png'];
         const fileType = this.files[0].type;
-        console.log(
-            `validImageTypes.includes(fileType)`,
-            validImageTypes.includes(fileType)
-        );
+
         if (!validImageTypes.includes(fileType)) {
             profileFileField.setCustomValidity('invalid');
         } else {
