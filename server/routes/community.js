@@ -82,7 +82,7 @@ router.get("/post/:id", async (req, res) => {
             user: req.session.user || "",
             src,
             post,
-            replies,
+            replies: replies.reverse(),
             isSameUser: req.session.user === user.email ? true : false,
         });
     } catch (error) {
