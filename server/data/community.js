@@ -37,12 +37,10 @@ module.exports = {
                 date: -1,
             })
             .toArray();
-        console.log(`allPosts`, allPosts);
         return allPosts;
     },
 
     async createPost(userId, name) {
-        console.log(`userID, name`, userId, name);
         // test the userid name
         if (!userId) throw "No userId provided";
         isValidObjectId(userId);
@@ -75,7 +73,6 @@ module.exports = {
         isValidObjectId(postId);
 
         const communityCollection = await community();
-        console.log(`postId`, postId);
         const post = await communityCollection.findOne({
             _id: ObjectId(postId),
         });
@@ -142,7 +139,6 @@ module.exports = {
         userId = ObjectId(userId);
         const communityCollection = await community();
         const post = await communityCollection.findOne({ _id: postId });
-        console.log(`post in data`, post);
         if (!post) throw "No post found";
         const replyObject = {
             _id: ObjectId(),
