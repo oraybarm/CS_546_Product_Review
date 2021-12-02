@@ -16,22 +16,22 @@ const session = require("express-session");
 // });
 router.post("/search", async (req, res) => {
   const body = req.body;
-  console.log("body", body);
+  //console.log("body", body);
 
   //console.log(option);
-  let searchTerm = body.search;
-  console.log(searchTerm);
+  let searchTerm = body.searchInput;
+  let searchValue = body.searchSelect;
+  //console.log(searchTerm);
+  //console.log(searchValue);
   if (!searchTerm || searchTerm.trim().length == 0) {
     return "Error: Search term blank";
   } else {
     searchTerm = searchTerm.toLowerCase();
     console.log(searchTerm);
-    console.log(option.value);
-    if (option.value === "name") {
+    //console.log(option.value);
+    if (searchValue === "name") {
       try {
-        let search_List = await productData.getProductByProductName(
-          body.search
-        );
+        let search_List = await productData.getProductByProductName(searchTerm);
         //return only the json
 
         res.status(200).render("searchPage/searchPage", {
@@ -41,9 +41,9 @@ router.post("/search", async (req, res) => {
         return res.status(404).render("errorPage/noSearch");
       }
     }
-    if (option.value === "tag") {
+    if (searchValue === "tag") {
       try {
-        let search_List = await productData.getProductbyTag(body.search);
+        let search_List = await productData.getProductbyTag(searchTerm);
         res.status(200).render("searchPage/searchPage", {
           products: search_List,
         });
