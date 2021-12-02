@@ -5,18 +5,18 @@ const users = require("../data/users");
 const { authMiddleware } = require("../middlewares/auth");
 const router = express.Router();
 
-router.get("/:id",async (req, res) => {
+router.get('/:id', async (req, res) => {
     if (!req.params.id) {
         res.status(400).json({ error: 'You must provide ID' });
         return;
-      }
-      try {
+    }
+    try {
         const review = await reviews.getReviewById(req.params.id);
         res.json(review);
-      } catch (e) {
+    } catch (e) {
         res.status(404).json({ error: e });
-      }
-  });
+    }
+});
 
 router.get("/product/:id",authMiddleware, async (req, res) => {
     if (!req.params.id) {
@@ -47,9 +47,9 @@ router.get("/product/:id",authMiddleware, async (req, res) => {
           }
         }
         if (posts.length > 0) {
-          hasPost = true;
+            hasPost = true;
         }
-        res.render('review/review',{posts: posts, hasPost:hasPost});
+        res.render('review/review', { posts: posts, hasPost: hasPost });
     } catch (e) {
         res.status(404).json({ error: 'review not found' });
     }
@@ -57,7 +57,7 @@ router.get("/product/:id",authMiddleware, async (req, res) => {
 
 router.get('/', async (req, res) => {
     res.render('review/review');
-  });
+});
 
 router.post('/',authMiddleware, async (req, res) => {
   console.log(req.body);
@@ -105,4 +105,4 @@ router.post('/delete',authMiddleware, async (req, res) => {
   }
 });
 
-  module.exports = router;
+module.exports = router;

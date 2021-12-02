@@ -15,6 +15,7 @@ const { getUser, getUserById } = require("../data/users");
 const { authMiddleware } = require("../middlewares/auth");
 const { isValidString, isValidObject, isValidObjectId } = require("../utils");
 const { ObjectId } = require("mongodb");
+const xss = require("xss");
 
 router.get("/", async (req, res) => {
     let posts, src;
@@ -28,7 +29,6 @@ router.get("/", async (req, res) => {
             ? `/public/images/upload/${user.photo}`
             : "/public/images/guest-user.jpg";
     }
-    console.log("authenticated :>> ", req.session.user ? true : false);
     res.render("community/community", {
         title: `Community ${posts.length}`,
         authenticated: req.session.user ? true : false,
@@ -41,9 +41,11 @@ router.get("/", async (req, res) => {
 router.post("/", authMiddleware, async (req, res) => {
     try {
         const user = await getUser(req.session.user);
-        const {
+        let {
             post: { title },
         } = req.body;
+
+        title = xss(title);
 
         if (!user) {
             req.session.error = "You must be logged in to post";
@@ -83,7 +85,7 @@ router.get("/post/:id", async (req, res) => {
             user: req.session.user || "",
             src,
             post,
-            replies,
+            replies: replies.reverse(),
             isSameUser: req.session.user === user.email ? true : false,
         });
     } catch (error) {
@@ -94,9 +96,10 @@ router.get("/post/:id", async (req, res) => {
 
 router.post("/post/:id/like", async (req, res) => {
     try {
-        const { id } = req.params;
+        let { id } = req.params;
         if (!id) throw "No postId provided";
         isValidObjectId(ObjectId(id));
+        id = xss(id);
 
         const post = await getPost(id);
         if (!post) throw "No post found";
@@ -112,7 +115,8 @@ router.post("/post/:id/like", async (req, res) => {
 router.post("/post/:id/reply", async (req, res) => {
     try {
         const { id } = req.params;
-        const { reply } = req.body;
+        let { reply } = req.body;
+        reply = xss(reply);
         if (!id) throw "No postId provided";
         isValidObjectId(ObjectId(id));
 
@@ -123,7 +127,10 @@ router.post("/post/:id/reply", async (req, res) => {
         const lastReply = returnedReply.pop();
 
         const replyWithUser = await getRepliesById(lastReply["_id"].toString());
-        return res.json({ replyWithUser, replyCount: returnedReply.length });
+        return res.json({
+            replyWithUser,
+            replyCount: returnedReply.length,
+        });
     } catch (error) {
         console.log(`error in post reply: `, error);
         res.status(404).render("errorPage/404");
