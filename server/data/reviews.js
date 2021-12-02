@@ -1,6 +1,7 @@
 const mongoCollections = require('../config/mongoCollection');
 const reviews = mongoCollections.reviews;
 const users = mongoCollections.users;
+const { ObjectId } = require('mongodb');
 
 function checkString(str){
   if(str===undefined){
@@ -17,23 +18,24 @@ function checkString(str){
       throw`Don't fool me! The string you input are all empty!`;
   }    
 }
+
+function myDBfunction(id) {
+  //check to make sure we have input at all
+  if (!id) throw 'Id parameter must be supplied';
+  //check to make sure it's a string
+  if (typeof id !== 'string') throw "Id must be a string";
+  //Now we check if it's a valid ObjectId so we attempt to convert a value to a valid object ID,
+  let parsedId = ObjectId(id);
+  //this console.log will not get executed if Object(id) fails, as it will throw an error
+  //console.log('Parsed it correctly, now I can pass parsedId into my query.');
+  return parsedId;
+}
+
 const exportedMethods = {
   
     async getReviewById(reviewId) {
       if (!reviewId) throw 'You must provide an id to search for';
       checkString(reviewId);
-      let { ObjectId } = require('mongodb');
-      function myDBfunction(id) {
-        //check to make sure we have input at all
-        if (!id) throw 'Id parameter must be supplied';
-        //check to make sure it's a string
-        if (typeof id !== 'string') throw "Id must be a string";
-        //Now we check if it's a valid ObjectId so we attempt to convert a value to a valid object ID,
-        let parsedId = ObjectId(id);
-        //this console.log will not get executed if Object(id) fails, as it will throw an error
-        //console.log('Parsed it correctly, now I can pass parsedId into my query.');
-        return parsedId;
-      }
       reviewId=myDBfunction(reviewId);
       const reviewCollection = await reviews();
       const review = await reviewCollection.findOne({ _id: reviewId});
@@ -43,18 +45,6 @@ const exportedMethods = {
   
     async getReviewbyProductId(productId) {
       checkString(productId);
-      let { ObjectId } = require('mongodb');
-      function myDBfunction(id) {
-        //check to make sure we have input at all
-        if (!id) throw 'Id parameter must be supplied';
-        //check to make sure it's a string
-        if (typeof id !== 'string') throw "Id must be a string";
-        //Now we check if it's a valid ObjectId so we attempt to convert a value to a valid object ID,
-        let parsedId = ObjectId(id);
-        //this console.log will not get executed if Object(id) fails, as it will throw an error
-        //console.log('Parsed it correctly, now I can pass parsedId into my query.');
-        return parsedId;
-      }
       productId=myDBfunction(productId);
       const reviewCollection = await reviews();
       const review = await reviewCollection.find({product:productId}).toArray();
@@ -63,21 +53,12 @@ const exportedMethods = {
     },
     
     async AddReview(productId,description,rating) {
+    if (!productId) throw 'You must provide a productId for review!';
+    if (!description) throw 'You must provide a description for review!';
     if (!rating) throw 'You must provide a rating for review!';
     checkString(description);
     checkString(rating);
-    let { ObjectId } = require('mongodb');
-    function myDBfunction(id) {
-     //check to make sure we have input at all
-      if (!id) throw 'Id parameter must be supplied';
-      //check to make sure it's a string
-      if (typeof id !== 'string') throw "Id must be a string";
-      //Now we check if it's a valid ObjectId so we attempt to convert a value to a valid object ID,
-      let parsedId = ObjectId(id);
-      //this console.log will not get executed if Object(id) fails, as it will throw an error
-      //console.log('Parsed it correctly, now I can pass parsedId into my query.');
-      return parsedId;
-    }
+    checkString(productId);
     productId=myDBfunction(productId);
     
     const reviewCollection = await reviews();
@@ -92,6 +73,12 @@ const exportedMethods = {
     },
 
     async AddReviewToUser(userid,reviewId){
+      if (!userid) throw 'You must provide an id';
+      checkString(userid);
+      id=myDBfunction(userid);
+      if (!reviewId) throw 'You must provide an id';
+      checkString(reviewId);
+      id=myDBfunction(reviewId);
       const userCollection = await users();
       const user = await userCollection.findOne({ _id: userid });
       if (user === null) throw 'No userid with that id';
@@ -109,10 +96,18 @@ const exportedMethods = {
     },
 
     async getUserByReviewId(id){
+      if (!id) throw 'You must provide an id';
+      checkString(id);
+      id=myDBfunction(id);
       const userCollection = await users();
       const user = await userCollection.findOne({ 'reviews._id' : id});
       if (user === null) throw 'No user with that review id';
-      return user;
+      let userInfo={};
+      userInfo["_id"]=user._id;
+      userInfo["firstName"]=user.firstName;
+      userInfo["lastName"]=user.lastName;
+      userInfo["img"]=user.photo.data.concat(user.photo.contentType);
+      return userInfo;
     },
     
     async updateReviewbyId(id,description,rating) {
@@ -121,17 +116,11 @@ const exportedMethods = {
       checkString(id);
       checkString(description);
       checkString(rating);
-      let { ObjectId } = require('mongodb');
-      function myDBfunction(id) {
-        //check to make sure we have input at all
-        if (!id) throw 'Id parameter must be supplied';
-        //check to make sure it's a string
-        if (typeof id !== 'string') throw "Id must be a string";
-        //Now we check if it's a valid ObjectId so we attempt to convert a value to a valid object ID,
-        let parsedId = ObjectId(id);
-        //this console.log will not get executed if Object(id) fails, as it will throw an error
-        //console.log('Parsed it correctly, now I can pass parsedId into my query.');
-        return parsedId;
+      rating=parseInt(rating);
+      if(isNaN(rating)){
+        throw " Rating is not a number!";
+      }else if(rating<1 || rating >5 ){
+        throw "Rating must be a number between 1 and 5"
       }
       id=myDBfunction(id);
       const reviewCollection = await reviews();
@@ -154,18 +143,7 @@ const exportedMethods = {
     async deleteReview(reviewId) {
       if (!reviewId) throw 'You must provide an id to search for';
       checkString(reviewId);
-      let { ObjectId } = require('mongodb');
-      function myDBfunction(id) {
-        //check to make sure we have input at all
-        if (!id) throw 'Id parameter must be supplied';
-        //check to make sure it's a string
-        if (typeof id !== 'string') throw "Id must be a string";
-        //Now we check if it's a valid ObjectId so we attempt to convert a value to a valid object ID,
-        let parsedId = ObjectId(id);
-        //this console.log will not get executed if Object(id) fails, as it will throw an error
-        //console.log('Parsed it correctly, now I can pass parsedId into my query.');
-        return parsedId;
-      }
+
       reviewId=myDBfunction(reviewId);
       const reviewCollection = await reviews();
       const review = await reviewCollection.findOne({ _id: reviewId});
@@ -178,7 +156,14 @@ const exportedMethods = {
       }
       return  deletionInfo;
     },
+
     async DeleteReviewToUser(userid,reviewId){
+      if (!userid) throw 'You must provide an id';
+      checkString(userid);
+      id=myDBfunction(userid);
+      if (!reviewId) throw 'You must provide an id';
+      checkString(reviewId);
+      id=myDBfunction(reviewId);
       const userCollection = await users();
       const user = await userCollection.findOne({ _id: userid });
       if (user === null) throw 'No userid with that id';

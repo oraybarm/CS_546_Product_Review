@@ -4,6 +4,7 @@ const { getUser } = require("../data/users");
 const users = require("../data/users");
 const { authMiddleware } = require("../middlewares/auth");
 const router = express.Router();
+const isValidString = require('../utils');
 
 router.get('/:id', async (req, res) => {
     if (!req.params.id) {
@@ -38,8 +39,8 @@ router.get("/product/:id",authMiddleware, async (req, res) => {
         let hasPost = false;
         for (let i = 0; i < review.length; i++) {
           let output = review[i];
-          output["username"]=userlist[i].firstName.concat(userlist[i].firstName);
-          output["image"]=userlist[i].photo.data.concat(userlist[i].photo.contentType);
+          output["username"]=userlist[i].firstName.concat(userlist[i].lastName);
+          output["image"]=userlist[i].img;
           output["userId"]=userlist[i]._id;
           output["usernow"]=(usernow==userlist[i]._id);
           if (output) {
@@ -61,14 +62,22 @@ router.get('/', async (req, res) => {
 
 router.post('/',authMiddleware, async (req, res) => {
   console.log(req.body);
-  const user=await getUser(req.session.user);
-  const review = req.body.content;
-  const rating = req.body.rateval;
-  let result;
-  let addreviewtouser;
   try{
-    result=await reviews.AddReview("619d59f6ef4d9cffbf59ef13", review, rating);//this id is productid
+    const user=await getUser(req.session.user);
+    const review = req.body.content;
+    const rating = req.body.rateval;
+    review = xss(review);
+    rating = xss(rating);
+    let result;
+    let addreviewtouser;
+    isValidString(review, 'review');
+    isValidString(rating, 'rating');
+    //this id is productid(get from product description page,but we don't have product page now)
+    result=await reviews.AddReview("619d59f6ef4d9cffbf59ef13", review, rating);
     console.log(result.insertedId);
+    if (!user._id) {
+      throw { message: 'Unable to get user Id', code: 500 };
+    }
     addreviewtouser=await reviews.AddReviewToUser(user._id,result.insertedId);
   }catch(e){
     console.log(e);
@@ -78,10 +87,14 @@ router.post('/',authMiddleware, async (req, res) => {
 
 router.post('/update', async (req, res) => {
   console.log(req.body);
-  const review = req.body.description;
-  const rating = req.body.rating;
-  let result;
   try{
+    const review = req.body.description;
+    const rating = req.body.rating;
+    review = xss(review);
+    rating = xss(rating);
+    let result;
+    isValidString(review, 'review');
+    isValidString(rating, 'rating');
     result=await reviews.updateReviewbyId(id,review,rating);
     console.log(result);
   }catch(e){
@@ -91,12 +104,17 @@ router.post('/update', async (req, res) => {
 });
 
 router.post('/delete',authMiddleware, async (req, res) => {
-  console.log(req.body.reviewId);
-  const reviewId=req.body.reviewId;
-  const user=await getUser(req.session.user);
-  let result;
   try{
+    console.log(req.body.reviewId);
+    const reviewId=req.body.reviewId;
+    reviewId = xss(reviewId);
+    const user=await getUser(req.session.user);
+    let result;
+    isValidString(reviewId, 'reviewId');
     result=await reviews.deleteReview(reviewId);
+    if (!user._id) {
+      throw { message: 'Unable to get user Id', code: 500 };
+    }
     console.log(result.DeletedId);
     Deletereviewtouser=await reviews.DeleteReviewToUser(user._id,result.DeletedId);
   }catch(e){
