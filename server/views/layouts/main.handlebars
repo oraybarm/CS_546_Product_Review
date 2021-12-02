@@ -59,6 +59,9 @@
 
                 <form
                     class="form-flex flex-row bg-dark d-flex align-items-baseline position-relative"
+                    method="POST"
+                    action="/product/search"
+                    id="searhcForm"
                 >
                     <div class="input-group mb-3 ">
                         <div
@@ -79,6 +82,7 @@
                             type="text"
                             class="form-control"
                             placeholder="Search something"
+                            id="searchInput"
                             name="searchInput"
                             aria-label="Search bar"
                             aria-describedby="basic-addon1"
@@ -93,7 +97,6 @@
                     >
                         Search
                     </button>
-                    
                 </form>
                 <ul
                     class="navbar-nav flex-row offset-2 d-flex align-items-center"

@@ -36,7 +36,6 @@ router.get("/home", async (req, res) => {
       error: false,
       products: prodList,
     });
-    return;
   } catch (e) {
     console.log(e);
     res.status(404).render("homePage/homePage", {
@@ -45,7 +44,6 @@ router.get("/home", async (req, res) => {
       user: req.session.user,
       error: true,
     });
-    return;
   }
 });
 

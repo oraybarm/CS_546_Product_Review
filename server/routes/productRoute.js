@@ -14,7 +14,6 @@ const session = require("express-session");
 //     res.status(404).send(e);
 //   }
 // });
-
 router.post("/search", async (req, res) => {
   const body = req.body;
   console.log("body", body);
@@ -22,7 +21,7 @@ router.post("/search", async (req, res) => {
   //console.log(option);
   let searchTerm = body.search;
   console.log(searchTerm);
-  if (!searchTerm || searchTerm.trim() == 0) {
+  if (!searchTerm || searchTerm.trim().length == 0) {
     return "Error: Search term blank";
   } else {
     searchTerm = searchTerm.toLowerCase();
