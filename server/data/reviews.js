@@ -1,6 +1,6 @@
 const mongoCollections = require('../config/mongoCollection');
 const reviews = mongoCollections.reviews;
-
+const users = mongoCollections.users;
 
 function checkString(str){
   if(str===undefined){
@@ -57,7 +57,6 @@ const exportedMethods = {
       }
       productId=myDBfunction(productId);
       const reviewCollection = await reviews();
-  
       const review = await reviewCollection.find({product:productId}).toArray();
       if (review === null) throw 'No review with that product id';
       return review;
@@ -89,10 +88,33 @@ const exportedMethods = {
       };
     const insertInfo = await reviewCollection.insertOne(newReview);
     if (insertInfo.insertedCount === 0) throw 'Could not add review';
-    console.log(insertInfo);
-    return "Add review successfully";
-  
+    return insertInfo;
     },
+
+    async AddReviewToUser(userid,reviewId){
+      const userCollection = await users();
+      const user = await userCollection.findOne({ _id: userid });
+      if (user === null) throw 'No userid with that id';
+      const reviewCollection = await users();
+      let newRest = {
+        _id:reviewId
+      };
+      const updateInfo = await reviewCollection.updateOne(
+        { _id: userid },
+        { $addToSet: { reviews: newRest }} 
+      );
+      if (!updateInfo.matchedCount && !updateInfo.modifiedCount)
+      throw 'Update failed';
+      return "Add review to user successfully!";
+    },
+
+    async getUserByReviewId(id){
+      const userCollection = await users();
+      const user = await userCollection.findOne({ 'reviews._id' : id});
+      if (user === null) throw 'No user with that review id';
+      return user;
+    },
+    
     async updateReviewbyId(id,description,rating) {
       if (!id) throw 'You must provide an id to update';
       if (!description) throw 'You must provide a description';
@@ -154,8 +176,21 @@ const exportedMethods = {
       if (deletionInfo.deletedCount === 0) {
         throw `Could not delete restaurant with id of ${reviewId}`;
       }
-      return  " has been successfully deleted!";
-    }
+      return  deletionInfo;
+    },
+    async DeleteReviewToUser(userid,reviewId){
+      const userCollection = await users();
+      const user = await userCollection.findOne({ _id: userid });
+      if (user === null) throw 'No userid with that id';
+      const reviewCollection = await users();
+      const updateInfo = await reviewCollection.updateOne(
+        { _id: userid },
+        { $pull: { reviews: {"_id":reviewId}}}
+      );
+      if (!updateInfo.matchedCount && !updateInfo.modifiedCount)
+      throw 'Update failed';
+      return "Delete review to user successfully!";
+    },
   };
   
   module.exports = exportedMethods;

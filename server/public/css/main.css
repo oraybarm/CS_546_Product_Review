@@ -488,3 +488,45 @@ ul,li,body{padding: 0;margin: 0;}
     top:100px;
     right:10px;
 }
+
+.more-tjm-info{
+    width:60px;
+    float: right;
+    margin-right:10px;
+}
+
+.white_content {
+    display: none;
+    position: absolute;
+    top: 18%;
+    left: 30%;
+ 
+    width: 400px;
+    height: 500px;
+    background: #FFFFFF;
+    border-radius: 6px;
+ 
+    z-index: 1002; 
+    overflow: auto;
+    position: fixed;
+}
+ 
+.top-div {
+    display: flex;
+    height: 56px;
+    background: #FFFFFF;
+    border-bottom: 1px solid #cccc;;
+}
+ 
+.closeBtn{
+    width: 14px;
+    height: 14px;
+    margin-left: 60px;
+    margin-top: 18px;
+    font-weight: bold;
+    font-size: 14px;
+    color: #666666;
+    width: 5%; 
+    cursor: pointer;
+}
+
