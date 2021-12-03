@@ -24,16 +24,19 @@ router.post("/search", async (req, res) => {
   //console.log(searchTerm);
   //console.log(searchValue);
   if (!searchTerm || searchTerm.trim().length == 0) {
+    res.status(404).render("errorPage/noSearch", {
+      message: "Search bar should not be blank",
+    });
     return "Error: Search term blank";
   } else {
     searchTerm = searchTerm.toLowerCase();
-    console.log(searchTerm);
-    //console.log(option.value);
+    //console.log(searchTerm);
+    console.log(searchValue);
     if (searchValue === "name") {
       try {
         let search_List = await productData.getProductByProductName(searchTerm);
+        console.log(search_List);
         //return only the json
-
         res.status(200).render("searchPage/searchPage", {
           products: search_List,
         });
@@ -41,7 +44,7 @@ router.post("/search", async (req, res) => {
         return res.status(404).render("errorPage/noSearch");
       }
     }
-    if (searchValue === "tag") {
+    if (searchValue === "tag" || searchValue === "Search product by") {
       try {
         let search_List = await productData.getProductbyTag(searchTerm);
         res.status(200).render("searchPage/searchPage", {

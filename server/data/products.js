@@ -134,7 +134,7 @@ let exportedMethods = {
   // using something called text search from Mongo db-  don't need this
   //returns array of objects containing matches
 
-  //https://www.guru99.com/regular-expressions-mongodb.html - this talks about using
+  //https://www.guru99.com/regular-expressions-mongodb.html - this talks about using regex to search
 
   async getProductByProductName(textToSearch) {
     if (typeof textToSearch !== "string")
@@ -142,13 +142,12 @@ let exportedMethods = {
     textToSearch = textToSearch.toLowerCase();
     const query = new RegExp(textToSearch, "i");
     const productCollection = await products();
-
+    if (!productCollection) throw "Error: Empty DB";
     const productByName = await productCollection
       .find({
         product_Name: { $regex: query },
       })
       .toArray();
-
     if (!productByName) throw "Error: No Matches";
     const sortedNameBylikes = productByName.sort(productByName.likes);
     return sortedNameBylikes;
