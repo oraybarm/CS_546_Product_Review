@@ -1,0 +1,95 @@
+
+<div
+  class="container"
+  id="container"
+  data-checksignin="{{signInError}}">
+  
+  <div class="form-container">
+    <form
+      class="row g-3 needs-validation"
+      novalidate
+      id="addProductForm"
+      action="/products/addProduct"
+      method="post"
+    >
+    <h1>Add a Product</h1>
+    <div class="col-md-12 position-relative">
+        <label for="name" class="form-label">Product Name</label>
+        <input
+          type="text"
+          class="form-control"
+          id="validationNameField"
+          name="name"
+          required
+          placeholder="Please enter product name"
+        />
+        <div class="invalid-feedback">
+          Please provide a valid Product Name (at least two characters, no specialcharacters allowed).
+        </div>
+    </div>
+    <div class="col-md-12 position-relative">
+        <label for="description" class="form-label">Description</label>
+        <textarea
+            type="text"
+            id="validationEmailField"
+            name="description"
+            required
+            placeholder="Please enter a small description of the product"
+        >
+        </textarea>
+        <div
+          class="invalid-feedback"
+          data-bs-toggle="tooltip"
+          data-bs-placement="right"
+          title="Tooltip on right"
+        >
+          Please provide a description of the product of more than 2 characters.
+        </div>
+    </div>
+    <div class="col-md-12 position-relative">
+        <label for="url" class="form-label">Website URL</label>
+        <input
+          type="text"
+          class="form-control"
+          id="validateURL"
+          name="url"
+          placeholder="Please enter the URL for the webiste"
+        />
+
+        <div
+          class="invalid-feedback"
+          data-bs-toggle="tooltip"
+          data-bs-placement="right"
+          title="Tooltip on right"
+        >
+          Please ensure URL is of the format "http://www.yourwebsite.com"
+        </div>
+    </div>
+    <div class="col-md-12 position-relative">
+        <label for="tags" class="form-label">Tags</label>
+        <input
+          type="text"
+          class="form-control"
+          id="tags"
+          name="tags"
+          required
+          placeholder="Please enter a tags for the webiste."
+        />
+
+        <div
+          class="invalid-feedback"
+          data-bs-toggle="tooltip"
+          data-bs-placement="right"
+          title="Tooltip on right"
+        >
+          Please ensure that the tag is not empty
+        </div>
+    </div>
+</div>
+<script src="/public/js/auth.js" />
+<script>
+  if (window.history.replaceState) {
+    window.history.replaceState(null, null, window.location.href)
+  }
+</script>
+

@@ -44,7 +44,7 @@ router.post("/search", async (req, res) => {
         return res.status(404).render("errorPage/noSearch");
       }
     }
-    if (searchValue === "tag" || searchValue === "Search product by") {
+    if (searchValue === "tag") {
       try {
         let search_List = await productData.getProductbyTag(searchTerm);
         res.status(200).render("searchPage/searchPage", {
