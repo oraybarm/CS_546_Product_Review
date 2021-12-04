@@ -85,91 +85,92 @@ router.post("/search", async (req, res) => {
 router.post(
   "/addProduct",
   upload.single("logo"),
-  //authMiddleware,
+  authMiddleware,
   async (req, res) => {
-    // if (!req.session.AuthCookie) {
-    //   res.status(401).redirect("/");
-    // } else {
-    //check what all is required after making the front end form
-    let { productName, description, websiteUrl, tags, developer } = req.body;
-    productName = productName.toLowerCase();
-    productName = xss(productName);
-    description = xss(description);
-    websiteUrl = websiteUrl.toLowerCase();
-    websiteUrl = xss(websiteUrl);
-    tags = xss(tags);
-    developer = developer.toLowerCase();
-    developer = xss(developer);
-    let logo = req.file?.filename;
-    logo = xss(logo);
-    // console.log(productName);
+    if (!req.session.AuthCookie) {
+      res.status(401).redirect("/");
+    } else {
+      //check what all is required after making the front end form
+      let { productName, description, websiteUrl, tags, developer } = req.body;
+      productName = productName.toLowerCase();
+      productName = xss(productName);
+      description = xss(description);
+      websiteUrl = websiteUrl.toLowerCase();
+      websiteUrl = xss(websiteUrl);
+      tags = xss(tags);
+      developer = developer.toLowerCase();
+      developer = xss(developer);
+      let logo = req.file?.filename;
+      logo = xss(logo);
+      // console.log(productName);
 
-    // console.log(websiteUrl);
-    // console.log(tags);
-    // //console.log()
-    // console.log(developer);
-    if (req.file && !req.file?.mimetype.includes("image")) {
-      return res.status(400).json({ error: "Please upload an image" });
-    }
-    //Checking if input present in the first place
-    if (!productName || !description || !websiteUrl || !tags || !developer) {
-      return res
-        .status(400)
-        .json({ error: "Please provide all details of the product" });
-    }
-    productName = productName.trim().toLowerCase();
-    // String typecheck
-    if (
-      typeof productName !== "string" ||
-      typeof description !== "string" ||
-      typeof websiteUrl !== "string" ||
-      typeof tags !== "string" ||
-      typeof developer !== "string"
-    ) {
-      return res
-        .status(400)
-        .json({ error: "Details provided are not of proper type string" });
-    }
-    // Tags array-type check
-    // if (
-    //   !Array.isArray(tags) ||
-    //   tags.length < 1 ||
-    //   tags.forEach((elem) => {
-    //     if (typeof elem !== "string" || elem.trim().length) {
-    //       return res.status(400).json({ error: "Tags should be of type string" });
-    //     }
-    //   })
-    // ) {
-    //   return res
-    //     .status(400)
-    //     .json({ error: "Tag are empty or not of type of array" });
-    // }
-    let re =
-      /^(http:\/\/|https:\/\/)?(www.)?([a-zA-Z0-9]+).[a-zA-Z0-9]*.[‌​a-z]{3}\.([a-z]+)?$/gm;
-    if (!re.test(websiteUrl)) {
-      return res.status(400).json({
-        error: "Website URL provided does not satisfy proper criteria (route)",
-      });
-    }
-    // const duplicate = await product.findOne({
-    //   productName: productName,
-    // });
-    // finally calling the db function to add the product
-    try {
-      const newProduct = await productData.addProduct(
-        productName,
-        description,
-        websiteUrl,
-        logo,
-        tags,
-        developer
-      );
-      console.log(newProduct);
-      return res.status(200).json(newProduct);
-    } catch (e) {
-      return res.status(500).json({ message: `${e}` });
+      // console.log(websiteUrl);
+      // console.log(tags);
+      // //console.log()
+      // console.log(developer);
+      if (req.file && !req.file?.mimetype.includes("image")) {
+        return res.status(400).json({ error: "Please upload an image" });
+      }
+      //Checking if input present in the first place
+      if (!productName || !description || !websiteUrl || !tags || !developer) {
+        return res
+          .status(400)
+          .json({ error: "Please provide all details of the product" });
+      }
+      productName = productName.trim().toLowerCase();
+      // String typecheck
+      if (
+        typeof productName !== "string" ||
+        typeof description !== "string" ||
+        typeof websiteUrl !== "string" ||
+        typeof tags !== "string" ||
+        typeof developer !== "string"
+      ) {
+        return res
+          .status(400)
+          .json({ error: "Details provided are not of proper type string" });
+      }
+      // Tags array-type check
+      // if (
+      //   !Array.isArray(tags) ||
+      //   tags.length < 1 ||
+      //   tags.forEach((elem) => {
+      //     if (typeof elem !== "string" || elem.trim().length) {
+      //       return res.status(400).json({ error: "Tags should be of type string" });
+      //     }
+      //   })
+      // ) {
+      //   return res
+      //     .status(400)
+      //     .json({ error: "Tag are empty or not of type of array" });
+      // }
+      let re =
+        /^(http:\/\/|https:\/\/)?(www.)?([a-zA-Z0-9]+).[a-zA-Z0-9]*.[‌​a-z]{3}\.([a-z]+)?$/gm;
+      if (!re.test(websiteUrl)) {
+        return res.status(400).json({
+          error:
+            "Website URL provided does not satisfy proper criteria (route)",
+        });
+      }
+      // const duplicate = await product.findOne({
+      //   productName: productName,
+      // });
+      // finally calling the db function to add the product
+      try {
+        const newProduct = await productData.addProduct(
+          productName,
+          description,
+          websiteUrl,
+          logo,
+          tags,
+          developer
+        );
+        console.log(newProduct);
+        return res.status(200).json(newProduct);
+      } catch (e) {
+        return res.status(500).json({ message: `${e}` });
+      }
     }
   }
-  // }
 );
 module.exports = router;
