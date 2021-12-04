@@ -6,6 +6,7 @@ const productData = require("../data/products");
 router.get("/", async (req, res) => {
   try {
     let prodList = await productData.getAllProducts();
+    //console.log(prodList);
     res.status(200).render("homePage/homePage", {
       title: "Home",
       authenticated: req.session.user ? true : false,
@@ -29,6 +30,7 @@ router.get("/", async (req, res) => {
 router.get("/home", async (req, res) => {
   try {
     let prodList = await productData.getAllProducts();
+    //console.log(prodList);
     res.status(200).render("homePage/homePage", {
       title: "Home",
       authenticated: req.session.user ? true : false,

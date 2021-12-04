@@ -60,7 +60,8 @@ let exportedMethods = {
     const prodList = await productCollection.find({}).limit(10).toArray();
     const sorted = prodList.sort(prodList.likes);
     if (prodList.length === 0) throw "Error:No products in the database";
-    console.log("get all test");
+    //console.log("get all test");
+    //console.log(sorted);
     return sorted;
   },
 
@@ -93,6 +94,7 @@ let exportedMethods = {
       logo: logo,
       tags: tags,
       developer: developer,
+      reviews: {},
       rating: 0.0,
       likes: 0,
     };
