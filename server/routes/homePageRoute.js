@@ -50,6 +50,16 @@ router.get("/home", async (req, res) => {
 router.get("/home/chart", async (req, res) => {
   try {
     const chart = await charts.getVisualData();
+    //res.json(chart);
+    res.render('statistic/statistic');
+  } catch (e) {
+    res.status(404).json({ error: e });
+  }
+});
+
+router.get("/home/getchartdata", async (req, res) => {
+  try {
+    const chart = await charts.getVisualData();
     res.json(chart);
   } catch (e) {
     res.status(404).json({ error: e });
