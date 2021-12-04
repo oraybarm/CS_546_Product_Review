@@ -10,7 +10,7 @@ const constructorMethod = (app) => {
   app.use("/users", userRoutes);
   app.use("/private", privateRoutes);
   app.use("/community", communityRoute);
-  app.use("/product", productRoute);
+  app.use("/products", productRoute);
   app.use("/reviews", ReviewRoute);
   app.get("/*", (req, res) => {
     res.render("errorPage/404");
