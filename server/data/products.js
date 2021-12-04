@@ -96,6 +96,12 @@ let exportedMethods = {
       rating: 0.0,
       likes: 0,
     };
+    const checkProd = await productList.findOne({
+      productName: productName,
+    });
+    if (checkProd) {
+      throw "Sorry! We already have a product with that name";
+    }
     const insertProd = await productList.insertOne(newProduct);
     if (insertProd.insertedCount === 0)
       throw "We are sorry. An error occured while adding the product. Please try again.";
