@@ -171,4 +171,66 @@ router.post(
     }
   }
 );
+
+router.get(
+  "/:id",
+ async (req, res) => 
+ {
+  if (!req.params.id) {
+    res.status(400).json({ error: "You must provide product id" });
+    return;
+  }
+  try {
+    if (!ObjectId.isValid(req.params.id)) throw "id is not valid.";
+    const product = await productData.getProductById(req.params.id);
+    if (typeof product === "undefined") throw "Not found with that id";
+
+    let prodLiked = false;
+    let userLogged = false;
+    if (req.session.user) {
+      const user = await userData.getUser(req.session.user);
+      prodLiked = await userData.checkLikedProduct(
+        user._id.toString(),
+        req.params.id
+      );
+      userLogged = true;
+    }
+    res.render(
+      "products/product", 
+      {
+      prodLiked: prodLiked,
+      productName: product.productName,
+      logo: product.logo,
+      site: product.websiteUrl,
+      tags: product.tags,
+      developer: product.developer,
+      rating: product.rating,
+      likes: product.likes,
+      description: product.description,
+      userLogged: userLogged,
+    });
+    return;
+  } catch (e) {
+    console.log(e);
+  }
+});
+
+router.post(
+  "/updateLike", 
+  async (req, res) => 
+  {
+  if (!req.session.user) {
+    console.log("need to login inorder to like");
+    return;
+  }
+
+  try {
+    await productData.updateCount(req.body.productId, req.body.liked);
+    const user = await userData.getUser(req.session.user);
+    await userData.updateLikedProducts(user._id.toString(), req.body.productId);
+  } catch (e) {
+    res.status(401).json({ error: "e" });
+  }
+});
+
 module.exports = router;

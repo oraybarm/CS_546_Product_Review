@@ -530,3 +530,96 @@ ul,li,body{padding: 0;margin: 0;}
     cursor: pointer;
 }
 
+
+/*
+product page
+*/
+div.productContainer{
+    font-family: Arial, Helvetica, sans-serif;
+    /* font-size:24px; */
+    
+    padding: 5%;
+    height:auto;
+    width: 60%;
+     margin:auto;
+     margin-top:0;
+
+    
+
+}
+div.prodName{
+    margin-top: 0;
+    margin-bottom: 20px;
+    text-align: center;
+    height: auto;
+}
+.description h4{
+    margin-top:20px;
+   display:inline;
+}
+.description p{
+    font-size: 15px;
+    line-height: 1em;
+    display:inline;
+}
+div.descrtiption{
+    max-height: fit-content;
+    width:max-content;
+    
+}
+div.logo{
+    padding-left: 20%;
+
+
+}
+div.logo img{
+    width: 200px;
+    height: 200px;
+
+
+}
+
+
+/*
+like button
+*/
+
+.like__btn {
+    padding: 10px 15px;
+    background: #0080ff;
+    font-size: 14px;
+    font-family: "Open Sans", sans-serif;
+    border-radius: 5px;
+    color: #e8efff;
+    outline: none;
+    border: none;
+    cursor: pointer;
+    padding-left: 20px;
+    margin-left:125px;
+    
+  }
+
+
+div.likeButton{
+    margin-top:4%;
+    
+    margin:20px;
+
+}
+
+div#profile ul{
+    all: revert;
+}
+div#contact a{
+    all:revert;
+}
+
+div#home{
+   font-size: 16px;
+}
+
+div#home h6{
+    display:inline;
+    color: navy;
+}
+
