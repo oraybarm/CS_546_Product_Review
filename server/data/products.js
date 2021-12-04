@@ -3,38 +3,38 @@ const products = mongoCollections.products;
 let { ObjectId } = require("mongodb");
 
 function checkInputs(
-  product_Name,
+  productName,
   description,
-  website_Url,
+  websiteUrl,
   logo,
   tags,
   developer
 ) {
   //If arguments are not provided
   if (
-    !product_Name ||
+    !productName ||
     !description ||
-    !website_Url ||
+    !websiteUrl ||
     !tags ||
     !developer ||
     !logo
   )
     throw "Error: All arguments have not been provided";
   // check if type is alright
-  if (typeof product_Name !== "string" || product_Name.trim().length < 1) {
+  if (typeof productName !== "string" || productName.trim().length < 1) {
     throw "Error: product_name, description and website_Url are not strings";
   }
   if (typeof description !== "string" || description.trim().length < 1)
     throw "Error Descritpion is not a string";
-  if (typeof website_Url !== "string" || website_Url.trim().length < 1)
+  if (typeof websiteUrl !== "string" || websiteUrl.trim().length < 1)
     throw "Error: website_Url is not a string";
 
-  if (website_Url.startsWith("http://www.") && website_Url.endsWith(".com")) {
+  if (websiteUrl.startsWith("http://www.") && websiteUrl.endsWith(".com")) {
     throw "Error: Website URL is invalid";
   }
-  let midString = website.substring(
-    website.indexOf(".") + 1,
-    website.lastIndexOf(".")
+  let midString = websiteUrl.substring(
+    websiteUrl.indexOf(".") + 1,
+    websiteUrl.lastIndexOf(".")
   );
   if (midString.length < 5) {
     throw "Error: Website name is less than 5 characters";
@@ -57,7 +57,7 @@ function checkID(id) {
 let exportedMethods = {
   async getAllProducts() {
     const productCollection = await products();
-    const prodList = await productCollection.find({}).limit(20).toArray();
+    const prodList = await productCollection.find({}).limit(10).toArray();
     const sorted = prodList.sort(prodList.likes);
     if (prodList.length === 0) throw "Error:No products in the database";
     console.log("get all test");
@@ -75,33 +75,41 @@ let exportedMethods = {
   //addProduct method
   // Need to still check how images will be added to this
   async addProduct(
-    product_Name,
+    productName,
     description,
-    website_Url,
+    websiteUrl,
     logo,
     tags,
     developer
   ) {
-    checkInputs(product_Name, description, website_Url, logo, tags, developer);
+    productName = productName.trim();
+    websiteUrl = websiteUrl.trim();
+    checkInputs(productName, description, websiteUrl, logo, tags, developer);
     const productList = await products();
-    let new_Product = {
-      product_name: product_Name,
+    let newProduct = {
+      productName: productName,
       description: description,
-      website_Url: website_Url,
-      logo: { data: logo.data, contentType: logo.contentType },
+      websiteUrl: websiteUrl,
+      logo: logo,
       tags: tags,
       developer: developer,
       rating: 0.0,
       likes: 0,
     };
-    const insert_Prod = await productList.insertOne(new_Product);
-    if (insert_Prod.insertedCount === 0)
+    const checkProd = await productList.findOne({
+      productName: productName,
+    });
+    if (checkProd) {
+      throw "Sorry! We already have a product with that name";
+    }
+    const insertProd = await productList.insertOne(newProduct);
+    if (insertProd.insertedCount === 0)
       throw "We are sorry. An error occured while adding the product. Please try again.";
-    const dbId = await insert_Prod.insertedId;
+    const dbId = await insertProd.insertedId;
     //console.log(typeof dbId);
-    const add_Product = await this.get(dbId.toString());
+    const addProduct = await this.getProductById(dbId.toString());
     //console.log(typeof addRest);
-    return add_Product;
+    return addProduct;
   },
 
   //
@@ -134,7 +142,7 @@ let exportedMethods = {
   // using something called text search from Mongo db-  don't need this
   //returns array of objects containing matches
 
-  //https://www.guru99.com/regular-expressions-mongodb.html - this talks about using
+  //https://www.guru99.com/regular-expressions-mongodb.html - this talks about using regex to search
 
   async getProductByProductName(textToSearch) {
     if (typeof textToSearch !== "string")
@@ -142,13 +150,12 @@ let exportedMethods = {
     textToSearch = textToSearch.toLowerCase();
     const query = new RegExp(textToSearch, "i");
     const productCollection = await products();
-
+    if (!productCollection) throw "Error: Empty DB";
     const productByName = await productCollection
       .find({
         product_Name: { $regex: query },
       })
       .toArray();
-
     if (!productByName) throw "Error: No Matches";
     const sortedNameBylikes = productByName.sort(productByName.likes);
     return sortedNameBylikes;
