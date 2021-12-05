@@ -5,6 +5,7 @@ const { authMiddleware } = require("../middlewares/auth");
 const session = require("express-session");
 const xss = require("xss");
 const multer = require("multer");
+const { authMiddleware } = require("../middlewares/auth");
 // router.get("/", async (req, res) => {
 //   try {
 //     let prodList = await productData.getAllProducts();
@@ -86,10 +87,10 @@ router.post("/search", async (req, res) => {
 
 router.post(
   "/addProduct",
-  upload.single("logo"),
+  upload.single("photo"),
   authMiddleware,
   async (req, res) => {
-    if (!req.session.AuthCookie) {
+    if (!req.session.user) {
       res.status(401).redirect("/");
     } else {
       //check what all is required after making the front end form
@@ -102,15 +103,11 @@ router.post(
       tags = xss(tags);
       developer = developer.toLowerCase();
       developer = xss(developer);
-      let logo = req.file?.filename;
-      logo = xss(logo);
-      // console.log(productName);
+      let photo = req.file.filename;
+      photo = xss(photo);
+      console.log(productName);
 
-      // console.log(websiteUrl);
-      // console.log(tags);
-      // //console.log()
-      // console.log(developer);
-      if (req.file && !req.file?.mimetype.includes("image")) {
+      if (req.file && !req.file.mimetype.includes("image")) {
         return res.status(400).json({ error: "Please upload an image" });
       }
       //Checking if input present in the first place
@@ -132,20 +129,13 @@ router.post(
           .status(400)
           .json({ error: "Details provided are not of proper type string" });
       }
-      // Tags array-type check
-      // if (
-      //   !Array.isArray(tags) ||
-      //   tags.length < 1 ||
-      //   tags.forEach((elem) => {
-      //     if (typeof elem !== "string" || elem.trim().length) {
-      //       return res.status(400).json({ error: "Tags should be of type string" });
-      //     }
-      //   })
-      // ) {
-      //   return res
-      //     .status(400)
-      //     .json({ error: "Tag are empty or not of type of array" });
-      // }
+      let tagslist=tags.split(",");
+      let tagarr=[];
+      for(let i=0;i<tagslist.length;i++){
+        let tag={};
+        tag["name"]=tagslist[i];
+        tagarr.push(tag);
+      }
       let re =
         /^(http:\/\/|https:\/\/)?(www.)?([a-zA-Z0-9]+).[a-zA-Z0-9]*.[‌​a-z]{3}\.([a-z]+)?$/gm;
       if (!re.test(websiteUrl)) {
@@ -159,16 +149,18 @@ router.post(
           productName,
           description,
           websiteUrl,
-          logo,
-          tags,
+          photo,
+          tagarr,
           developer
         );
-        //console.log(newProduct);
-        return res.status(200).json(newProduct);
+        console.log(newProduct);
+        res.redirect('/');
+
       } catch (e) {
         return res.status(500).json({ message: `${e}` });
       }
     }
   }
 );
+
 module.exports = router;
