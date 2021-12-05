@@ -22,23 +22,22 @@ function checkInputs(
     throw "Error: All arguments have not been provided";
   // check if type is alright
   if (typeof productName !== "string" || productName.trim().length < 1) {
-    throw "Error: product_name, description and website_Url are not strings";
+    throw "Error: productName is not strings";
   }
   if (typeof description !== "string" || description.trim().length < 1)
     throw "Error Descritpion is not a string";
   if (typeof websiteUrl !== "string" || websiteUrl.trim().length < 1)
     throw "Error: website_Url is not a string";
 
-  if (websiteUrl.startsWith("http://www.") && websiteUrl.endsWith(".com")) {
-    throw "Error: Website URL is invalid";
+  let re =
+    /^(http:\/\/|https:\/\/)?(www.)?([a-zA-Z0-9]+).[a-zA-Z0-9]*.[‌​a-z]{3}\.([a-z]+)?$/gm;
+  if (!re.test(websiteUrl)) {
+    return res.status(400).json({
+      error: "Website URL provided does not satisfy proper criteria (route)",
+    });
   }
-  let midString = websiteUrl.substring(
-    websiteUrl.indexOf(".") + 1,
-    websiteUrl.lastIndexOf(".")
-  );
-  if (midString.length < 5) {
-    throw "Error: Website name is less than 5 characters";
-  }
+  if (typeof tags !== "string" || productName.trim().length < 1)
+    throw "Error: Tag is not of string type or tag field is empty";
 }
 //
 // Just a helper function to check db id's
@@ -57,7 +56,7 @@ function checkID(id) {
 let exportedMethods = {
   async getAllProducts() {
     const productCollection = await products();
-    const prodList = await productCollection.find({}).limit(10).toArray();
+    const prodList = await productCollection.find({}).toArray();
     const sorted = prodList.sort(prodList.likes);
     if (prodList.length === 0) throw "Error:No products in the database";
     //console.log("get all test");
@@ -65,6 +64,7 @@ let exportedMethods = {
     return sorted;
   },
 
+  //Obtains product details using ID
   async getProductById(product_Id) {
     checkID(product_Id);
     objId_product = ObjectId(product_Id);
@@ -94,7 +94,7 @@ let exportedMethods = {
       logo: logo,
       tags: tags,
       developer: developer,
-      reviews: {},
+      reviews: [],
       rating: 0.0,
       likes: 0,
     };
@@ -155,10 +155,11 @@ let exportedMethods = {
     if (!productCollection) throw "Error: Empty DB";
     const productByName = await productCollection
       .find({
-        product_Name: { $regex: query },
+        productName: { $regex: query },
       })
       .toArray();
-    if (!productByName) throw "Error: No Matches";
+    console.log(productByName);
+    if (productByName.length === 0) throw "Error: No Matches";
     const sortedNameBylikes = productByName.sort(productByName.likes);
     return sortedNameBylikes;
   },
@@ -169,14 +170,14 @@ let exportedMethods = {
   async getProductbyTag(tagSearch) {
     if (typeof tagSearch !== "string") throw "Error: The input is not a string";
     tagSearch = tagSearch.toLowerCase();
-    const query = new RegExp(textToSearch, "i");
+    const query = new RegExp(tagSearch, "i");
     const productCollection = await products();
     const productByTag = await productCollection
       .find({
         tags: { $regex: query },
       })
       .toArray();
-    if (!productByTag) throw "Error: No Matches";
+    if (productByTag.length === 0) throw "Error: No Matches";
     const soredTagByLikes = productByTag.sort(productByTag.likes);
     return soredTagByLikes;
   },
@@ -184,24 +185,24 @@ let exportedMethods = {
   //
   // This function will delete a product
   //
-  async deleteProduct(user_Id, product_Id) {
-    checkID(user_Id);
-    checkID(product_Id);
-    objId_user = ObjectId(user_Id);
-    objId_product = ObjectId(product_Id);
-    const prooductCollection = await products();
-    const delProduct = await productCollection.findOne({
-      _id: objId_product,
-    });
-    if (!delProduct) throw "Error:Product not found!";
-    updateCount(objId_product, false);
-    // we need to authenticate the user tryig to delete the product info
+  // async deleteProduct(user_Id, product_Id) {
+  //   checkID(user_Id);
+  //   checkID(product_Id);
+  //   objId_user = ObjectId(user_Id);
+  //   objId_product = ObjectId(product_Id);
+  //   const prooductCollection = await products();
+  //   const delProduct = await productCollection.findOne({
+  //     _id: objId_product,
+  //   });
+  //   if (!delProduct) throw "Error:Product not found!";
+  //   updateCount(objId_product, false);
+  //   // we need to authenticate the user tryig to delete the product info
 
-    if (removed.deletedCount == 0) {
-      throw `Could not delete Restaurant ${delProduct.name}`;
-    } else {
-      return `${delProduct.name} has been successfully deleted!`;
-    }
-  },
+  //   if (removed.deletedCount == 0) {
+  //     throw `Could not delete Restaurant ${delProduct.name}`;
+  //   } else {
+  //     return `${delProduct.name} has been successfully deleted!`;
+  //   }
+  // },
 };
 module.exports = exportedMethods;

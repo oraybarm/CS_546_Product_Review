@@ -3,6 +3,7 @@
     {{#each products}}
     <div class="card" >
         <h2>{{this.productName}}</h2>
+        <img src='/public/images/upload/{{this.logo}}' alt={{this.productName}} width="460" height="345">
         <p>Likes: {{this.likes}}</p>
         <p>Rating:{{this.rating}}</p>
         <p>Tags:{{this.tags}}</p>
