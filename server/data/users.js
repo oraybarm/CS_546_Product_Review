@@ -145,7 +145,7 @@ module.exports = {
   },
   async getLikedProductsByUser(id){
     const user = await this.getUserById(id);
-    return user.likedProducts;
+    return user.liked_products;
   },
 
   async checkLikedProduct(id,prodId){
