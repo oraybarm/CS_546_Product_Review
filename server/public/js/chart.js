@@ -11,7 +11,7 @@ let dataShadow = [];
 $.ajax({
     type : "get",
     async : false,            
-    url : "http://localhost:3000/home/chart",    
+    url : "http://localhost:3000/home/getchartdata",    
     data : {},
     dataType : "json",       
     success : function(result) {

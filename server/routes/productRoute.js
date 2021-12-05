@@ -1,9 +1,11 @@
 const express = require("express");
 const router = express.Router();
 const productData = require("../data/products");
+const { authMiddleware } = require("../middlewares/auth");
 const session = require("express-session");
 const xss = require("xss");
 const multer = require("multer");
+const { authMiddleware } = require("../middlewares/auth");
 // router.get("/", async (req, res) => {
 //   try {
 //     let prodList = await productData.getAllProducts();
@@ -40,10 +42,12 @@ const upload = multer({
 router.post("/search", async (req, res) => {
   const body = req.body;
   //console.log("body", body);
-
+  //body = xss(body);
   //console.log(option);
   let searchTerm = body.searchInput;
   let searchValue = body.searchSelect;
+  searchTerm = xss(searchTerm);
+  searchValue = xss(searchValue);
   //console.log(searchTerm);
   //console.log(searchValue);
   if (!searchTerm || searchTerm.trim().length == 0) {
@@ -54,11 +58,11 @@ router.post("/search", async (req, res) => {
   } else {
     searchTerm = searchTerm.toLowerCase();
     //console.log(searchTerm);
-    console.log(searchValue);
-    if (searchValue === "name") {
+    //console.log(searchValue);
+    if (searchValue === "name" || searchValue === "Search product by") {
       try {
         let search_List = await productData.getProductByProductName(searchTerm);
-        console.log(search_List);
+        //console.log(search_List);
         //return only the json
         res.status(200).render("searchPage/searchPage", {
           products: search_List,
@@ -67,7 +71,7 @@ router.post("/search", async (req, res) => {
         return res.status(404).render("errorPage/noSearch");
       }
     }
-    if (searchValue === "tag" || searchValue === "Search product by") {
+    if (searchValue === "tag") {
       try {
         let search_List = await productData.getProductbyTag(searchTerm);
         //console.log(search_List);
@@ -83,10 +87,10 @@ router.post("/search", async (req, res) => {
 
 router.post(
   "/addProduct",
-  upload.single("logo"),
+  upload.single("photo"),
   authMiddleware,
   async (req, res) => {
-    if (!req.session.AuthCookie) {
+    if (!req.session.user) {
       res.status(401).redirect("/");
     } else {
       //check what all is required after making the front end form
@@ -99,15 +103,11 @@ router.post(
       tags = xss(tags);
       developer = developer.toLowerCase();
       developer = xss(developer);
-      let logo = req.file?.filename;
-      logo = xss(logo);
-      // console.log(productName);
+      let photo = req.file.filename;
+      photo = xss(photo);
+      console.log(productName);
 
-      // console.log(websiteUrl);
-      // console.log(tags);
-      // //console.log()
-      // console.log(developer);
-      if (req.file && !req.file?.mimetype.includes("image")) {
+      if (req.file && !req.file.mimetype.includes("image")) {
         return res.status(400).json({ error: "Please upload an image" });
       }
       //Checking if input present in the first place
@@ -129,46 +129,38 @@ router.post(
           .status(400)
           .json({ error: "Details provided are not of proper type string" });
       }
-      // Tags array-type check
-      // if (
-      //   !Array.isArray(tags) ||
-      //   tags.length < 1 ||
-      //   tags.forEach((elem) => {
-      //     if (typeof elem !== "string" || elem.trim().length) {
-      //       return res.status(400).json({ error: "Tags should be of type string" });
-      //     }
-      //   })
-      // ) {
-      //   return res
-      //     .status(400)
-      //     .json({ error: "Tag are empty or not of type of array" });
-      // }
+      let tagslist=tags.split(",");
+      let tagarr=[];
+      for(let i=0;i<tagslist.length;i++){
+        let tag={};
+        tag["name"]=tagslist[i];
+        tagarr.push(tag);
+      }
       let re =
         /^(http:\/\/|https:\/\/)?(www.)?([a-zA-Z0-9]+).[a-zA-Z0-9]*.[‌​a-z]{3}\.([a-z]+)?$/gm;
       if (!re.test(websiteUrl)) {
         return res.status(400).json({
-          error: "Website URL provided does not satisfy proper criteria",
+          error:
+            "Website URL provided does not satisfy proper criteria (route)",
         });
       }
-      const delRest = await restaurantCollection.findOne({
-        productName: productName,
-      });
-      // finally calling the db function to add the product
       try {
         const newProduct = await productData.addProduct(
           productName,
           description,
           websiteUrl,
-          logo,
-          tags,
+          photo,
+          tagarr,
           developer
         );
         console.log(newProduct);
-        return res.status(200).json(newProduct);
+        res.redirect('/');
+
       } catch (e) {
         return res.status(500).json({ message: `${e}` });
       }
     }
   }
 );
+
 module.exports = router;

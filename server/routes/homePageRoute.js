@@ -6,6 +6,7 @@ const productData = require("../data/products");
 router.get("/", async (req, res) => {
   try {
     let prodList = await productData.getAllProducts();
+    //console.log(prodList);
     res.status(200).render("homePage/homePage", {
       title: "Home",
       authenticated: req.session.user ? true : false,
@@ -29,6 +30,7 @@ router.get("/", async (req, res) => {
 router.get("/home", async (req, res) => {
   try {
     let prodList = await productData.getAllProducts();
+    //console.log(prodList);
     res.status(200).render("homePage/homePage", {
       title: "Home",
       authenticated: req.session.user ? true : false,
@@ -48,6 +50,16 @@ router.get("/home", async (req, res) => {
 });
 
 router.get("/home/chart", async (req, res) => {
+  try {
+    const chart = await charts.getVisualData();
+    //res.json(chart);
+    res.render('statistic/statistic');
+  } catch (e) {
+    res.status(404).json({ error: e });
+  }
+});
+
+router.get("/home/getchartdata", async (req, res) => {
   try {
     const chart = await charts.getVisualData();
     res.json(chart);
