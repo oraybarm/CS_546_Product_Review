@@ -10,10 +10,11 @@
     <div class= "Product List">
     {{#each products}}
     <div class="card" >
-        <h3>{{this.product_Name}}</h3>
-        <p>{{this.likes}}</p>
-        <p>{{this.rating}}</p>
-        <p>{{this.tags}}</p>
+        <h3>{{this.productName}}</h3>
+        <img src='/public/images/upload/{{this.logo}}' alt={{this.productName}} width="460" height="345">
+        <p>Likes:{{this.likes}}</p>
+        <p>Rating: {{this.rating}}</p>
+        <p>Tags: {{this.tags}}</p>
         <br/>
     </div>
     {{/each}}

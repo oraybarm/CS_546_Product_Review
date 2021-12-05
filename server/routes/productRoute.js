@@ -1,6 +1,7 @@
 const express = require("express");
 const router = express.Router();
 const productData = require("../data/products");
+const { authMiddleware } = require("../middlewares/auth");
 const session = require("express-session");
 const xss = require("xss");
 const multer = require("multer");
@@ -41,10 +42,12 @@ const upload = multer({
 router.post("/search", async (req, res) => {
   const body = req.body;
   //console.log("body", body);
-
+  //body = xss(body);
   //console.log(option);
   let searchTerm = body.searchInput;
   let searchValue = body.searchSelect;
+  searchTerm = xss(searchTerm);
+  searchValue = xss(searchValue);
   //console.log(searchTerm);
   //console.log(searchValue);
   if (!searchTerm || searchTerm.trim().length == 0) {
@@ -55,11 +58,11 @@ router.post("/search", async (req, res) => {
   } else {
     searchTerm = searchTerm.toLowerCase();
     //console.log(searchTerm);
-    console.log(searchValue);
-    if (searchValue === "name") {
+    //console.log(searchValue);
+    if (searchValue === "name" || searchValue === "Search product by") {
       try {
         let search_List = await productData.getProductByProductName(searchTerm);
-        console.log(search_List);
+        //console.log(search_List);
         //return only the json
         res.status(200).render("searchPage/searchPage", {
           products: search_List,
@@ -68,7 +71,7 @@ router.post("/search", async (req, res) => {
         return res.status(404).render("errorPage/noSearch");
       }
     }
-    if (searchValue === "tag" || searchValue === "Search product by") {
+    if (searchValue === "tag") {
       try {
         let search_List = await productData.getProductbyTag(searchTerm);
         //console.log(search_List);
@@ -137,13 +140,10 @@ router.post(
         /^(http:\/\/|https:\/\/)?(www.)?([a-zA-Z0-9]+).[a-zA-Z0-9]*.[‌​a-z]{3}\.([a-z]+)?$/gm;
       if (!re.test(websiteUrl)) {
         return res.status(400).json({
-          error: "Website URL provided does not satisfy proper criteria",
+          error:
+            "Website URL provided does not satisfy proper criteria (route)",
         });
       }
-      // const delRest = await restaurantCollection.findOne({
-      //   productName: productName,
-      // });
-      // finally calling the db function to add the product
       try {
         const newProduct = await productData.addProduct(
           productName,
@@ -155,6 +155,7 @@ router.post(
         );
         console.log(newProduct);
         res.redirect('/');
+
       } catch (e) {
         return res.status(500).json({ message: `${e}` });
       }
