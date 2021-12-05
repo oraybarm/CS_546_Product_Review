@@ -4,8 +4,6 @@ const productData = require("../data/products");
 const session = require("express-session");
 const xss = require("xss");
 const multer = require("multer");
-const userData = require("../data/users");
-const { ObjectId } = require("mongodb");
 // router.get("/", async (req, res) => {
 //   try {
 //     let prodList = await productData.getAllProducts();
@@ -213,13 +211,12 @@ router.get(
     });
     return;
   } catch (e) {
-    res.render("errorPage/404");
+    console.log(e);
   }
 });
 
 router.post(
   "/updateLike", 
-  authMiddleware,
   async (req, res) => 
   {
   if (!req.session.user) {
@@ -232,7 +229,7 @@ router.post(
     const user = await userData.getUser(req.session.user);
     await userData.updateLikedProducts(user._id.toString(), req.body.productId);
   } catch (e) {
-    res.render('products/product',{error:"could not update"});
+    res.status(401).json({ error: "e" });
   }
 });
 
