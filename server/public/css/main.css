@@ -619,3 +619,114 @@ body {
   width: 5%;
   cursor: pointer;
 }
+/*
+product page
+*/
+div.productContainer{
+    font-family: Arial, Helvetica, sans-serif;
+    /* font-size:24px; */
+    display:flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 5%;
+    height:auto;
+    width: 60%;
+     margin:auto;
+     margin-top:0;
+
+    
+
+}
+div.prodName{
+    margin-top: 0;
+    margin-bottom: 20px;
+    display:flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    /* text-align: center; */
+    height: auto;
+}
+.description h4{
+    margin-top:20px;
+   display:inline;
+}
+.description p{
+    font-size: 15px;
+    line-height: 1em;
+    display:inline;
+}
+div.descrtiption{
+    max-height: fit-content;
+    width:max-content;
+    
+}
+div.logo{
+  
+
+}
+div.logo img{
+    width: 200px;
+    height: 200px;
+
+
+}
+
+
+/*
+like button
+*/
+
+.like__btn {
+    padding: 10px 15px;
+
+    font-size: 14px;
+    font-family: "Open Sans", sans-serif;
+    border-radius: 5px;
+    color: #e8efff;
+    outline: none;
+    border: none;
+    cursor: pointer;
+    /* padding-left: 20px;
+    margin-left:125px; */
+    margin-right:40px;
+    
+  }
+
+
+div.prodBtns{
+    margin-top:4%;
+   
+    margin:20px;
+    width:fit-content;
+
+}
+
+div#profile ul{
+    all: revert;
+    color: coral;
+}
+div#contact a{
+    all:revert;
+}
+
+div#home{
+   font-size: 16px;
+}
+div#home h6{
+    display:inline;
+    color: coral;
+}
+
+button.getProd{
+    display: inline;
+    padding: 10px 15px;
+
+    font-size: 14px;
+    font-family: "Open Sans", sans-serif;
+    border-radius: 5px;
+    color: #e8efff;
+    outline: none;
+    border: none;
+}

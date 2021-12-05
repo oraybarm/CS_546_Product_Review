@@ -176,6 +176,22 @@ const exportedMethods = {
       throw 'Update failed';
       return "Delete review to user successfully!";
     },
+
+    async getReviewsByUser(id){
+      if(typeof id === "undefined") throw "id is not provided";
+      if(typeof id != "string") throw "id is not a string";
+      if(id.trim().length === 0) throw "id is an empty string";
+  
+      //checks if id is a valid objectId else throw error
+      if(!ObjectId.isValid(id)) throw "id is not a valid objectId";
+      //converts string to ObjectId
+      let parsedId = ObjectId(id);
+        
+      const user = await users.getUserById(parsedId);
+      const reviews = await user.getReviewsByUserId(id);
+  
+      return reviews;
+      }
   };
   
   module.exports = exportedMethods;
