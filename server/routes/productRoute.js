@@ -5,7 +5,6 @@ const { authMiddleware } = require("../middlewares/auth");
 const session = require("express-session");
 const xss = require("xss");
 const multer = require("multer");
-const { authMiddleware } = require("../middlewares/auth");
 // router.get("/", async (req, res) => {
 //   try {
 //     let prodList = await productData.getAllProducts();
@@ -112,9 +111,9 @@ router.post(
       }
       //Checking if input present in the first place
       if (!productName || !description || !websiteUrl || !tags || !developer) {
-        return res
-          .status(400)
-          .json({ error: "Please provide all details of the product" });
+        return res.status(400).json({
+          error: "Please provide all details of the product",
+        });
       }
       productName = productName.trim().toLowerCase();
       // String typecheck
@@ -125,15 +124,15 @@ router.post(
         typeof tags !== "string" ||
         typeof developer !== "string"
       ) {
-        return res
-          .status(400)
-          .json({ error: "Details provided are not of proper type string" });
+        return res.status(400).json({
+          error: "Details provided are not of proper type string",
+        });
       }
-      let tagslist=tags.split(",");
-      let tagarr=[];
-      for(let i=0;i<tagslist.length;i++){
-        let tag={};
-        tag["name"]=tagslist[i];
+      let tagslist = tags.split(",");
+      let tagarr = [];
+      for (let i = 0; i < tagslist.length; i++) {
+        let tag = {};
+        tag["name"] = tagslist[i];
         tagarr.push(tag);
       }
       let re =
@@ -154,8 +153,7 @@ router.post(
           developer
         );
         console.log(newProduct);
-        res.redirect('/');
-
+        res.redirect("/");
       } catch (e) {
         return res.status(500).json({ message: `${e}` });
       }
