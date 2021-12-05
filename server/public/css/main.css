@@ -529,3 +529,8 @@ ul,li,body{padding: 0;margin: 0;}
     cursor: pointer;
 }
 
+#addProductButton{
+    position:absolute;
+    top:150px;
+    right:50px;
+}

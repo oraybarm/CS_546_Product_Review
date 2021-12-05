@@ -3,6 +3,7 @@
 <div class="jumbotron">
     <h1>HomePage</h1>
 </div>
+
 {{#if error}}
     <h2>No products found!</h2>
 {{else}}
@@ -18,4 +19,261 @@
     {{/each}}
     </div>
 {{/if}}
+
+<!-- Button trigger modal -->
+<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModalCenter" id="addProductButton">
+  Add Product
+</button>
+
+<!-- Modal -->
+<div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLongTitle">Add Product</h5>
+        <button type="button" class="btn btn-secondary" data-dismiss="modal" aria-label="Close" id="close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        
+
+
+    <form
+        action="/products/addProduct"
+        method="POST"
+        enctype="multipart/form-data"
+        class="needs-validation"
+        novalidate
+    >
+        <div class="col-md-12 position-relative">
+            <label for="productName" class="form-label">Product Name</label>
+            <input
+                type="text"
+                name="productName"
+                id="productName"
+                value="{{productName}}"
+                class="form-control"
+            />
+            <div class="invalid-feedback">
+                Please provide a valid Product Name(at least two characters, no special
+                characters allowed).
+            </div>
+        </div>
+        <div class="col-md-12 position-relative">
+            <label for="description" class="form-label">Description</label>
+            <input
+                type="text"
+                name="description"
+                id="description"
+                value="{{description}}"
+                class="form-control"
+            />
+            <div class="invalid-feedback">
+                Please provide a valid description(at least two characters, no special
+                characters allowed).
+            </div>
+        </div>
+        <div class="col-md-12 position-relative">
+            <label for="websiteUrl" class="form-label">WebsiteUrl</label>
+            <input
+                type="text"
+                name="websiteUrl"
+                id="websiteUrl"
+                value="{{websiteUrl}}"
+                class="form-control"
+            />
+            <div class="invalid-feedback">
+                Please provide a valid websiteUrl(at least 5 characters).
+            </div>
+        </div>
+
+        <div class="col-md-12 position-relative">
+            <label for="tags" class="form-label">Tags(Space with Comma)</label>
+            <input
+                type="text"
+                name="tags"
+                id="tags"
+                value="{{tags}}"
+                class="form-control"
+            />       
+            <div class="invalid-feedback">
+                Please provide a valid tags (at least two characters, no special
+                characters allowed,commas between tags).
+            </div>
+            <ul id="newtag"></ul>
+        </div>
+
+        <div class="col-md-12 position-relative">
+            <label for="developer" class="form-label">Developer</label>
+            <input
+                type="text"
+                name="developer"
+                id="developer"
+                value="{{developer}}"
+                class="form-control"
+            />
+            <div class="invalid-feedback">
+                Please provide a valid developer(at least two characters, no special
+                characters allowed).
+            </div>
+        </div>
+        <div class="col-md-12 position-relative">
+            <label for="file" class="form-label"
+                >Upload a Logo</label
+            >
+            <input type="file" id="file" name="photo" class="form-control" />
+            <div class="invalid-feedback">
+                Files supported: jpg, jpeg, png Max file size: 2MB
+            </div>
+        </div>
+        <div>
+        <button type="button" class="btn btn-secondary" data-dismiss="modal" id="closebutton">Close</button>
+        <button type="submit" class="btn btn-primary" id="savebutton" name="Submit">Create</button>
+        </div>
+    </form>
+
+
+      </div>
+    </div>
+  </div>
+</div>
+<script
+    src="https://code.jquery.com/jquery-2.2.4.min.js"
+    integrity="sha256-BbhdlvQf/xTY9gja0Dq3HiwQF8LaCRTXxZKRutelT44="
+    crossorigin="anonymous"
+></script>
+<script
+    src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
+    integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
+    crossorigin="anonymous"
+></script>
+<script>
+    $("#addProductButton").click(function(){
+        $("#exampleModalCenter").modal("show");
+    });
+    $("#close").click(function(){
+        $("#exampleModalCenter").modal("hide");
+    });
+    $("#closebutton").click(function(){
+        $("#exampleModalCenter").modal("hide");
+    }); 
+
+window.onload=(function ($) {
+
+    var productNameField = document.getElementById("name");
+    var productFileField = document.getElementById("file");
+    var productdescriptionField = document.getElementById("description");
+    var productwebsiteUrlField = document.getElementById("websiteUrl");
+    var producttagsField = document.getElementById("tags");
+    var productdeveloperField = document.getElementById("developer");
+
+    let forms = document.querySelectorAll(".needs-validation");
+
+    productNameField.addEventListener("input", function () {
+        var val = document.getElementById("name").value;
+        if (!isValidString(val)) {
+            productNameField.setCustomValidity("invalid");
+        } else {
+            productNameField.setCustomValidity("");
+        }
+    });
+
+    productdescriptionField.addEventListener("input", function () {
+        var val = document.getElementById("description").value;
+        if (!isValidString(val)) {
+            productdescriptionField.setCustomValidity("invalid");
+        } else {
+            productdescriptionField.setCustomValidity("");
+        }
+    });
+
+    productwebsiteUrlField.addEventListener("input", function () {
+        var val = document.getElementById("websiteUrl").value;
+        if (!isValidwebsiteUrl(val)) {
+            productwebsiteUrlField.setCustomValidity("invalid");
+        } else {
+            productwebsiteUrlField.setCustomValidity("");
+        }
+    });
+
+    producttagsField.addEventListener("input", function () {
+        var val = document.getElementById("tags").value;
+        if (!isValidString(val)) {
+            producttagsField.setCustomValidity("invalid");
+        } else {
+            producttagsField.setCustomValidity("");
+        }
+    });
+
+    productdeveloperField.addEventListener("input", function () {
+        var val = document.getElementById("developer").value;
+        if (!isValidString(val)) {
+            productdeveloperField.
+            setCustomValidity("invalid");
+        } else {
+            productdeveloperField.setCustomValidity("");
+        }
+    });
+
+    productFileField.addEventListener("input", function () {
+        var val = document.getElementById("file").value;
+        const validImageTypes = ["image/gif", "image/jpeg", "image/png"];
+        const fileType = this.files[0].type;
+
+        if (
+            !validImageTypes.includes(fileType) ||
+            this.files[0].size / 1024 / 1024 > 2
+        ) {
+            productFileField.setCustomValidity("invalid");
+        } else {
+            productFileField.setCustomValidity("");
+        }
+    });
+
+    // Loop over them and prevent submission
+    Array.prototype.slice.call(forms).forEach(function (form) {
+        form.addEventListener(
+            "submit",
+            function (event) {
+                console.log("get here?");
+                if (!form.checkValidity()) {
+                    event.preventDefault();
+                    event.stopPropagation();
+                }
+
+                form.classList.add("was-validated");
+            },
+            false
+        );
+    });
+
+
+    function isValidString(val) {
+        if (typeof val !== "string" || val.trim().length < 1){
+            return false;
+        }else{
+            return true;
+        }
+    
+    }
+
+    function isValidwebsiteUrl(websiteUrl) {
+        let midString = websiteUrl.substring(
+        websiteUrl.indexOf(".") + 1,
+        websiteUrl.lastIndexOf(".")
+        );
+        if (typeof websiteUrl !== "string" || websiteUrl.trim().length < 1){
+            return false;
+        } else if (websiteUrl.startsWith("http://www.") && websiteUrl.endsWith(".com")) {
+            return false;
+        }else if (midString.length < 5) {
+            return false;
+        }else{
+            return true;
+        }
+    }
+})(jQuery);
+
+</script>
 
