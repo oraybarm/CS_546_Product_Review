@@ -145,8 +145,53 @@ module.exports = {
   },
   async getLikedProductsByUser(id){
     const user = await this.getUserById(id);
-    return user.liked_products;
+    return user.likedProducts;
+  },
+
+  async checkLikedProduct(id,prodId){
+    const likedProd =  await this.getLikedProductsByUser(id)
+    if(!likedProd) return false;
+    
+    return likedProd.indexOf(prodId)>-1?true:false;
+  },
+
+
+  async updateLikedProducts(id,prodId){
+    let likedProducts = await this.getLikedProductsByUser(id);
+    let flag = false;
+    if(!likedProducts){
+     likedProducts =[prodId]; 
+    }
+    else{
+    for(let i = 0;i<likedProducts.length;i++){
+      if(likedProducts[i] === prodId) 
+      {
+        likedProducts.splice(i,1);
+        flag = true;
+        break;
+      }
+    }
+    if(!flag)
+      likedProducts.push(prodId);
   }
+      const user = await this.getUserById(id);
+    
+    const userCollection = await users();
+    const updatedData = {
+      likedProducts: likedProducts
+    };
+    let parsedId = ObjectId(id);
+    const updatedInfo = await userCollection.updateOne(
+      { _id: parsedId },
+      { $set: updatedData }
+    );
+
+    if (updatedInfo.modifiedCount === 0) {
+      throw "Could not update the user Liked Products successfully";
+    }
+    return flag;
+  }
+
 
 
 };
