@@ -167,9 +167,11 @@ const exportedMethods = {
 
     async DeleteReviewToUser(userid,reviewId){
       if (!userid) throw 'You must provide an id';
+      userid=userid.toString();
       checkString(userid);
       id=myDBfunction(userid);
       if (!reviewId) throw 'You must provide an id';
+      reviewId=reviewId.toString();
       checkString(reviewId);
       id=myDBfunction(reviewId);
       const userCollection = await users();

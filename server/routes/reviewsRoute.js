@@ -131,7 +131,6 @@ router.post("/delete", authMiddleware, async (req, res) => {
     if (!user._id) {
       throw { message: "Unable to get user Id", code: 500 };
     }
-    console.log(result.DeletedId);
     Deletereviewtouser = await reviews.DeleteReviewToUser(
       user._id,
       result.DeletedId

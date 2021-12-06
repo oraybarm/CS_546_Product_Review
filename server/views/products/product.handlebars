@@ -121,8 +121,8 @@
         <li><p>{{this.description}}</p></li>
         <li><img src="../../public/images/{{this.rating}}.png"></li>
         {{#if this.usernow}}
-        <div onclick="DeleteInfo('{{this._id}}')">Delete</div>
-        <div class="more-tjm-info" onclick="moreWhInfo('{{this._id}}')">Update</div>
+        <button onclick="DeleteInfo('{{this._id}}')">Delete</button>
+        <button class="more-tjm-info" onclick="moreWhInfo('{{this._id}}')">Update</button>
         <div id="MyDiv" class="white_content">
     <div class="top-div">
         <div style="width: 270px;height: 20px;font-size: 20px;font-weight: 600;text-align:center;color: #666666;margin: 11px;">
@@ -134,7 +134,7 @@
         </div>
     </div>
     <div style="display:flex;width: 400px;height: 400px;font-size: 16px;font-family: Titillium Web;font-weight: 400;color: #666666;opacity: 0.9;margin-top: 20px;text-align: center;">
-    <form action="/update" method="POST" id="update-form" style="margin-left: 10%;">
+    <form id="update-form" style="margin-left: 10%;">
       <label for="review" style="color:rgb(27, 18, 4);text-align:center;">Review</label>
       <input type="text" id="description1" name="description" value="{{this.description}}">
       <br>
@@ -206,14 +206,10 @@
                 alert('Please Write your review!')
                 return
             }
-            var newLi = document.createElement('li')
-            newLi.innerHTML = `${content}<br/><img src="../../public/images/${rateval +
-                1}.png"><a href="javascript:void(0)">Delete</a>`
+            //var newLi = document.createElement('li')
+            //newLi.innerHTML = `${content}<br/><img src="../../public/images/${rateval}.png"><a href="javascript:void(0)">Delete</a>`
             // $("comment_content").appendChild(newLi);   //Method 1
-            $('comment_content').insertBefore(
-                newLi,
-                $('comment_content').children[0]
-            ) //Method 2
+            //$('comment_content').insertBefore(newLi,$('comment_content').children[0]) //Method 2
 
             // clear the input
             $('comment').value = ''
@@ -237,7 +233,9 @@
                     console.log("Add review successfully.");
                     }
                 }
-            }) 
+            });
+          window.location.href=window.location.href; 
+          window.location.reload;  
         }
         
         // get event
@@ -258,7 +256,7 @@
     ]
     var flag = false;
     var index = 0;
-    var rateval = 0;
+    var rateval = 1;
     for (let i = 0; i < oLi.length; i++) {
         oLi[i].onmouseover = () => {
             //hover
@@ -287,9 +285,9 @@
             }
         }
         oLi[i].onclick = function () {
-            flag = true
-            index = i
-            rateval = i
+            flag = true;
+            index = i;
+            rateval = i+1;
             oDiv.innerHTML = data[index]
         }
   }
@@ -323,7 +321,9 @@ function DeleteInfo(reviewId) {
                     console.log("Delete review successfully.");
                     }
                 }
-            })
+            });
+  window.location.href=window.location.href; 
+  window.location.reload; 
 };
 
 
