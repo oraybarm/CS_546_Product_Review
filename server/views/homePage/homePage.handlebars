@@ -9,7 +9,7 @@
 {{else}}
     <div class= "Product List">
     {{#each products}}
-    <div class="card" >
+    <div class="card" onclick="location.href=' ../products/{{this._id}}'" >
         <h3>{{this.productName}}</h3>
         <img src='/public/images/upload/{{this.logo}}' alt={{this.productName}} width="460" height="345">
         <p>Likes:{{this.likes}}</p>

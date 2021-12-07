@@ -36,8 +36,18 @@ function checkInputs(
       error: "Website URL provided does not satisfy proper criteria (route)",
     });
   }
-  if (typeof tags !== "string" || productName.trim().length < 1)
+  if (!Array.isArray(tags) || tags.length === 0)
     throw "Error: Tag is not of string type or tag field is empty";
+  //Added Sacheth: Checking of tags added
+  for (let i = 0; i < tags.length; i++) {
+    for (let j = 0; j < tags.length; j++) {
+      if (typeof tags[j] !== "string" && typeof tags[j] !== "string")
+        throw "Error: Tags array does not contain strings";
+      if (tags[i].toLowerCase() === tags[j].toLowerCase() && i !== j) {
+        throw "Error: Same tag entered";
+      }
+    }
+  }
 }
 //
 // Just a helper function to check db id's
@@ -158,7 +168,7 @@ let exportedMethods = {
         productName: { $regex: query },
       })
       .toArray();
-    console.log(productByName);
+    //console.log(productByName);
     if (productByName.length === 0) throw "Error: No Matches";
     const sortedNameBylikes = productByName.sort(productByName.likes);
     return sortedNameBylikes;
