@@ -6,12 +6,11 @@ const session = require("express-session");
 const xss = require("xss");
 const multer = require("multer");
 const userData = require("../data/users");
-const { ObjectId } = require('mongodb');
+const { ObjectId } = require("mongodb");
 
 const reviews = require("../data/reviews");
 const { getUser } = require("../data/users");
 const isValidString = require("../utils");
-
 
 // router.get("/", async (req, res) => {
 //   try {
@@ -136,13 +135,13 @@ router.post(
           error: "Details provided are not of proper type string",
         });
       }
-      let tagslist = tags.split(",");
-      let tagarr = [];
-      for (let i = 0; i < tagslist.length; i++) {
-        let tag = {};
-        tag["name"] = tagslist[i];
-        tagarr.push(tag);
-      }
+      let tagsList = tags.split(",");
+      // let tagarr = [];
+      // for (let i = 0; i < tagslist.length; i++) {
+      //   let tag = {};
+      //   tag["name"] = tagslist[i];
+      //   tagarr.push(tag);
+      // }
       let re =
         /^(http:\/\/|https:\/\/)?(www.)?([a-zA-Z0-9]+).[a-zA-Z0-9]*.[‌​a-z]{3}\.([a-z]+)?$/gm;
       if (!re.test(websiteUrl)) {
@@ -157,7 +156,7 @@ router.post(
           description,
           websiteUrl,
           photo,
-          tagarr,
+          tagsList,
           developer
         );
         console.log(newProduct);
@@ -169,10 +168,7 @@ router.post(
   }
 );
 
-router.get(
-  "/:id",
- async (req, res) => 
- {
+router.get("/:id", async (req, res) => {
   if (!req.params.id) {
     res.status(400).json({ error: "You must provide product id" });
     return;
@@ -197,37 +193,7 @@ router.get(
       );
       userLogged = true;
     }
-    const user = await getUser(req.session.user);
-    const usernow = user._id;
-    const review = await reviews.getReviewbyProductId(req.params.id);
-    const userlist = [];
-    for (let i = 0; i < review.length; i++) {
-      let userInfo = await reviews.getUserByReviewId(review[i]._id);
-      userlist.push(userInfo);
-    }
-    let posts = [];
-    let hasPost = false;
-    for (let i = 0; i < review.length; i++) {
-      let output = review[i];
-      //output["username"] = userlist[i].firstName.concat(userlist[i].lastName);
-      output["username"]=userlist[i].name;
-      output["image"] = userlist[i].img;
-      output["userId"] = userlist[i]._id;
-      if(usernow.toString() == userlist[i]._id.toString()){
-        output["usernow"] = true;
-      }else{
-        output["usernow"] = false;
-      }
-      if (output) {
-        posts.push(output);
-      }
-    }
-    if (posts.length > 0) {
-      hasPost = true;
-    }
-    res.render(
-      "products/product", 
-      {
+    res.render("products/product", {
       prodLiked: prodLiked,
       productName: product.productName,
       logo: product.logo,
@@ -238,26 +204,20 @@ router.get(
       likes: product.likes,
       description: product.description,
       userLogged: userLogged,
-      posts: posts, 
+      posts: posts,
       hasPost: hasPost,
-      productid: req.params.id
+      productid: req.params.id,
     });
     return;
   } catch (e) {
     console.log(e);
     res.render("errorPage/404");
   }
-}
-);
+});
 
-
-router.post(
-  "/updateLike",
-  authMiddleware,
-  async (req, res) => 
-  {
+router.post("/updateLike", authMiddleware, async (req, res) => {
   if (!req.session.user) {
-    res.redirect('users/signup');
+    res.redirect("users/signup");
     return;
   }
 
@@ -265,11 +225,9 @@ router.post(
     await productData.updateCount(req.body.productId, req.body.liked);
     const user = await userData.getUser(req.session.user);
     await userData.updateLikedProducts(user._id.toString(), req.body.productId);
-  } catch (e) 
-  {
+  } catch (e) {
     res.redirect(`/products/${req.body.productId}`);
   }
-}
-);
+});
 
 module.exports = router;
