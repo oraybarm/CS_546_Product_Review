@@ -177,10 +177,6 @@ router.get(
     res.status(400).json({ error: "You must provide product id" });
     return;
   }
-  if (!req.session.user) {
-    res.status(400).json({ error: "You must log in!" });
-    return;
-  }
 
   try {
     if (!ObjectId.isValid(req.params.id)) throw "id is not valid.";
@@ -196,9 +192,13 @@ router.get(
         req.params.id
       );
       userLogged = true;
+    } 
+    let usernow = "";
+    if(req.session.user){
+      const user = await getUser(req.session.user);
+      usernow = user._id;
     }
-    const user = await getUser(req.session.user);
-    const usernow = user._id;
+
     const review = await reviews.getReviewbyProductId(req.params.id);
     const userlist = [];
     for (let i = 0; i < review.length; i++) {
