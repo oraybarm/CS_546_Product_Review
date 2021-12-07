@@ -11,7 +11,6 @@ const { ObjectId } = require("mongodb");
 const reviews = require("../data/reviews");
 const { getUser } = require("../data/users");
 const isValidString = require("../utils");
-const _ = require("lodash");
 
 // router.get("/", async (req, res) => {
 //   try {
@@ -92,14 +91,24 @@ router.post("/search", async (req, res) => {
   }
 });
 
+router.get("/addProducterror", (req, res) => {
+  const { addProductError } = req.session;
+  const error = addProductError;
+  req.session.addProductError = false;
+  return res.status(200).json({
+    error: addProductError,
+  });
+});
+
 router.post(
   "/addProduct",
-  upload.single("photo"),
   authMiddleware,
+  upload.single("photo"),
   async (req, res) => {
     if (!req.session.user) {
       res.status(401).redirect("/");
     } else {
+      req.session.addProductError = false;
       //check what all is required after making the front end form
       let { productName, description, websiteUrl, tags, developer } = req.body;
       productName = productName.toLowerCase();
@@ -136,13 +145,13 @@ router.post(
           error: "Details provided are not of proper type string",
         });
       }
-      let tagsList = tags.split(",");
-      // let tagarr = [];
-      // for (let i = 0; i < tagslist.length; i++) {
-      //   let tag = {};
-      //   tag["name"] = tagslist[i];
-      //   tagarr.push(tag);
-      // }
+      let tagslist = tags.split(",");
+      let tagarr = [];
+      for (let i = 0; i < tagslist.length; i++) {
+        let tag = {};
+        tag["name"] = tagslist[i];
+        tagarr.push(tag);
+      }
       let re =
         /^(http:\/\/|https:\/\/)?(www.)?([a-zA-Z0-9]+).[a-zA-Z0-9]*.[‌​a-z]{3}\.([a-z]+)?$/gm;
       if (!re.test(websiteUrl)) {
@@ -157,13 +166,17 @@ router.post(
           description,
           websiteUrl,
           photo,
-          tagsList,
+          tagarr,
           developer
         );
-        console.log(newProduct);
+        console.log("new", newProduct);
         res.redirect("/");
       } catch (e) {
-        return res.status(500).json({ message: `${e}` });
+        console.log("error", e);
+        req.session.addProductError = e;
+        res.redirect("/");
+        // res.redirect("/products/addProducterror");
+        // return res.status(500).json({ message: e, errorMessage: e });
       }
     }
   }
@@ -189,9 +202,9 @@ router.get("/:id", async (req, res) => {
         req.params.id
       );
       userLogged = true;
-    } 
+    }
     let usernow = "";
-    if(req.session.user){
+    if (req.session.user) {
       const user = await getUser(req.session.user);
       usernow = user._id;
     }
@@ -207,14 +220,14 @@ router.get("/:id", async (req, res) => {
     for (let i = 0; i < review.length; i++) {
       let output = review[i];
       //output["username"] = userlist[i].firstName.concat(userlist[i].lastName);
-      output["username"]=userlist[i].name;
+      output["username"] = userlist[i].name;
       output["image"] = !_.isEmpty(userlist[i].img)
-      ? `/public/images/upload/${userlist[i].img}`
-      : "/public/images/guest-user.jpg";
+        ? `/public/images/upload/${userlist[i].img}`
+        : "/public/images/guest-user.jpg";
       output["userId"] = userlist[i]._id;
-      if(usernow.toString() == userlist[i]._id.toString()){
+      if (usernow.toString() == userlist[i]._id.toString()) {
         output["usernow"] = true;
-      }else{
+      } else {
         output["usernow"] = false;
       }
       if (output) {
@@ -224,9 +237,7 @@ router.get("/:id", async (req, res) => {
     if (posts.length > 0) {
       hasPost = true;
     }
-    res.render(
-      "products/product", 
-      {
+    res.render("products/product", {
       prodLiked: prodLiked,
       productName: product.productName,
       logo: product.logo,
