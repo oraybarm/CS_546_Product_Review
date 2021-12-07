@@ -11,7 +11,7 @@ const { ObjectId } = require('mongodb');
 const reviews = require("../data/reviews");
 const { getUser } = require("../data/users");
 const isValidString = require("../utils");
-
+const _ = require("lodash");
 
 // router.get("/", async (req, res) => {
 //   try {
@@ -211,7 +211,9 @@ router.get(
       let output = review[i];
       //output["username"] = userlist[i].firstName.concat(userlist[i].lastName);
       output["username"]=userlist[i].name;
-      output["image"] = userlist[i].img;
+      output["image"] = !_.isEmpty(userlist[i].img)
+      ? `/public/images/upload/${userlist[i].img}`
+      : "/public/images/guest-user.jpg";
       output["userId"] = userlist[i]._id;
       if(usernow.toString() == userlist[i]._id.toString()){
         output["usernow"] = true;
