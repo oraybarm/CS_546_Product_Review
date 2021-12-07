@@ -6,7 +6,7 @@ const session = require("express-session");
 const xss = require("xss");
 const multer = require("multer");
 const userData = require("../data/users");
-const { ObjectId } = require('mongodb');
+const { ObjectId } = require("mongodb");
 
 const reviews = require("../data/reviews");
 const { getUser } = require("../data/users");
@@ -136,13 +136,13 @@ router.post(
           error: "Details provided are not of proper type string",
         });
       }
-      let tagslist = tags.split(",");
-      let tagarr = [];
-      for (let i = 0; i < tagslist.length; i++) {
-        let tag = {};
-        tag["name"] = tagslist[i];
-        tagarr.push(tag);
-      }
+      let tagsList = tags.split(",");
+      // let tagarr = [];
+      // for (let i = 0; i < tagslist.length; i++) {
+      //   let tag = {};
+      //   tag["name"] = tagslist[i];
+      //   tagarr.push(tag);
+      // }
       let re =
         /^(http:\/\/|https:\/\/)?(www.)?([a-zA-Z0-9]+).[a-zA-Z0-9]*.[‌​a-z]{3}\.([a-z]+)?$/gm;
       if (!re.test(websiteUrl)) {
@@ -157,7 +157,7 @@ router.post(
           description,
           websiteUrl,
           photo,
-          tagarr,
+          tagsList,
           developer
         );
         console.log(newProduct);
@@ -169,10 +169,7 @@ router.post(
   }
 );
 
-router.get(
-  "/:id",
- async (req, res) => 
- {
+router.get("/:id", async (req, res) => {
   if (!req.params.id) {
     res.status(400).json({ error: "You must provide product id" });
     return;
@@ -240,26 +237,20 @@ router.get(
       likes: product.likes,
       description: product.description,
       userLogged: userLogged,
-      posts: posts, 
+      posts: posts,
       hasPost: hasPost,
-      productid: req.params.id
+      productid: req.params.id,
     });
     return;
   } catch (e) {
     console.log(e);
     res.render("errorPage/404");
   }
-}
-);
+});
 
-
-router.post(
-  "/updateLike",
-  authMiddleware,
-  async (req, res) => 
-  {
+router.post("/updateLike", authMiddleware, async (req, res) => {
   if (!req.session.user) {
-    res.redirect('users/signup');
+    res.redirect("users/signup");
     return;
   }
 
@@ -267,11 +258,9 @@ router.post(
     await productData.updateCount(req.body.productId, req.body.liked);
     const user = await userData.getUser(req.session.user);
     await userData.updateLikedProducts(user._id.toString(), req.body.productId);
-  } catch (e) 
-  {
+  } catch (e) {
     res.redirect(`/products/${req.body.productId}`);
   }
-}
-);
+});
 
 module.exports = router;
