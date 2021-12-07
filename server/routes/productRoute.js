@@ -6,6 +6,13 @@ const session = require("express-session");
 const xss = require("xss");
 const multer = require("multer");
 const userData = require("../data/users");
+const { ObjectId } = require('mongodb');
+
+const reviews = require("../data/reviews");
+const { getUser } = require("../data/users");
+const isValidString = require("../utils");
+
+
 // router.get("/", async (req, res) => {
 //   try {
 //     let prodList = await productData.getAllProducts();
@@ -170,6 +177,11 @@ router.get(
     res.status(400).json({ error: "You must provide product id" });
     return;
   }
+  if (!req.session.user) {
+    res.status(400).json({ error: "You must log in!" });
+    return;
+  }
+
   try {
     if (!ObjectId.isValid(req.params.id)) throw "id is not valid.";
     const product = await productData.getProductById(req.params.id);
@@ -185,6 +197,34 @@ router.get(
       );
       userLogged = true;
     }
+    const user = await getUser(req.session.user);
+    const usernow = user._id;
+    const review = await reviews.getReviewbyProductId(req.params.id);
+    const userlist = [];
+    for (let i = 0; i < review.length; i++) {
+      let userInfo = await reviews.getUserByReviewId(review[i]._id);
+      userlist.push(userInfo);
+    }
+    let posts = [];
+    let hasPost = false;
+    for (let i = 0; i < review.length; i++) {
+      let output = review[i];
+      //output["username"] = userlist[i].firstName.concat(userlist[i].lastName);
+      output["username"]=userlist[i].name;
+      output["image"] = userlist[i].img;
+      output["userId"] = userlist[i]._id;
+      if(usernow.toString() == userlist[i]._id.toString()){
+        output["usernow"] = true;
+      }else{
+        output["usernow"] = false;
+      }
+      if (output) {
+        posts.push(output);
+      }
+    }
+    if (posts.length > 0) {
+      hasPost = true;
+    }
     res.render(
       "products/product", 
       {
@@ -198,13 +238,18 @@ router.get(
       likes: product.likes,
       description: product.description,
       userLogged: userLogged,
+      posts: posts, 
+      hasPost: hasPost,
+      productid: req.params.id
     });
     return;
   } catch (e) {
+    console.log(e);
     res.render("errorPage/404");
   }
 }
 );
+
 
 router.post(
   "/updateLike",
