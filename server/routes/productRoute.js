@@ -7,6 +7,11 @@ const xss = require("xss");
 const multer = require("multer");
 const userData = require("../data/users");
 const { ObjectId } = require("mongodb");
+
+const reviews = require("../data/reviews");
+const { getUser } = require("../data/users");
+const isValidString = require("../utils");
+
 // router.get("/", async (req, res) => {
 //   try {
 //     let prodList = await productData.getAllProducts();
@@ -168,6 +173,11 @@ router.get("/:id", async (req, res) => {
     res.status(400).json({ error: "You must provide product id" });
     return;
   }
+  if (!req.session.user) {
+    res.status(400).json({ error: "You must log in!" });
+    return;
+  }
+
   try {
     if (!ObjectId.isValid(req.params.id)) throw "id is not valid.";
     const product = await productData.getProductById(req.params.id);
@@ -194,9 +204,13 @@ router.get("/:id", async (req, res) => {
       likes: product.likes,
       description: product.description,
       userLogged: userLogged,
+      posts: posts,
+      hasPost: hasPost,
+      productid: req.params.id,
     });
     return;
   } catch (e) {
+    console.log(e);
     res.render("errorPage/404");
   }
 });

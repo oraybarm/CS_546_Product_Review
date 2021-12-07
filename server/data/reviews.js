@@ -35,6 +35,7 @@ const exportedMethods = {
   
     async getReviewById(reviewId) {
       if (!reviewId) throw 'You must provide an id to search for';
+      reviewId=reviewId.toString();
       checkString(reviewId);
       reviewId=myDBfunction(reviewId);
       const reviewCollection = await reviews();
@@ -44,6 +45,7 @@ const exportedMethods = {
     },
   
     async getReviewbyProductId(productId) {
+      productId=productId.toString();
       checkString(productId);
       productId=myDBfunction(productId);
       const reviewCollection = await reviews();
@@ -58,6 +60,7 @@ const exportedMethods = {
     if (!rating) throw 'You must provide a rating for review!';
     checkString(description);
     checkString(rating);
+    productId=productId.toString();
     checkString(productId);
     productId=myDBfunction(productId);
     
@@ -74,11 +77,13 @@ const exportedMethods = {
 
     async AddReviewToUser(userid,reviewId){
       if (!userid) throw 'You must provide an id';
+      userid=userid.toString();
       checkString(userid);
-      id=myDBfunction(userid);
+      userid=myDBfunction(userid);
       if (!reviewId) throw 'You must provide an id';
+      reviewId=reviewId.toString();
       checkString(reviewId);
-      id=myDBfunction(reviewId);
+      reviewId=myDBfunction(reviewId);
       const userCollection = await users();
       const user = await userCollection.findOne({ _id: userid });
       if (user === null) throw 'No userid with that id';
@@ -97,22 +102,24 @@ const exportedMethods = {
 
     async getUserByReviewId(id){
       if (!id) throw 'You must provide an id';
-      checkString(id);
+      id=id.toString();
       id=myDBfunction(id);
       const userCollection = await users();
       const user = await userCollection.findOne({ 'reviews._id' : id});
       if (user === null) throw 'No user with that review id';
       let userInfo={};
       userInfo["_id"]=user._id;
-      userInfo["firstName"]=user.firstName;
-      userInfo["lastName"]=user.lastName;
-      userInfo["img"]=user.photo.data.concat(user.photo.contentType);
+      // userInfo["firstName"]=user.firstName;
+      // userInfo["lastName"]=user.lastName;
+      userInfo["name"]=user.name;
+      userInfo["img"]=user.photo;
       return userInfo;
     },
     
     async updateReviewbyId(id,description,rating) {
       if (!id) throw 'You must provide an id to update';
       if (!description) throw 'You must provide a description';
+      id=id.toString();
       checkString(id);
       checkString(description);
       checkString(rating);
@@ -142,6 +149,7 @@ const exportedMethods = {
 
     async deleteReview(reviewId) {
       if (!reviewId) throw 'You must provide an id to search for';
+
       checkString(reviewId);
 
       reviewId=myDBfunction(reviewId);
@@ -159,9 +167,11 @@ const exportedMethods = {
 
     async DeleteReviewToUser(userid,reviewId){
       if (!userid) throw 'You must provide an id';
+      userid=userid.toString();
       checkString(userid);
       id=myDBfunction(userid);
       if (!reviewId) throw 'You must provide an id';
+      reviewId=reviewId.toString();
       checkString(reviewId);
       id=myDBfunction(reviewId);
       const userCollection = await users();
