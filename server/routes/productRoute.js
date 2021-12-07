@@ -11,6 +11,7 @@ const { ObjectId } = require("mongodb");
 const reviews = require("../data/reviews");
 const { getUser } = require("../data/users");
 const isValidString = require("../utils");
+const _ = require("lodash");
 
 // router.get("/", async (req, res) => {
 //   try {
@@ -173,10 +174,6 @@ router.get("/:id", async (req, res) => {
     res.status(400).json({ error: "You must provide product id" });
     return;
   }
-  if (!req.session.user) {
-    res.status(400).json({ error: "You must log in!" });
-    return;
-  }
 
   try {
     if (!ObjectId.isValid(req.params.id)) throw "id is not valid.";
@@ -192,8 +189,44 @@ router.get("/:id", async (req, res) => {
         req.params.id
       );
       userLogged = true;
+    } 
+    let usernow = "";
+    if(req.session.user){
+      const user = await getUser(req.session.user);
+      usernow = user._id;
     }
-    res.render("products/product", {
+
+    const review = await reviews.getReviewbyProductId(req.params.id);
+    const userlist = [];
+    for (let i = 0; i < review.length; i++) {
+      let userInfo = await reviews.getUserByReviewId(review[i]._id);
+      userlist.push(userInfo);
+    }
+    let posts = [];
+    let hasPost = false;
+    for (let i = 0; i < review.length; i++) {
+      let output = review[i];
+      //output["username"] = userlist[i].firstName.concat(userlist[i].lastName);
+      output["username"]=userlist[i].name;
+      output["image"] = !_.isEmpty(userlist[i].img)
+      ? `/public/images/upload/${userlist[i].img}`
+      : "/public/images/guest-user.jpg";
+      output["userId"] = userlist[i]._id;
+      if(usernow.toString() == userlist[i]._id.toString()){
+        output["usernow"] = true;
+      }else{
+        output["usernow"] = false;
+      }
+      if (output) {
+        posts.push(output);
+      }
+    }
+    if (posts.length > 0) {
+      hasPost = true;
+    }
+    res.render(
+      "products/product", 
+      {
       prodLiked: prodLiked,
       productName: product.productName,
       logo: product.logo,
