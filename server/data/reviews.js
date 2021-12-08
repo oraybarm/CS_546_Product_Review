@@ -1,7 +1,9 @@
 const mongoCollections = require('../config/mongoCollection');
 const reviews = mongoCollections.reviews;
 const users = mongoCollections.users;
+const products = mongoCollections.products;
 const { ObjectId } = require('mongodb');
+const userfun = require('./users');
 
 function checkString(str){
   if(str===undefined){
@@ -72,6 +74,26 @@ const exportedMethods = {
       };
     const insertInfo = await reviewCollection.insertOne(newReview);
     if (insertInfo.insertedCount === 0) throw 'Could not add review';
+
+    let rateall=0;
+    const prodreview=await this.getReviewbyProductId(productId);
+    for(let i=0;i<prodreview.length;i++){
+      rateall=parseInt(prodreview[i].rating)+rateall;
+    }
+    let averagerate=rateall/prodreview.length;
+    averagerate=averagerate.toFixed(2);
+    const prodCollection = await products();
+      const updated = {
+        rating:averagerate
+      };
+  
+    const updatedInfo = await prodCollection.updateOne(
+      { _id: productId },
+      { $set: updated }
+    );
+    if (!updatedInfo.matchedCount && !updatedInfo.modifiedCount)
+      throw 'Update rating failed'; 
+  
     return insertInfo;
     },
 
@@ -140,9 +162,34 @@ const exportedMethods = {
         { _id: id },
         { $set: updated }
       );
+
       if (updatedInfo.modifiedCount === 0) {
         throw 'could not update successfully';
       }
+    
+    const rev = await this.getReviewById(id);
+    let productId=rev.product;
+    let rateall=0;
+    const prodreview=await this.getReviewbyProductId(productId);
+    console.log(prodreview);
+    for(let i=0;i<prodreview.length;i++){
+      rateall=parseInt(prodreview[i].rating)+rateall;
+    }
+    let averagerate=rateall/prodreview.length;
+    averagerate=averagerate.toFixed(2);
+    const prodCollection = await products();
+      const updatedp = {
+        rating:averagerate
+      };
+  
+    const updatedInfop = await prodCollection.updateOne(
+      { _id: productId },
+      { $set: updatedp }
+    );
+    if (!updatedInfop.matchedCount && !updatedInfop.modifiedCount)
+      throw 'Update rating failed'; 
+
+
       return "update successfully";
     },
 
@@ -157,30 +204,56 @@ const exportedMethods = {
       const review = await reviewCollection.findOne({ _id: reviewId});
       if (review === null) throw 'No review with that id';
       
+      const rev = await this.getReviewById(reviewId);
+      let productId=rev.product;
+
       const deletionInfo = await reviewCollection.deleteOne({ _id: reviewId });
   
       if (deletionInfo.deletedCount === 0) {
         throw `Could not delete restaurant with id of ${reviewId}`;
       }
-      return  deletionInfo;
+
+    
+    let rateall=0;
+    const prodreview=await this.getReviewbyProductId(productId);
+    console.log(prodreview);
+    for(let i=0;i<prodreview.length;i++){
+      rateall=parseInt(prodreview[i].rating)+rateall;
+    }
+    let averagerate=rateall/prodreview.length;
+    averagerate=averagerate.toFixed(2);
+    const prodCollection = await products();
+      const updatedp = {
+        rating:averagerate
+      };
+  
+    const updatedInfop = await prodCollection.updateOne(
+      { _id: productId },
+      { $set: updatedp }
+    );
+    if (!updatedInfop.matchedCount && !updatedInfop.modifiedCount)
+      throw 'Update rating failed'; 
+
+
+      return  reviewId;
     },
 
     async DeleteReviewToUser(userid,reviewId){
       if (!userid) throw 'You must provide an id';
       userid=userid.toString();
       checkString(userid);
-      id=myDBfunction(userid);
+      userid=myDBfunction(userid);
       if (!reviewId) throw 'You must provide an id';
       reviewId=reviewId.toString();
       checkString(reviewId);
-      id=myDBfunction(reviewId);
+      reviewId=myDBfunction(reviewId);
       const userCollection = await users();
       const user = await userCollection.findOne({ _id: userid });
       if (user === null) throw 'No userid with that id';
       const reviewCollection = await users();
       const updateInfo = await reviewCollection.updateOne(
-        { _id: userid },
-        { $pull: { reviews: {"_id":reviewId}}}
+        { _id: userid},
+        { $pull: { reviews: { _id : reviewId}}}
       );
       if (!updateInfo.matchedCount && !updateInfo.modifiedCount)
       throw 'Update failed';
@@ -189,18 +262,21 @@ const exportedMethods = {
 
     async getReviewsByUser(id){
       if(typeof id === "undefined") throw "id is not provided";
-      if(typeof id != "string") throw "id is not a string";
-      if(id.trim().length === 0) throw "id is an empty string";
-  
+      id=id.toString();
+      checkString(id);
       //checks if id is a valid objectId else throw error
       if(!ObjectId.isValid(id)) throw "id is not a valid objectId";
-      //converts string to ObjectId
-      let parsedId = ObjectId(id);
-        
-      const user = await users.getUserById(parsedId);
-      const reviews = await user.getReviewsByUserId(id);
-  
-      return reviews;
+      const user = await userfun.getUserById(id);
+      //user._id=user._id.toString();
+      const reviewsid = await userfun.getReviewsByUserId(user._id);
+      let reviewlist=[];
+      let review={};
+      for(let i=0;i<reviewsid.length;i++){
+        review=await this.getReviewById(reviewsid[i]._id);
+        reviewlist.push(review);
+      }
+      console.log(reviewlist);
+      return reviewlist;
       }
   };
   

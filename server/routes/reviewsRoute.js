@@ -35,11 +35,9 @@ router.get("/product/:id", authMiddleware, async (req, res) => {
     const review = await reviews.getReviewbyProductId(req.params.id);
     const userlist = [];
     for (let i = 0; i < review.length; i++) {
-      console.log(review[i]._id);
       let userInfo = await reviews.getUserByReviewId(review[i]._id);
       userlist.push(userInfo);
     }
-    console.log(userlist);
     let posts = [];
     let hasPost = false;
     for (let i = 0; i < review.length; i++) {
@@ -85,11 +83,9 @@ router.post("/", authMiddleware, async (req, res) => {
       review,
       rating
     );
-    console.log(result.insertedId);
     if (!user._id) {
       throw { message: "Unable to get user Id", code: 500 };
     }
-    console.log(user._id);
     addreviewtouser = await reviews.AddReviewToUser(
       user._id,
       result.insertedId
@@ -133,7 +129,7 @@ router.post("/delete", authMiddleware, async (req, res) => {
     }
     Deletereviewtouser = await reviews.DeleteReviewToUser(
       user._id,
-      result.DeletedId
+      result
     );
   } catch (e) {
     console.log(e);
