@@ -112,13 +112,11 @@ router.post(
       req.session.addProductError = false;
       //check what all is required after making the front end form
       let { productName, description, websiteUrl, tags, developer } = req.body;
-      productName = productName.toLowerCase();
       productName = xss(productName);
       description = xss(description);
       websiteUrl = websiteUrl.toLowerCase();
       websiteUrl = xss(websiteUrl);
       tags = xss(tags);
-      developer = developer.toLowerCase();
       developer = xss(developer);
       let photo = req.file.filename;
       photo = xss(photo);
@@ -146,13 +144,10 @@ router.post(
           error: "Details provided are not of proper type string",
         });
       }
-      let tagslist = tags.split(",");
-      let tagarr = [];
-      for (let i = 0; i < tagslist.length; i++) {
-        let tag = {};
-        tag["name"] = tagslist[i];
-        tagarr.push(tag);
-      }
+      tags = tags.trim().toUpperCase();
+      let tagsList = tags.split(",");
+      tagsList = new Set(tagsList);
+      tagsList = Array.from(tagsList);
       let re =
         /^(http:\/\/|https:\/\/)?(www.)?([a-zA-Z0-9]+).[a-zA-Z0-9]*.[‌​a-z]{3}\.([a-z]+)?$/gm;
       if (!re.test(websiteUrl)) {
@@ -167,7 +162,7 @@ router.post(
           description,
           websiteUrl,
           photo,
-          tagarr,
+          tagsList,
           developer
         );
         console.log("new", newProduct);
@@ -203,41 +198,8 @@ router.get("/:id", async (req, res) => {
         req.params.id
       );
       userLogged = true;
-    } 
-    let usernow = "";
-    if(req.session.user){
-      const user = await getUser(req.session.user);
-      usernow = user._id;
     }
 
-    const review = await reviews.getReviewbyProductId(req.params.id);
-    const userlist = [];
-    for (let i = 0; i < review.length; i++) {
-      let userInfo = await reviews.getUserByReviewId(review[i]._id);
-      userlist.push(userInfo);
-    }
-    let posts = [];
-    let hasPost = false;
-    for (let i = 0; i < review.length; i++) {
-      let output = review[i];
-      //output["username"] = userlist[i].firstName.concat(userlist[i].lastName);
-      output["username"]=userlist[i].name;
-      output["image"] = !_.isEmpty(userlist[i].img)
-      ? `/public/images/upload/${userlist[i].img}`
-      : "/public/images/guest-user.jpg";
-      output["userId"] = userlist[i]._id;
-      if(usernow.toString() == userlist[i]._id.toString()){
-        output["usernow"] = true;
-      }else{
-        output["usernow"] = false;
-      }
-      if (output) {
-        posts.push(output);
-      }
-    }
-    if (posts.length > 0) {
-      hasPost = true;
-    }
     let usernow = "";
     if (req.session.user) {
       const user = await getUser(req.session.user);
