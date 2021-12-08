@@ -1,7 +1,7 @@
 const mongoCollections = require("../config/mongoCollection");
 const products = mongoCollections.products;
 let { ObjectId } = require("mongodb");
-const { isValidObject } = require("../utils.js");
+const { isValidObject, addhttp } = require("../utils.js");
 
 function checkInputs(
   productName,
@@ -31,7 +31,7 @@ function checkInputs(
     throw "Error: website_Url is not a string";
 
   let re =
-    /^(http:\/\/|https:\/\/)?(www.)?([a-zA-Z0-9]+).[a-zA-Z0-9]*.[‌​a-z]{3}\.([a-z]+)?$/gm;
+    /^(http:\/\/|https:\/\/)?(www.)?([a-zA-Z0-9]+).[a-zA-Z0-9]*.[‌​a-z]{2}\.([a-z]+)?$/gm;
   if (!re.test(websiteUrl)) {
     return res.status(400).json({
       error: "Website URL provided does not satisfy proper criteria (route)",
@@ -99,12 +99,17 @@ let exportedMethods = {
     productName = productName.trim();
     websiteUrl = websiteUrl.trim();
     checkInputs(productName, description, websiteUrl, logo, tags, developer);
+<<<<<<< HEAD
     console.log(tags);
+=======
+    tags = [...new Set(tags)];
+    const verbiateURl = addhttp(websiteUrl);
+>>>>>>> a7d8577eeb6a068bbab813506cc86bf5551a622b
     const productList = await products();
     let newProduct = {
       productName: productName,
       description: description,
-      websiteUrl: websiteUrl,
+      websiteUrl: verbiateURl,
       logo: logo,
       tags: tags,
       developer: developer,

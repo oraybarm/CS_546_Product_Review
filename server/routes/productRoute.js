@@ -160,7 +160,7 @@ router.post(
       tagsList = new Set(tagsList);
       tagsList = Array.from(tagsList);
       let re =
-        /^(http:\/\/|https:\/\/)?(www.)?([a-zA-Z0-9]+).[a-zA-Z0-9]*.[‌​a-z]{3}\.([a-z]+)?$/gm;
+        /^(http:\/\/|https:\/\/)?(www.)?([a-zA-Z0-9]+).[a-zA-Z0-9]*.[‌​a-z]{2}\.([a-z]+)?$/gm;
       if (!re.test(websiteUrl)) {
         return res.status(400).json({
           error:
