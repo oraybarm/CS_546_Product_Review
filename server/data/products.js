@@ -1,6 +1,7 @@
 const mongoCollections = require("../config/mongoCollection");
 const products = mongoCollections.products;
 let { ObjectId } = require("mongodb");
+const { isValidObject } = require("../utils.js");
 
 function checkInputs(
   productName,
@@ -36,18 +37,16 @@ function checkInputs(
       error: "Website URL provided does not satisfy proper criteria (route)",
     });
   }
+  console.log("tage", tags);
   if (!Array.isArray(tags) || tags.length === 0)
     throw "Error: Tag is not of string type or tag field is empty";
-  //Added Sacheth: Checking of tags added
-  for (let i = 0; i < tags.length; i++) {
-    for (let j = 0; j < tags.length; j++) {
-      if (typeof tags[j] !== "string" && typeof tags[j] !== "string")
-        throw "Error: Tags array does not contain strings";
-      if (tags[i].toLowerCase() === tags[j].toLowerCase() && i !== j) {
-        throw "Error: Same tag entered";
-      }
+  let parsedTags = [...new Set(tags)];
+  parsedTags.forEach((tag) => {
+    isValidObject(tag);
+    if (typeof tag.name !== "string" || tag.name.trim().length < 1) {
+      throw "Error: Tag is not of string type or tag field is empty";
     }
-  }
+  });
 }
 //
 // Just a helper function to check db id's
@@ -96,6 +95,7 @@ let exportedMethods = {
     productName = productName.trim();
     websiteUrl = websiteUrl.trim();
     checkInputs(productName, description, websiteUrl, logo, tags, developer);
+    tags = [...new Set(tags)];
     const productList = await products();
     let newProduct = {
       productName: productName,
