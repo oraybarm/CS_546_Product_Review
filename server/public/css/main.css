@@ -738,10 +738,19 @@ button.getProd {
   display: none !important;
 }
 
-@media (min-width: 768px) {
+.productContainer {
+  margin-right: 3rem !important;
+  margin-left: 3rem !important;
+}
+
+@media (max-width: 768px) {
   #searhcForm {
     display: flex !important;
     flex-direction: row !important;
+  }
+  .productContainer {
+    margin-right: 0rem !important;
+    margin-left: 0rem !important;
   }
 }
 
@@ -766,29 +775,29 @@ button.getProd {
   padding: 5px;
 }
 
-#review{
-  width:100%;
-  height:auto;
-  top:700px;
-  position:absolute;
-  margin-left:20%;
+#review {
+  width: 100%;
+  height: auto;
+  top: 700px;
+  position: absolute;
+  margin-left: 20%;
 }
 
-.description{
-  width:600px;
-  height:auto;
+.description {
+  width: 600px;
+  height: auto;
   font-size: 20px;
-  padding:5px;
+  padding: 5px;
 }
 
-#reviewform{
-  width:500px;
-  height:100%;
+#reviewform {
+  width: 500px;
+  height: 100%;
   text-align: left;
   margin-top: 20px;
 }
 
-.ReviewContainer{
-  position:absolute;
-  top:650px;
+.ReviewContainer {
+  position: absolute;
+  top: 650px;
 }

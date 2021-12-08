@@ -154,7 +154,7 @@ router.post(
         tagarr.push(tag);
       }
       let re =
-        /^(http:\/\/|https:\/\/)?(www.)?([a-zA-Z0-9]+).[a-zA-Z0-9]*.[‌​a-z]{3}\.([a-z]+)?$/gm;
+        /^(http:\/\/|https:\/\/)?(www.)?([a-zA-Z0-9]+).[a-zA-Z0-9]*.[‌​a-z]{2}\.([a-z]+)?$/gm;
       if (!re.test(websiteUrl)) {
         return res.status(400).json({
           error:
@@ -203,7 +203,7 @@ router.get("/:id", async (req, res) => {
         req.params.id
       );
       userLogged = true;
-    } 
+    }
     let usernow = "";
     if (req.session.user) {
       const user = await getUser(req.session.user);

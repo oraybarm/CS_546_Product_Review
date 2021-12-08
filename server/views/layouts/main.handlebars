@@ -1,157 +1,164 @@
 <!DOCTYPE html>
 <html lang="en">
-    <head>
-        <meta charset="UTF-8" />
-        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-        <link
-            rel="shortcut icon"
-            type="image/jpg"
-            href="/public/images/favicon.ico"
-        />
-        <link
-            href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css"
-            rel="stylesheet"
-            integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3"
-            crossorigin="anonymous"
-        />
-        <link
-            rel="stylesheet"
-            href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"
-        />
-        <link rel="stylesheet" href="/public/css/main.css" />
-        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
-        <script src="https://cdn.bootcss.com/echarts/4.2.1-rc1/echarts.min.js"></script>
-        <title>{{{title}}}</title>
-    </head>
-    <body>
-        <nav
-            class="navbar navbar-expand-md navbar-dark bg-dark w-100 display-flex align-items-baseline"
-        >
-            <button
-                class="navbar-toggler"
-                type="button"
-                data-toggle="collapse"
-                data-target="#navbarSupportedContent"
-                aria-controls="navbarSupportedContent"
-                aria-expanded="false"
-                aria-label="Toggle navigation"
-            >
-                <span class="navbar-toggler-icon"></span>
-            </button>
-            <a class=" offset-1 navbar-brand" href="/home">SassBook</a>
-            <div
-                class="collapse navbar-collapse align-items-baseline"
-                id="navbarSupportedContent"
-            >
-                <ul class="navbar-nav mr-auto">
-                    <li class="nav-item active">
-                        <a class="nav-link" href="/home"
-                            >Home <span class="sr-only">(current)</span></a
-                        >
-                    </li>
-                    <li class="nav-item active">
-                        <a class="nav-link" href="/community"
-                            >Community <span class="sr-only">(current)</span></a
-                        >
-                    </li>
-                    <li class="nav-item active">
-                        <a class="nav-link" href="/home/chart"
-                            >Statistic <span class="sr-only">(current)</span></a
-                        >
-                    </li>
-                </ul>
+	<head>
+		<meta charset="UTF-8" />
+		<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<link
+			rel="shortcut icon"
+			type="image/jpg"
+			href="/public/images/favicon.ico"
+		/>
+		<link
+			href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css"
+			rel="stylesheet"
+			integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3"
+			crossorigin="anonymous"
+		/>
+		<link
+			rel="stylesheet"
+			href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"
+		/>
+		<link rel="stylesheet" href="/public/css/main.css" />
+		<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+		<script src="https://cdn.bootcss.com/echarts/4.2.1-rc1/echarts.min.js"></script>
+		<title>{{{title}}}</title>
+	</head>
+	<body>
+		<nav
+			class="navbar navbar-expand-md navbar-dark bg-dark w-100 display-flex align-items-baseline"
+		>
+			<button
+				class="navbar-toggler"
+				type="button"
+				data-bs-toggle="collapse"
+				data-bs-target="#navbarSupportedContent"
+				aria-controls="navbarSupportedContent"
+				aria-expanded="false"
+				aria-label="Toggle navigation"
+			>
+				<span class="navbar-toggler-icon"></span>
+			</button>
+			<a class=" offset-1 navbar-brand" href="/home">SassBook</a>
+			<div
+				class="collapse navbar-collapse align-items-baseline"
+				id="navbarSupportedContent"
+			>
+				<ul class="navbar-nav mr-auto">
+					<li class="nav-item active">
+						<a class="nav-link" href="/home"
+							>Home <span class="sr-only">(current)</span></a
+						>
+					</li>
+					<li class="nav-item active">
+						<a class="nav-link" href="/community"
+							>Community <span class="sr-only">(current)</span></a
+						>
+					</li>
+					<li class="nav-item active">
+						<a class="nav-link" href="/home/chart"
+							>Statistic <span class="sr-only">(current)</span></a
+						>
+					</li>
+				</ul>
 
-                <form
-                    class="form-flex flex-row bg-dark d-flex align-items-baseline position-relative"
-                    method="POST"
-                    action="/products/search"
-                    id="searhcForm"
-                >
-                    <div class="input-group mb-3 ">
-                        <div
-                            class="input-group-prepend d-flex align-items-center position-relative"
-                        >
-                            <select
-                                class="form-select"
-                                id="searchSelect"
-                                name="searchSelect"
-                                aria-label="Default select example"
-                            >
-                                <option selected>Search product by</option>
-                                <option value="name">By Name</option>
-                                <option value="tag">By Tag</option>
-                            </select>
-                        </div>
-                        <input
-                            type="text"
-                            class="form-control"
-                            placeholder="Search something"
-                            id="searchInput"
-                            name="searchInput"
-                            aria-label="Search bar"
-                            aria-describedby="basic-addon1"
-                        />
-                        <i class="fas fa-search homeSearch"></i>
-                    </div>
+				<form
+					class="form-flex flex-row bg-dark d-flex align-items-baseline position-relative"
+					method="POST"
+					action="/products/search"
+					id="searhcForm"
+				>
+					<div class="input-group mb-3 ">
+						<div
+							class="input-group-prepend d-flex align-items-center position-relative"
+						>
+							<select
+								class="form-select"
+								id="searchSelect"
+								name="searchSelect"
+								aria-label="Default select example"
+							>
+								<option selected>Search product by</option>
+								<option value="name">By Name</option>
+								<option value="tag">By Tag</option>
+							</select>
+						</div>
+						<input
+							type="text"
+							class="form-control"
+							placeholder="Search something"
+							id="searchInput"
+							name="searchInput"
+							aria-label="Search bar"
+							aria-describedby="basic-addon1"
+						/>
+						<i class="fas fa-search homeSearch"></i>
+					</div>
 
-                    <button
-                        class="btn btn-outline-danger d-flex align-items-center"
-                        type="submit"
-                        id="searchButton"
-                    >
-                        Search
-                    </button>
-                </form>
-                <ul class="navbar-nav flex-row d-flex align-items-center">
-                    <li class="nav-item mx-3">
-                        <a href="/private/profile">
-                            <button
-                                class=" btn  btn-outline-danger"
-                                href="/private/profile"
-                            >
-                                <i class="fa fa-user"></i>
-                            </button>
-                        </a>
-                    </li>
-                    {{#if authenticated}}
-                    <li class="nav-item mx-2">
-                        <a class="" href="/users/logout">
-                            <button
-                                class="btn btn-outline-danger d-flex align-items-center"
-                            >
-                                Logout
-                            </button>
-                        </a>
-                    </li>
-                    {{else}}
-                    <li class="nav-item mx-2">
-                        <a class="" href="/users/signup" type="submit">
-                            <button
-                                class="btn btn-outline-danger d-flex align-items-center"
-                            >
-                                Login
-                            </button>
-                        </a>
+					<button
+						class="btn btn-outline-danger d-flex align-items-center"
+						type="submit"
+						id="searchButton"
+					>
+						Search
+					</button>
+				</form>
+				<ul class="navbar-nav flex-row d-flex align-items-center">
+					<li class="nav-item mx-3">
+						<a href="/private/profile">
+							<button
+								class=" btn  btn-outline-danger"
+								href="/private/profile"
+							>
+								<i class="fa fa-user"></i>
+							</button>
+						</a>
+					</li>
+					{{#if authenticated}}
+					<li class="nav-item mx-2">
+						<a class="" href="/users/logout">
+							<button
+								class="btn btn-outline-danger d-flex align-items-center"
+							>
+								Logout
+							</button>
+						</a>
+					</li>
+					{{else}}
+					<li class="nav-item mx-2">
+						<a class="" href="/users/signup" type="submit">
+							<button
+								class="btn btn-outline-danger d-flex align-items-center"
+							>
+								Login
+							</button>
+						</a>
 
-                        {{/if}}
-                    </li>
-                </ul>
-            </div>
-        </nav>
-        {{{body}}}
-        <script>
-            if (window.history.replaceState) {
-                window.history.replaceState(null, null, window.location.href)
-            }
-        </script>
+						{{/if}}
+					</li>
+				</ul>
+			</div>
+		</nav>
+		{{{body}}}
+		<script>
+			if (window.history.replaceState) {
+				window.history.replaceState(null, null, window.location.href)
+			}
+		</script>
 
-        <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.10.6/moment.min.js"></script> -->
-        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
-        <script
-            src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"
-            integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p"
-            crossorigin="anonymous"
-        ></script>
-    </body>
+		<!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.10.6/moment.min.js"></script> -->
+		<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+		<script
+			src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"
+			integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p"
+			crossorigin="anonymous"
+		></script>
+		<script type="text/javascript">
+			$(document).ready(function () {
+				$('button.navbar-toggler').click(function () {
+					$('button.navbar-toggler').toggleClass('collapse')
+				})
+			})
+		</script>
+	</body>
 </html>

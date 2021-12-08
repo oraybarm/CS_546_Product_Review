@@ -1,6 +1,6 @@
 {{#if error}}
 <h2>No products found!</h2>
-{{else}}
+{{/if}}
 
 <div class="jumbotron w-100 mx-5 d-flex flex-column">
   <!-- Button trigger modal -->
@@ -18,10 +18,10 @@
   {{/if}}
   <div>
     <div class="d-flex flex-row flex-wrap">
-      {{/if}} {{#each products}}
+      {{#each products}}
       <a href="/products/{{_id}}">
         <div
-          class="card d-flex align-items-center mx-5 rounded"
+          class="card d-flex align-items-center rounded productContainer"
           style="width: 18rem;"
         >
           <img
@@ -123,14 +123,14 @@
             </div>
             <div class="col-md-12 position-relative">
               <label for="description" class="form-label">Description</label>
-              <input
+              <textarea
                 type="text"
-                class="form-control"
+                class="form-control w-100 mx-10"
                 id="productDescription"
                 name="description"
                 required
                 placeholder="Product Description"
-              />
+              ></textarea>
 
               <div class="invalid-feedback">
                 Please provide a valid Description(at least two characters, no
