@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css?family=Montserrat:400,800');
+@import url("https://fonts.googleapis.com/css?family=Montserrat:400,800");
 
 * {
   box-sizing: border-box;
@@ -9,7 +9,7 @@ body {
   display: flex;
   align-items: center;
   flex-direction: column;
-  font-family: 'Montserrat', sans-serif;
+  font-family: "Montserrat", sans-serif;
   height: 100vh;
   margin: 0px 0 20px;
   color: #212529;
@@ -363,7 +363,7 @@ textarea.communityInput {
 }
 
 .card-text::after {
-  content: ' * ';
+  content: " * ";
   display: inline;
   margin-right: 1px;
 }
@@ -666,7 +666,7 @@ like button
   padding: 10px 15px;
 
   font-size: 14px;
-  font-family: 'Open Sans', sans-serif;
+  font-family: "Open Sans", sans-serif;
   border-radius: 5px;
   color: #e8efff;
   outline: none;
@@ -705,7 +705,7 @@ button.getProd {
   padding: 10px 15px;
 
   font-size: 14px;
-  font-family: 'Open Sans', sans-serif;
+  font-family: "Open Sans", sans-serif;
   border-radius: 5px;
   color: #e8efff;
   outline: none;

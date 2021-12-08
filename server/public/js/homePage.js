@@ -5,7 +5,7 @@
 
   var productNameField = document.getElementById("productName");
   var productDescriptionField = document.getElementById("productDescription");
-  var productUrl = document.getElementById("productUrl");
+  var productUrl = document.getElementById("websiteUrl");
   var productTag = document.getElementById("productTag");
   var profileFileField = document.getElementById("file");
   var developer = document.getElementById("developer");

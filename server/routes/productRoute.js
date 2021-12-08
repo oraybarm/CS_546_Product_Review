@@ -112,14 +112,14 @@ router.post(
       req.session.addProductError = false;
       //check what all is required after making the front end form
       let { productName, description, websiteUrl, tags, developer } = req.body;
-      productName = productName.toLowerCase();
       productName = xss(productName);
       description = xss(description);
-      websiteUrl = websiteUrl.toLowerCase();
+      websiteUrl = websiteUrl.toLowerCase().trim();
       websiteUrl = xss(websiteUrl);
       tags = xss(tags);
-      developer = developer.toLowerCase();
       developer = xss(developer);
+      if (!req.file)
+        return res.status(400).json({ error: "Please provide a file" });
       let photo = req.file.filename;
       photo = xss(photo);
       console.log(productName);
@@ -131,6 +131,17 @@ router.post(
       if (!productName || !description || !websiteUrl || !tags || !developer) {
         return res.status(400).json({
           error: "Please provide all details of the product",
+        });
+      }
+      if (
+        productName.trim().length < 1 ||
+        description.trim().length < 1 ||
+        websiteUrl.trim().length < 1 ||
+        tags.trim().length < 1 ||
+        developer.trim().length < 1
+      ) {
+        return res.status(400).json({
+          error: "Please provide ensure there are no blank details",
         });
       }
       productName = productName.trim().toLowerCase();
@@ -146,13 +157,10 @@ router.post(
           error: "Details provided are not of proper type string",
         });
       }
-      let tagslist = tags.split(",");
-      let tagarr = [];
-      for (let i = 0; i < tagslist.length; i++) {
-        let tag = {};
-        tag["name"] = tagslist[i];
-        tagarr.push(tag);
-      }
+      tags = tags.trim().toUpperCase();
+      let tagsList = tags.split(",");
+      tagsList = new Set(tagsList);
+      tagsList = Array.from(tagsList);
       let re =
         /^(http:\/\/|https:\/\/)?(www.)?([a-zA-Z0-9]+).[a-zA-Z0-9]*.[‌​a-z]{2}\.([a-z]+)?$/gm;
       if (!re.test(websiteUrl)) {
@@ -167,7 +175,7 @@ router.post(
           description,
           websiteUrl,
           photo,
-          tagarr,
+          tagsList,
           developer
         );
         console.log("new", newProduct);
