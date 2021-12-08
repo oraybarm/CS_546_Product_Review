@@ -1,7 +1,7 @@
 const mongoCollections = require("../config/mongoCollection");
 const products = mongoCollections.products;
 let { ObjectId } = require("mongodb");
-const { isValidObject } = require("../utils.js");
+const { isValidObject, addhttp } = require("../utils.js");
 
 function checkInputs(
   productName,
@@ -96,11 +96,12 @@ let exportedMethods = {
     websiteUrl = websiteUrl.trim();
     checkInputs(productName, description, websiteUrl, logo, tags, developer);
     tags = [...new Set(tags)];
+    const verbiateURl = addhttp(websiteUrl);
     const productList = await products();
     let newProduct = {
       productName: productName,
       description: description,
-      websiteUrl: websiteUrl,
+      websiteUrl: verbiateURl,
       logo: logo,
       tags: tags,
       developer: developer,
