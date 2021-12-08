@@ -768,3 +768,18 @@ button.getProd {
   font-size: 20px;
   padding: 5px;
 }
+
+#review{
+  width:100%;
+  height:auto;
+  top:700px;
+  position:absolute;
+  margin-left:20%;
+}
+
+.description{
+  width:600px;
+  height:auto;
+  font-size: 20px;
+  padding:5px;
+}
