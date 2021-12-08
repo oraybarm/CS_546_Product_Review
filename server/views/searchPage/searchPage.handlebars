@@ -1,13 +1,15 @@
 <div class= "Search List">
     <h3>Search Results:</h3>
     {{#each products}}
-    <div class="card" onclick="location.href=' ../products/{{this._id}}'";>
+    <div class="card" >
+        <a href="../products/{{this._id}}">
         <h2>{{this.productName}}</h2>
-        <img src='/public/images/upload/{{this.logo}}' alt={{this.productName}} width="460" height="345">
+        <img src="/public/images/upload/{{this.logo}}" alt={{{this.productName}}} width="460" height="345">
         <p>Likes: {{this.likes}}</p>
         <p>Rating:{{this.rating}}</p>
         <p>Tags:{{this.tags}}</p>
         <br/>
+        </a>
     </div>
     {{/each}}
 </div>

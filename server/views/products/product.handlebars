@@ -164,154 +164,174 @@
 <script src="/public/js/product.js"></script>
 
 <script type="text/javascript">
-  window.onload = function () {
-    // listen
-    $('btn').onclick = function () {
-      // get input content
-      var content = $('comment').value
-      if (content.length === 0) {
-        alert('Please Write your review!')
-        return
-      }
-      //var newLi = document.createElement('li')
-      //newLi.innerHTML = `${content}<br/><img src="../../public/images/${rateval}.png"><a href="javascript:void(0)">Delete</a>`
-      // $("comment_content").appendChild(newLi);   //Method 1
-      //$('comment_content').insertBefore(newLi,$('comment_content').children[0]) //Method 2
+    window.onload = function () {
+      // listen
+      $('btn').onclick = function () {
+        // get input content
+        var content = $('comment').value
+        if (content.length === 0) {
+          alert('Please Write your review!')
+          return
+        }
+        //var newLi = document.createElement('li')
+        //newLi.innerHTML = `${content}<br/><img src="../../public/images/${rateval}.png"><a href="javascript:void(0)">Delete</a>`
+        // $("comment_content").appendChild(newLi);   //Method 1
+        //$('comment_content').insertBefore(newLi,$('comment_content').children[0]) //Method 2
+  <<<<<<< HEAD
 
-      // clear the input
-      $('comment').value = ''
-      // Delete review
-      var delBtns = document.getElementsByTagName('a')
-      for (var i = 0; i < delBtns.length; i++) {
-        delBtns[i].onclick = function () {
-          this.parentNode.remove()
+  =======
+  >>>>>>> eec707cbdcdf95d04db529097e98a7449a74e058
+        // clear the input
+        $('comment').value = ''
+        // Delete review
+        var delBtns = document.getElementsByTagName('a')
+        for (var i = 0; i < delBtns.length; i++) {
+          delBtns[i].onclick = function () {
+            this.parentNode.remove()
+          }
+        }
+        let productid = $('btn').name
+        jQuery.ajax({
+          type: 'Post',
+          async: true,
+          url: 'http://localhost:3000/reviews/',
+          data: { content, rateval, productid },
+          dataType: 'json',
+          success: function (result) {
+            console.log(result)
+            if (result) {
+              console.log('Add review successfully.')
+            }
+          }
+        })
+        window.location.href = window.location.href
+        window.location.reload
+      }
+  <<<<<<< HEAD
+
+  =======
+  >>>>>>> eec707cbdcdf95d04db529097e98a7449a74e058
+      // get event
+      function $ (id) {
+        return typeof id === 'string' ? document.getElementById(id) : null
+      }
+    }
+</script>
+<script type="text/javascript">
+    var oLi = document.getElementsByClassName('rate')
+    var oDiv = document.getElementById('rater')
+    var data = ['Very Negative', 'Negative', 'Mixed', 'Positive', 'Very Positive']
+    var flag = false
+    var index = 0
+    var rateval = 1
+    for (let i = 0; i < oLi.length; i++) {
+      oLi[i].onmouseover = () => {
+        //hover
+        //clear and add
+        for (let j = 0; j < oLi.length; j++) {
+          oLi[j].style.backgroundPosition = '0 0'
+        }
+        for (let j = 0; j <= i; j++) {
+          oLi[j].style.backgroundPosition = '0 -28px'
+        }
+        oDiv.innerHTML = data[i]
+      }
+      //mouse click event
+      oLi[i].onmouseout = () => {
+        //clear style
+        for (let j = 0; j < oLi.length; j++) {
+          oLi[j].style.backgroundPosition = '0 0'
+        }
+        oDiv.innerHTML = ''
+        if (flag) {
+          //if clicked
+          for (let j = 0; j <= index; j++) {
+            oLi[j].style.backgroundPosition = '0 -28px'
+          }
+          oDiv.innerHTML = data[index]
         }
       }
-      let productid = $('btn').name
+      oLi[i].onclick = function () {
+        flag = true
+        index = i
+        rateval = i + 1
+        oDiv.innerHTML = data[index]
+      }
+    }
+  <<<<<<< HEAD
+
+  =======
+  >>>>>>> eec707cbdcdf95d04db529097e98a7449a74e058
+    $('#siteRedirection').click(function () {
+      const href = $('#siteRedirection').attr('href')
+      window.open(
+        href,
+        '_blank' // <- This is what makes it open in a new window.
+      )
+    })
+</script>
+
+<script type="text/javascript">
+    function moreWhInfo () {
+      $('#MyDiv').show()
+      $('.mask').show()
+    }
+  <<<<<<< HEAD
+
+  =======
+  >>>>>>> eec707cbdcdf95d04db529097e98a7449a74e058
+    $('.closeBtn').click(function () {
+      $('#MyDiv').hide()
+      $('.mask').hide()
+    })
+  <<<<<<< HEAD
+
+  =======
+  >>>>>>> eec707cbdcdf95d04db529097e98a7449a74e058
+    function DeleteInfo (reviewId) {
+      console.log(reviewId)
       jQuery.ajax({
         type: 'Post',
         async: true,
-        url: 'http://localhost:3000/reviews/',
-        data: { content, rateval, productid },
+        url: 'http://localhost:3000/reviews/delete',
+        data: { reviewId },
         dataType: 'json',
         success: function (result) {
-          console.log(result)
           if (result) {
-            console.log('Add review successfully.')
+            console.log('Delete review successfully.')
           }
         }
       })
       window.location.href = window.location.href
       window.location.reload
     }
+  <<<<<<< HEAD
 
-    // get event
-    function $ (id) {
-      return typeof id === 'string' ? document.getElementById(id) : null
-    }
-  }
-</script>
-<script type="text/javascript">
-  var oLi = document.getElementsByClassName('rate')
-  var oDiv = document.getElementById('rater')
-  var data = ['Very Negative', 'Negative', 'Mixed', 'Positive', 'Very Positive']
-  var flag = false
-  var index = 0
-  var rateval = 1
-  for (let i = 0; i < oLi.length; i++) {
-    oLi[i].onmouseover = () => {
-      //hover
-      //clear and add
-      for (let j = 0; j < oLi.length; j++) {
-        oLi[j].style.backgroundPosition = '0 0'
-      }
-      for (let j = 0; j <= i; j++) {
-        oLi[j].style.backgroundPosition = '0 -28px'
-      }
-      oDiv.innerHTML = data[i]
-    }
-    //mouse click event
-    oLi[i].onmouseout = () => {
-      //clear style
-      for (let j = 0; j < oLi.length; j++) {
-        oLi[j].style.backgroundPosition = '0 0'
-      }
-      oDiv.innerHTML = ''
-      if (flag) {
-        //if clicked
-        for (let j = 0; j <= index; j++) {
-          oLi[j].style.backgroundPosition = '0 -28px'
+  =======
+  >>>>>>> eec707cbdcdf95d04db529097e98a7449a74e058
+    function UpdateInfo (reviewId) {
+      console.log(reviewId)
+      let des = document.getElementById('description1')
+      let rat = document.getElementById('rating1')
+      let newdes = des.value
+      let newrate = rat.value
+  <<<<<<< HEAD
+
+  =======
+  >>>>>>> eec707cbdcdf95d04db529097e98a7449a74e058
+      jQuery.ajax({
+        type: 'Post',
+        async: true,
+        url: 'http://localhost:3000/reviews/update',
+        data: { reviewId, newdes, newrate },
+        dataType: 'json',
+        success: function (result) {
+          if (result) {
+            console.log('Update review successfully.')
+          }
         }
-        oDiv.innerHTML = data[index]
-      }
+      })
+      $('#MyDiv').hide()
+      $('.mask').hide()
     }
-    oLi[i].onclick = function () {
-      flag = true
-      index = i
-      rateval = i + 1
-      oDiv.innerHTML = data[index]
-    }
-  }
-
-  $('#siteRedirection').click(function () {
-    const href = $('#siteRedirection').attr('href')
-    window.open(
-      href,
-      '_blank' // <- This is what makes it open in a new window.
-    )
-  })
-</script>
-
-<script type="text/javascript">
-  function moreWhInfo () {
-    $('#MyDiv').show()
-    $('.mask').show()
-  }
-
-  $('.closeBtn').click(function () {
-    $('#MyDiv').hide()
-    $('.mask').hide()
-  })
-
-  function DeleteInfo (reviewId) {
-    console.log(reviewId)
-    jQuery.ajax({
-      type: 'Post',
-      async: true,
-      url: 'http://localhost:3000/reviews/delete',
-      data: { reviewId },
-      dataType: 'json',
-      success: function (result) {
-        if (result) {
-          console.log('Delete review successfully.')
-        }
-      }
-    })
-    window.location.href = window.location.href
-    window.location.reload
-  }
-
-  function UpdateInfo (reviewId) {
-    console.log(reviewId)
-    let des = document.getElementById('description1')
-    let rat = document.getElementById('rating1')
-    let newdes = des.value
-    let newrate = rat.value
-
-    jQuery.ajax({
-      type: 'Post',
-      async: true,
-      url: 'http://localhost:3000/reviews/update',
-      data: { reviewId, newdes, newrate },
-      dataType: 'json',
-      success: function (result) {
-        if (result) {
-          console.log('Update review successfully.')
-        }
-      }
-    })
-
-    $('#MyDiv').hide()
-    $('.mask').hide()
-  }
 </script>
