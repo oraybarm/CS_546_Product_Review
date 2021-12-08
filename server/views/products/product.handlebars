@@ -24,15 +24,6 @@
 
   <div class="prodBtns">
     {{#if userLogged}}
-<<<<<<< HEAD
-      <button class="btn btn-outline-danger">
-        <span id="icon"><i class="far fa-thumbs-up"></i></span>
-        <span id="count">{{likes}}</span>
-        Like
-      </button>
-    {{/if}}
-    <a class="btn btn-outline-danger " href="{{site}}" target="_blank">Get Product</a>
-=======
     <button class="like__btn">
       <span id="icon"><i class="far fa-thumbs-up"></i></span>
       <span id="count">{{likes}}</span>
@@ -46,7 +37,6 @@
   <div class="description">
     <h3>Product Descrtiption:</h3>
     {{description}}
->>>>>>> a7d8577eeb6a068bbab813506cc86bf5551a622b
   </div>
 </div>
 <div id="review">
@@ -187,7 +177,6 @@
       //newLi.innerHTML = `${content}<br/><img src="../../public/images/${rateval}.png"><a href="javascript:void(0)">Delete</a>`
       // $("comment_content").appendChild(newLi);   //Method 1
       //$('comment_content').insertBefore(newLi,$('comment_content').children[0]) //Method 2
-
       // clear the input
       $('comment').value = ''
       // Delete review
@@ -214,7 +203,6 @@
       window.location.href = window.location.href
       window.location.reload
     }
-
     // get event
     function $ (id) {
       return typeof id === 'string' ? document.getElementById(id) : null
@@ -262,7 +250,6 @@
       oDiv.innerHTML = data[index]
     }
   }
-
   $('#siteRedirection').click(function () {
     const href = $('#siteRedirection').attr('href')
     window.open(
@@ -277,12 +264,10 @@
     $('#MyDiv').show()
     $('.mask').show()
   }
-
   $('.closeBtn').click(function () {
     $('#MyDiv').hide()
     $('.mask').hide()
   })
-
   function DeleteInfo (reviewId) {
     console.log(reviewId)
     jQuery.ajax({
@@ -300,14 +285,12 @@
     window.location.href = window.location.href
     window.location.reload
   }
-
   function UpdateInfo (reviewId) {
     console.log(reviewId)
     let des = document.getElementById('description1')
     let rat = document.getElementById('rating1')
     let newdes = des.value
     let newrate = rat.value
-
     jQuery.ajax({
       type: 'Post',
       async: true,
@@ -320,7 +303,6 @@
         }
       }
     })
-
     $('#MyDiv').hide()
     $('.mask').hide()
   }

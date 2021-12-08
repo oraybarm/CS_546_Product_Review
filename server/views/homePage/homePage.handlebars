@@ -24,7 +24,6 @@
           class="card d-flex align-items-center rounded productContainer"
           style="width: 18rem;"
         >
-        
           <img
             class="card-img-top p-2 rounded"
             src="/public/images/upload/{{this.logo}}"
@@ -55,17 +54,15 @@
             <div
               class="tagContainer d-flex flex-wrap align-items-center justify-content-center"
             >
-            
               {{#each tags}}
-              <a class="my-0 btn btn-danger h-10 tagPill">
+              <button class="my-0 btn btn-danger h-10 tagPill">
                 {{this}}
-              </a>
+              </button>
               {{/each}}
             </div>
           </div>
-          </a>
         </div>
-        
+      </a>
       {{/each}}
     </div>
   </div>
@@ -76,6 +73,7 @@
     id="exampleModalCenter"
     tabindex="-1"
     role="dialog"
+    aria-labelledby="exampleModalCenterTitle"
     aria-hidden="true"
   >
     <div class="modal-dialog modal-dialog-centered" role="document">
@@ -124,13 +122,8 @@
               </div>
             </div>
             <div class="col-md-12 position-relative">
-<<<<<<< HEAD
-              <label for="productDescription" class="form-label">Description</label>
-              <input
-=======
               <label for="description" class="form-label">Description</label>
               <textarea
->>>>>>> a7d8577eeb6a068bbab813506cc86bf5551a622b
                 type="text"
                 class="form-control w-100 mx-10"
                 id="productDescription"
@@ -145,11 +138,11 @@
               </div>
             </div>
             <div class="col-md-12 position-relative">
-              <label for="websiteUrl" class="form-label">Product URL</label>
+              <label for="url" class="form-label">Product URL</label>
               <input
                 type="text"
                 class="form-control"
-                id="websiteUrl"
+                id="productUrl"
                 name="websiteUrl"
                 required
                 placeholder="Please enter your products website"
@@ -178,14 +171,14 @@
             </div>
             <!-- tags section -->
             <div class="col-md-12 position-relative">
-              <label for="productTag" class="form-label">Related tags</label>
+              <label for="tags" class="form-label">Related tags</label>
               <input
                 type="text"
                 class="form-control"
                 id="productTag"
                 name="tags"
                 required
-                placeholder="Please enter a tag which best suits your product separated by commas"
+                placeholder="Please enter a tag which best suits your produc separated by commas"
               />
 
               <div class="invalid-feedback">

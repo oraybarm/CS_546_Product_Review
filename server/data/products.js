@@ -40,18 +40,14 @@ function checkInputs(
   console.log("tag", tags);
   if (!Array.isArray(tags) || tags.length === 0)
     throw "Error: Tag is not of string type or tag field is empty";
-
+  //let parsedTags = [...new Set(tags)];
   for (let i = 0; i < tags.length; i++) {
-    if (tags[i].trim().length < 1 || typeof tags[i] !== "string")
+    if (typeof tags[i] !== "string" || tags[i].trim().length < 1) {
       throw "Error: Tag is not of string type or tag field is empty";
+    }
   }
-  // parsedTags.forEach((tag) => {
-  //   isValidObject(tag);
-  //   if (typeof tag.name !== "string" || tag.name.trim().length < 1) {
-  //     throw "Error: Tag is not of string type or tag field is empty";
-  //   }
-  // });
 }
+
 //
 // Just a helper function to check db id's
 //
@@ -87,7 +83,7 @@ let exportedMethods = {
     return prodId;
   },
   //addProduct method
-
+  // Need to still check how images will be added to this
   async addProduct(
     productName,
     description,
@@ -99,12 +95,7 @@ let exportedMethods = {
     productName = productName.trim();
     websiteUrl = websiteUrl.trim();
     checkInputs(productName, description, websiteUrl, logo, tags, developer);
-<<<<<<< HEAD
-    console.log(tags);
-=======
-    tags = [...new Set(tags)];
     const verbiateURl = addhttp(websiteUrl);
->>>>>>> a7d8577eeb6a068bbab813506cc86bf5551a622b
     const productList = await products();
     let newProduct = {
       productName: productName,
@@ -132,7 +123,6 @@ let exportedMethods = {
     //console.log(typeof addRest);
     return addProduct;
   },
-
   //
   // This function will get a product by name search
 

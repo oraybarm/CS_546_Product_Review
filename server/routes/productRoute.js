@@ -118,6 +118,8 @@ router.post(
       websiteUrl = xss(websiteUrl);
       tags = xss(tags);
       developer = xss(developer);
+      if (!req.file)
+        return res.status(400).json({ error: "Please provide a file" });
       let photo = req.file.filename;
       photo = xss(photo);
       console.log(productName);
