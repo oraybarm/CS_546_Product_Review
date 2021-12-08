@@ -5,7 +5,7 @@
 
   var productNameField = document.getElementById("productName");
   var productDescriptionField = document.getElementById("productDescription");
-  var productUrl = document.getElementById("productUrl");
+  var productUrl = document.getElementById("websiteUrl");
   var productTag = document.getElementById("productTag");
   var profileFileField = document.getElementById("file");
   var developer = document.getElementById("developer");
@@ -79,7 +79,7 @@
 
   function checkValidWebUrl(val) {
     let re =
-      /^(http:\/\/|https:\/\/)?(www.)?([a-zA-Z0-9]+).[a-zA-Z0-9]*.[‌​a-z]{3}\.([a-z]+)?$/gm;
+      /^(http:\/\/|https:\/\/)?(www.)?([a-zA-Z0-9]+).[a-zA-Z0-9]*.[‌​a-z]{2}\.([a-z]+)?$/gm;
     const data = re.test(val);
 
     return data;
