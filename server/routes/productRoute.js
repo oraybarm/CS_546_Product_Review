@@ -92,14 +92,24 @@ router.post("/search", async (req, res) => {
   }
 });
 
+router.get("/addProducterror", (req, res) => {
+  const { addProductError } = req.session;
+  const error = addProductError;
+  req.session.addProductError = false;
+  return res.status(200).json({
+    error: addProductError,
+  });
+});
+
 router.post(
   "/addProduct",
-  upload.single("photo"),
   authMiddleware,
+  upload.single("photo"),
   async (req, res) => {
     if (!req.session.user) {
       res.status(401).redirect("/");
     } else {
+      req.session.addProductError = false;
       //check what all is required after making the front end form
       let { productName, description, websiteUrl, tags, developer } = req.body;
       productName = productName.toLowerCase();
@@ -136,13 +146,13 @@ router.post(
           error: "Details provided are not of proper type string",
         });
       }
-      let tagsList = tags.split(",");
-      // let tagarr = [];
-      // for (let i = 0; i < tagslist.length; i++) {
-      //   let tag = {};
-      //   tag["name"] = tagslist[i];
-      //   tagarr.push(tag);
-      // }
+      let tagslist = tags.split(",");
+      let tagarr = [];
+      for (let i = 0; i < tagslist.length; i++) {
+        let tag = {};
+        tag["name"] = tagslist[i];
+        tagarr.push(tag);
+      }
       let re =
         /^(http:\/\/|https:\/\/)?(www.)?([a-zA-Z0-9]+).[a-zA-Z0-9]*.[‌​a-z]{3}\.([a-z]+)?$/gm;
       if (!re.test(websiteUrl)) {
@@ -157,13 +167,17 @@ router.post(
           description,
           websiteUrl,
           photo,
-          tagsList,
+          tagarr,
           developer
         );
-        console.log(newProduct);
+        console.log("new", newProduct);
         res.redirect("/");
       } catch (e) {
-        return res.status(500).json({ message: `${e}` });
+        console.log("error", e);
+        req.session.addProductError = e;
+        res.redirect("/");
+        // res.redirect("/products/addProducterror");
+        // return res.status(500).json({ message: e, errorMessage: e });
       }
     }
   }
@@ -224,9 +238,41 @@ router.get("/:id", async (req, res) => {
     if (posts.length > 0) {
       hasPost = true;
     }
-    res.render(
-      "products/product", 
-      {
+    let usernow = "";
+    if (req.session.user) {
+      const user = await getUser(req.session.user);
+      usernow = user._id;
+    }
+
+    const review = await reviews.getReviewbyProductId(req.params.id);
+    const userlist = [];
+    for (let i = 0; i < review.length; i++) {
+      let userInfo = await reviews.getUserByReviewId(review[i]._id);
+      userlist.push(userInfo);
+    }
+    let posts = [];
+    let hasPost = false;
+    for (let i = 0; i < review.length; i++) {
+      let output = review[i];
+      //output["username"] = userlist[i].firstName.concat(userlist[i].lastName);
+      output["username"] = userlist[i].name;
+      output["image"] = !_.isEmpty(userlist[i].img)
+        ? `/public/images/upload/${userlist[i].img}`
+        : "/public/images/guest-user.jpg";
+      output["userId"] = userlist[i]._id;
+      if (usernow.toString() == userlist[i]._id.toString()) {
+        output["usernow"] = true;
+      } else {
+        output["usernow"] = false;
+      }
+      if (output) {
+        posts.push(output);
+      }
+    }
+    if (posts.length > 0) {
+      hasPost = true;
+    }
+    res.render("products/product", {
       prodLiked: prodLiked,
       productName: product.productName,
       logo: product.logo,
