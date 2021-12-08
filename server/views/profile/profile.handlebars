@@ -65,6 +65,38 @@
         <button type="submit" name="Submit">Update</button>
     </form>
 </div>
+
+<div class="ReviewContainer">
+    <form
+        enctype="multipart/form-data"
+        class="needs-validation"
+        id="reviewform"
+        novalidate
+    >
+        <div class="col-md-12 position-relative">
+        <h3>My reviews:</h3>
+        <hr>
+        <ul>
+        {{#if hasPost}}
+        {{#each posts}}
+        <li><a href="/products/{{this.product}}"><p>{{this.description}}</p></a></li>
+        <li><a href="/products/{{this.product}}"><img src="../../public/images/{{this.rating}}.png"></a></li>
+        <hr>
+        {{/each}}
+        {{else}}
+        <li>
+            <p class="not-found">No review right now.</p>
+        </li>
+        {{/if}}
+    </ul>
+
+
+        </div>
+        
+    </form>
+
+</div>
+
 <script
     src="https://code.jquery.com/jquery-2.2.4.min.js"
     integrity="sha256-BbhdlvQf/xTY9gja0Dq3HiwQF8LaCRTXxZKRutelT44="

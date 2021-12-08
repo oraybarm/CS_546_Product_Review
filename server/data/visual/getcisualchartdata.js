@@ -23,7 +23,7 @@ const exportedMethods = {
         let tag=[];
         for(let i=0;i<taglist.length;i++){
             for(let j=0;j<taglist[i].tags.length;j++){
-                    tag.push(taglist[i].tags[j].name);
+                    tag.push(taglist[i].tags[j]);
             }
         }
         let data=getEleNums(tag);

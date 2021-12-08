@@ -11,6 +11,7 @@ const { ObjectId } = require("mongodb");
 const reviews = require("../data/reviews");
 const { getUser } = require("../data/users");
 const isValidString = require("../utils");
+const _ = require("lodash");
 
 // router.get("/", async (req, res) => {
 //   try {
@@ -202,7 +203,7 @@ router.get("/:id", async (req, res) => {
         req.params.id
       );
       userLogged = true;
-    }
+    } 
     let usernow = "";
     if (req.session.user) {
       const user = await getUser(req.session.user);
