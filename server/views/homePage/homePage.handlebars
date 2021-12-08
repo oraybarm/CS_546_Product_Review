@@ -43,9 +43,7 @@
             </div>
             <p
               class="my-0"
-              data-rating="{{this.rating}}"
-              data-productid="{{this._id}}"
-            ></p>
+            >Rating:{{this.rating}}</p>
           </div>
           <div
             class="d-flex align-items-center flex-wrap w-100 justify-content-center border-top my-2"
@@ -206,17 +204,15 @@
       </div>
     </div>
   </div>
-  <script
+</div>
+ <script
     src="https://code.jquery.com/jquery-2.2.4.min.js"
     integrity="sha256-BbhdlvQf/xTY9gja0Dq3HiwQF8LaCRTXxZKRutelT44="
     crossorigin="anonymous"
   ></script>
-  <script
-    src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
-    integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
-    crossorigin="anonymous"
-  ></script>
+  
   <script>
+
     $('.errorCreateProduct').addClass('hideError')
     $('#addProductButton').click(function () {
       $('#exampleModalCenter').modal('show')
