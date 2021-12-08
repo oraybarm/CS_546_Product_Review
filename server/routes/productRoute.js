@@ -209,12 +209,7 @@ router.get("/:id", async (req, res) => {
         req.params.id
       );
       userLogged = true;
-<<<<<<< HEAD
     }
-
-=======
-    } 
->>>>>>> 4cfb02524deb6aeb75a4c2a6a475f72b379d9eef
     let usernow = "";
     if (req.session.user) {
       const user = await getUser(req.session.user);
