@@ -114,7 +114,7 @@ router.post(
       let { productName, description, websiteUrl, tags, developer } = req.body;
       productName = xss(productName);
       description = xss(description);
-      websiteUrl = websiteUrl.toLowerCase();
+      websiteUrl = websiteUrl.toLowerCase().trim();
       websiteUrl = xss(websiteUrl);
       tags = xss(tags);
       developer = xss(developer);
@@ -129,6 +129,17 @@ router.post(
       if (!productName || !description || !websiteUrl || !tags || !developer) {
         return res.status(400).json({
           error: "Please provide all details of the product",
+        });
+      }
+      if (
+        productName.trim().length < 1 ||
+        description.trim().length < 1 ||
+        website.trim().length < 1 ||
+        tags.trim().length < 1 ||
+        !develeoper.trim().length < 1
+      ) {
+        return res.status(400).json({
+          error: "Please provide ensure there are no blank details",
         });
       }
       productName = productName.trim().toLowerCase();
