@@ -37,7 +37,7 @@ function checkInputs(
       error: "Website URL provided does not satisfy proper criteria (route)",
     });
   }
-  console.log("tage", tags);
+  console.log("tag", tags);
   if (!Array.isArray(tags) || tags.length === 0)
     throw "Error: Tag is not of string type or tag field is empty";
   let parsedTags = [...new Set(tags)];
