@@ -87,7 +87,7 @@ let exportedMethods = {
     return prodId;
   },
   //addProduct method
-  // Need to still check how images will be added to this
+
   async addProduct(
     productName,
     description,
@@ -129,36 +129,7 @@ let exportedMethods = {
   },
 
   //
-  // This a helper function is used to increment the like counter by 1
-  //
-  async updateCount(product_Id, action) {
-    objId = ObjectId(product_Id);
-    const productCollection = await products();
-    const prod_Id = await productCollection.findOne({ _id: objId });
-    let updated_Like;
-    if (restaurantID === null) throw "No restaurant with this ID";
-    if (action === true) {
-      updated_Like = parseInt(product_Id.likes) + 1;
-    } else {
-      updated_Like = parseInt(product_Id.likes) - 1;
-    }
-    const updated_detials = { likes: updated_Like };
-    const updated = await productCollection.updateOne({
-      _id: objId,
-      $set: updated_detials,
-    });
-    if (updated.modifiedCount === 0) {
-      throw "Could not update the product because it was not found in the database";
-    }
-    return await this.get(objId);
-  },
-
-  //
   // This function will get a product by name search
-  // using something called text search from Mongo db-  don't need this
-  //returns array of objects containing matches
-
-  //https://www.guru99.com/regular-expressions-mongodb.html - this talks about using regex to search
 
   async getProductByProductName(textToSearch) {
     if (typeof textToSearch !== "string")
