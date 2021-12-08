@@ -24,6 +24,7 @@
           class="card d-flex align-items-center mx-5 rounded"
           style="width: 18rem;"
         >
+        
           <img
             class="card-img-top p-2 rounded"
             src="/public/images/upload/{{this.logo}}"
@@ -54,15 +55,17 @@
             <div
               class="tagContainer d-flex flex-wrap align-items-center justify-content-center"
             >
+            
               {{#each tags}}
-              <button class="my-0 btn btn-danger h-10 tagPill">
+              <a class="my-0 btn btn-danger h-10 tagPill">
                 {{this}}
-              </button>
+              </a>
               {{/each}}
             </div>
           </div>
+          </a>
         </div>
-      </a>
+        
       {{/each}}
     </div>
   </div>

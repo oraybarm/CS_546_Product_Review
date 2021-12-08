@@ -134,9 +134,9 @@ router.post(
       if (
         productName.trim().length < 1 ||
         description.trim().length < 1 ||
-        website.trim().length < 1 ||
+        websiteUrl.trim().length < 1 ||
         tags.trim().length < 1 ||
-        !develeoper.trim().length < 1
+        developer.trim().length < 1
       ) {
         return res.status(400).json({
           error: "Please provide ensure there are no blank details",
