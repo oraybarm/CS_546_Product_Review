@@ -139,8 +139,8 @@ module.exports = {
     return user;
   },
   async getReviewsByUserId(id){
-    const user = await this.getUserById(id);
-
+    const userCollection = await users();
+    const user = await userCollection.findOne({_id:id});
     return user.reviews;
   },
   async getLikedProductsByUser(id){

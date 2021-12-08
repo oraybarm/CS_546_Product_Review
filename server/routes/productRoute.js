@@ -205,40 +205,6 @@ router.get("/:id", async (req, res) => {
       userLogged = true;
     } 
     let usernow = "";
-    if(req.session.user){
-      const user = await getUser(req.session.user);
-      usernow = user._id;
-    }
-
-    const review = await reviews.getReviewbyProductId(req.params.id);
-    const userlist = [];
-    for (let i = 0; i < review.length; i++) {
-      let userInfo = await reviews.getUserByReviewId(review[i]._id);
-      userlist.push(userInfo);
-    }
-    let posts = [];
-    let hasPost = false;
-    for (let i = 0; i < review.length; i++) {
-      let output = review[i];
-      //output["username"] = userlist[i].firstName.concat(userlist[i].lastName);
-      output["username"]=userlist[i].name;
-      output["image"] = !_.isEmpty(userlist[i].img)
-      ? `/public/images/upload/${userlist[i].img}`
-      : "/public/images/guest-user.jpg";
-      output["userId"] = userlist[i]._id;
-      if(usernow.toString() == userlist[i]._id.toString()){
-        output["usernow"] = true;
-      }else{
-        output["usernow"] = false;
-      }
-      if (output) {
-        posts.push(output);
-      }
-    }
-    if (posts.length > 0) {
-      hasPost = true;
-    }
-    let usernow = "";
     if (req.session.user) {
       const user = await getUser(req.session.user);
       usernow = user._id;

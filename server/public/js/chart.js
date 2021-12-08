@@ -16,6 +16,7 @@ $.ajax({
     dataType : "json",       
     success : function(result) {
         if (result) {
+          console
             for (var key in result) {
               dataAxis.push(key);
               data.push(result[key]);

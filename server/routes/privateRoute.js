@@ -11,6 +11,7 @@ const {
     isValidUsername,
     isValidString,
 } = require("../utils");
+const reviews = require("../data/reviews");
 
 // TODO: there's a middleware to check isadmin inside middleware/private.js
 // we can use it for report user feature
@@ -36,6 +37,18 @@ router.get("/profile", authMiddleware, async (req, res) => {
         if (nothingToUpdate) {
             toastMessage = "Nothing to update here";
         }
+        const users = await getUser(req.session.user);
+        const usernow = users._id;
+        const review= await reviews.getReviewsByUser(usernow);
+        let posts = [];
+        let hasPost = false;
+        for(let i=0;i<review.length;i++){
+            posts.push(review[i]);
+        }
+        if (posts.length > 0) {
+            hasPost = true;
+          }
+        console.log(posts);
         res.render("profile/profile", {
             authenticated: true,
             user: req.session.user,
@@ -47,6 +60,8 @@ router.get("/profile", authMiddleware, async (req, res) => {
             updateSuccessful,
             error: req.session.error,
             toastMessage,
+            posts: posts,
+            hasPost: hasPost
         });
     } catch (error) {
         res.render("profile/profile", {
