@@ -39,7 +39,7 @@
     {{description}}
   </div>
 </div>
-<div id="review">
+<div id="reviews">
   <h3>Product Review:</h3>
   {{#if userLogged}}
   <div id="box">
@@ -58,11 +58,13 @@
         rows="10"
         placeholder="Please write your review"
       ></textarea>
-      <button id="btn" name="{{productid}}">Submit</button>
+      <button id="btn" name="{{productid}}" class="submitReviewButton">
+        Submit
+      </button>
     </div>
+    {{/if}}
     <ul id="comment_content"></ul>
   </div>
-  {{/if}}
   <div id="reviewpart">
     <ul>
       {{#if hasPost}} {{#each posts}}
@@ -140,20 +142,6 @@
   </div>
 </div>
 
-{{!
-<link
-  rel="stylesheet"
-  href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css"
-/>
-}}
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
-
-<script
-  src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"
-  integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p"
-  crossorigin="anonymous"
-></script>
 <script
   src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"
   integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p"
