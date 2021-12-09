@@ -17,7 +17,6 @@
     <div>Hello {{name}}</div>
     <!-- <div>{{src}}</div> -->
     <img src="{{src}}" class="rounded-circle" alt="{{name}}" />
-    <h1>{{error}}</h1>
     <div class="invalid-feedback">
         {{error}}
     </div>
@@ -80,8 +79,8 @@
         {{#if hasPost}}
         {{#each posts}}
         <li><a href="/products/{{this.product}}"><p>{{this.description}}</p></a></li>
-        <li><a href="/products/{{this.product}}"><img src="../../public/images/{{this.rating}}.png"></a></li>
-        <hr>
+        <li><a href="/products/{{this.product}}"><img src="../../public/images/{{this.rating}}.png" alt="review star"></a></li>
+        
         {{/each}}
         {{else}}
         <li>
