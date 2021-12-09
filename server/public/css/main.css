@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css?family=Montserrat:400,800');
+@import url("https://fonts.googleapis.com/css?family=Montserrat:400,800");
 
 * {
   box-sizing: border-box;
@@ -9,7 +9,7 @@ body {
   display: flex;
   align-items: center;
   flex-direction: column;
-  font-family: 'Montserrat', sans-serif;
+  font-family: "Montserrat", sans-serif;
   height: 100vh;
   margin: 0px 0 20px;
   color: #212529;
@@ -363,7 +363,7 @@ textarea.communityInput {
 }
 
 .card-text::after {
-  content: ' * ';
+  content: " * ";
   display: inline;
   margin-right: 1px;
 }
@@ -411,6 +411,89 @@ a.newPost {
   animation: newPostShadow 5s linear 2s infinite alternate;
 }
 
+ul {
+  list-style: none;
+}
+#box {
+  width: 1000px;
+  border: 1px solid #ccc;
+  margin: 1px auto;
+  padding: 20px;
+  display: inline-block;
+  *display: inline;
+  *zoom: 1;
+}
+#comment {
+  width: 900px;
+  height: 75px;
+  padding: 10px 10px;
+  font-size: 20px;
+  /*outline: none;*/
+}
+.box_top {
+  margin-bottom: 5px;
+  display: inline-block;
+}
+#comment_content li {
+  border-bottom: 1px dashed #ccc;
+  width: 900px;
+  font-size: 17px;
+  color: rgb(14, 13, 13);
+}
+#comment_content li a {
+  float: right;
+}
+
+ul,
+li,
+body {
+  padding: 0;
+  margin: 0;
+}
+
+.rate {
+  float: left;
+  list-style: none;
+  width: 27px;
+  height: 28px;
+  background-image: url(../images/star.gif);
+  background-position: 0 0;
+}
+
+#rater {
+  font-size: 20px;
+  font-weight: 600;
+  color: coral;
+}
+
+.userimg {
+  height: 30px;
+  width: 30px;
+  border-radius: 50px;
+}
+
+#reviewpart {
+  width: 1000px;
+  border: 1px solid #ccc;
+  margin: 10px auto;
+  padding: 20px;
+  display: inline-block;
+  *display: inline;
+  *zoom: 1;
+}
+
+#chart {
+  height: 600px;
+  width: 800px;
+  position: absolute;
+  top: 200px;
+}
+
+/* .more-tjm-info {
+  width: 60px;
+  float: right;
+  margin-right: 10px;
+} */
 
 ul {
   list-style: none;
@@ -532,10 +615,6 @@ body {
 /*
 product page
 */
-
-h3 {
-  word-break: break-word;
-}
 div.productContainer {
   font-family: Arial, Helvetica, sans-serif;
   /* font-size:24px; */
@@ -543,7 +622,10 @@ div.productContainer {
   flex-direction: column;
   align-items: center;
   justify-content: center;
+  padding: 5%;
+  height: auto;
   width: 60%;
+  margin: auto;
   margin-top: 0;
 }
 div.prodName {
@@ -584,7 +666,7 @@ like button
   padding: 10px 15px;
 
   font-size: 14px;
-  font-family: 'Open Sans', sans-serif;
+  font-family: "Open Sans", sans-serif;
   border-radius: 5px;
   color: #e8efff;
   outline: none;
@@ -623,7 +705,7 @@ button.getProd {
   padding: 10px 15px;
 
   font-size: 14px;
-  font-family: 'Open Sans', sans-serif;
+  font-family: "Open Sans", sans-serif;
   border-radius: 5px;
   color: #e8efff;
   outline: none;
@@ -657,8 +739,8 @@ button.getProd {
 }
 
 .productContainer {
-  margin-right: 1rem !important;
-  margin-left: 1rem !important;
+  margin-right: 3rem !important;
+  margin-left: 3rem !important;
 }
 
 @media (max-width: 768px) {
