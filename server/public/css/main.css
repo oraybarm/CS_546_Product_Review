@@ -1,4 +1,4 @@
-@import url("https://fonts.googleapis.com/css?family=Montserrat:400,800");
+@import url('https://fonts.googleapis.com/css?family=Montserrat:400,800');
 
 * {
   box-sizing: border-box;
@@ -9,7 +9,7 @@ body {
   display: flex;
   align-items: center;
   flex-direction: column;
-  font-family: "Montserrat", sans-serif;
+  font-family: 'Montserrat', sans-serif;
   height: 100vh;
   margin: 0px 0 20px;
   color: #212529;
@@ -362,12 +362,6 @@ textarea.communityInput {
   background-color: #fff;
 }
 
-.card-text::after {
-  content: " * ";
-  display: inline;
-  margin-right: 1px;
-}
-
 .postReply {
   margin-left: 10px;
 }
@@ -586,7 +580,7 @@ like button
   padding: 10px 15px;
   background-color: coral;
   font-size: 14px;
-  font-family: "Open Sans", sans-serif;
+  font-family: 'Open Sans', sans-serif;
   border-radius: 5px;
   color: #e8efff;
   outline: none;
@@ -603,7 +597,9 @@ div.prodBtns {
   width: fit-content;
   display: flex;
   align-items: center;
-  flex-direction: column;
+  flex-direction: row;
+  width: 30%;
+  justify-content: space-between;
 }
 
 div#profile ul {
@@ -627,7 +623,7 @@ div#home h6 {
   padding: 10px 15px;
   background-color: coral;
   font-size: 14px;
-  font-family: "Open Sans", sans-serif;
+  font-family: 'Open Sans', sans-serif;
   border-radius: 5px;
   color: #e8efff;
   outline: none;
@@ -674,6 +670,10 @@ div#home h6 {
   .productContainer {
     margin-right: 0rem !important;
     margin-left: 0rem !important;
+  }
+  .card-body {
+    flex-direction: column !important;
+    align-items: start;
   }
 }
 
@@ -742,4 +742,9 @@ div#home h6 {
 }
 #reviews + #reviewpart {
   width: 75%;
+}
+
+.createCommunityPost {
+  box-shadow: unset;
+  border-radius: 4px solid;
 }
