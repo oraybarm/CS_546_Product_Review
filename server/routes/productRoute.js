@@ -313,11 +313,13 @@ router.post("/delete", authMiddleware, async (req, res) => {
     return;
   }
   try {
-    let usr = await userData.getUser(req.session.user);
+    // let usr = await userData.getUser(req.session.user);
     let usrId = usr._id;
     checkId(usrId);
-    let productId = xss(req.body.productId);
+    let productId = req.body.productId;
+    console.log(productId);
     checkId(productId);
+    //console.log(productId);
     const prodList = await productData.getProductById(productId);
     if (!prodList) {
       res
@@ -327,6 +329,7 @@ router.post("/delete", authMiddleware, async (req, res) => {
     if (usrId !== prodList.devId) {
       res.status(400).json({ error: "User cannot delete this product" });
     }
+    productId = productId.toString();
     const delProd = await productData.deleteProduct(productId);
     res.status(200).json({ message: `${delProd} was deleted` });
   } catch (e) {
