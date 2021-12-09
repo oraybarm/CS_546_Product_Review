@@ -54,9 +54,10 @@ router.get("/home/chart", async (req, res) => {
     //res.json(chart);
     res.render("statistic/statistic", {
       authenticated: req.session.user ? true : false,
+      title: "Statistics",
     });
   } catch (e) {
-    res.status(404).json({ error: e });
+    res.status(404).render("/errorPage/404", { title: "Error" });
   }
 });
 
@@ -65,7 +66,7 @@ router.get("/home/getchartdata", async (req, res) => {
     const chart = await charts.getVisualData();
     res.json(chart);
   } catch (e) {
-    res.status(404).json({ error: e });
+    res.status(404).render("/errorPage/404", { title: "Error" });
   }
 });
 

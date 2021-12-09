@@ -584,7 +584,7 @@ like button
 
 .like__btn {
   padding: 10px 15px;
-
+  background-color: coral;
   font-size: 14px;
   font-family: 'Open Sans', sans-serif;
   border-radius: 5px;
@@ -622,16 +622,17 @@ div#home h6 {
   color: coral;
 }
 
-button.getProd {
+.getProd {
   display: inline;
   padding: 10px 15px;
-
+  background-color: coral;
   font-size: 14px;
   font-family: 'Open Sans', sans-serif;
   border-radius: 5px;
   color: #e8efff;
   outline: none;
   border: none;
+  cursor: pointer;
 }
 
 .closeBtn {
