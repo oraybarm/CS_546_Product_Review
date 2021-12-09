@@ -52,7 +52,9 @@ router.get("/home/chart", async (req, res) => {
   try {
     const chart = await charts.getVisualData();
     //res.json(chart);
-    res.render("statistic/statistic");
+    res.render("statistic/statistic", {
+      authenticated: req.session.user ? true : false,
+    });
   } catch (e) {
     res.status(404).json({ error: e });
   }

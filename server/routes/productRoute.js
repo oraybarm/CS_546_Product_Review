@@ -247,6 +247,7 @@ router.get("/:id", async (req, res) => {
       hasPost = true;
     }
     res.render("products/product", {
+      authenticated: req.session.user ? true : false,
       prodLiked: prodLiked,
       productName: product.productName,
       logo: product.logo,

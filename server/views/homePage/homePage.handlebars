@@ -19,10 +19,13 @@
   <div>
     <div class="d-flex flex-row flex-wrap">
       {{#each products}}
-      <a href="/products/{{_id}}">
-        <div
-          class="card d-flex align-items-center rounded productContainer"
-          style="width: 18rem;"
+      <div
+        class="card d-flex align-items-center rounded productContainer"
+        style="width: 18rem;"
+      >
+        <a
+          href="/products/{{_id}}"
+          class="d-flex align-items-center flex-column"
         >
           <img
             class="card-img-top p-2 rounded"
@@ -32,35 +35,33 @@
             height="240"
           />
           <h3>{{this.productName}}</h3>
+        </a>
+        <div
+          class="likeRating d-flex flex-row align-items-center justify-content-evenly w-75"
+        >
           <div
-            class="likeRating d-flex flex-row align-items-center justify-content-evenly w-75"
+            class="likes d-flex flex-row justify-content-space-between w-50 align-items-center"
           >
-            <div
-              class="likes d-flex flex-row justify-content-space-between w-50 align-items-center"
-            >
-              <p class="my-0">{{this.likes}}</p>
-              <i class="fa fa-heart ml-1 text-danger"></i>
-            </div>
-            <p
-              class="my-0"
-            >Rating:{{this.rating}}</p>
+            <p class="my-0">{{this.likes}}</p>
+            <i class="fa fa-heart ml-1 text-danger"></i>
           </div>
+          <p class="my-0">Rating:{{this.rating}}</p>
+        </div>
+        <div
+          class="d-flex align-items-center flex-wrap w-100 justify-content-center border-top my-2"
+        >
+          <p class="my-0 mt-1 mx-1">Tags:</p>
           <div
-            class="d-flex align-items-center flex-wrap w-100 justify-content-center border-top my-2"
+            class="tagContainer d-flex flex-wrap align-items-center justify-content-center"
           >
-            <p class="my-0 mt-1 mx-1">Tags:</p>
-            <div
-              class="tagContainer d-flex flex-wrap align-items-center justify-content-center"
-            >
-              {{#each tags}}
-              <button class="my-0 btn btn-danger h-10 tagPill">
-                {{this}}
-              </button>
-              {{/each}}
-            </div>
+            {{#each tags}}
+            <button class="my-0 btn btn-danger h-10 tagPill">
+              {{this}}
+            </button>
+            {{/each}}
           </div>
         </div>
-      </a>
+      </div>
       {{/each}}
     </div>
   </div>
@@ -92,7 +93,7 @@
         </div>
         <div class="modal-body">
           <p
-            class="errorCreateProduct d-flex align-items-center flex-column alert alert-primary "
+            class="errorCreateProduct d-flex align-items-center flex-column alert alert-danger "
             role="alert"
           ></p>
           <form
@@ -121,14 +122,14 @@
             </div>
             <div class="col-md-12 position-relative">
               <label for="description" class="form-label">Description</label>
-              <textarea
+              <input
                 type="text"
-                class="form-control w-100 mx-10"
+                class="form-control"
                 id="productDescription"
                 name="description"
                 required
                 placeholder="Product Description"
-              ></textarea>
+              />
 
               <div class="invalid-feedback">
                 Please provide a valid Description(at least two characters, no
@@ -205,39 +206,37 @@
     </div>
   </div>
 </div>
- <script
-    src="https://code.jquery.com/jquery-2.2.4.min.js"
-    integrity="sha256-BbhdlvQf/xTY9gja0Dq3HiwQF8LaCRTXxZKRutelT44="
-    crossorigin="anonymous"
-  ></script>
-  
-  <script>
+<script
+  src="https://code.jquery.com/jquery-2.2.4.min.js"
+  integrity="sha256-BbhdlvQf/xTY9gja0Dq3HiwQF8LaCRTXxZKRutelT44="
+  crossorigin="anonymous"
+></script>
 
-    $('.errorCreateProduct').addClass('hideError')
-    $('#addProductButton').click(function () {
+<script>
+  $('.errorCreateProduct').addClass('hideError')
+  $('#addProductButton').click(function () {
+    $('#exampleModalCenter').modal('show')
+  })
+  $('#close').click(function () {
+    $('#exampleModalCenter').modal('hide')
+  })
+  $('#closebutton').click(function () {
+    $('#exampleModalCenter').modal('hide')
+  })
+  // for displaying error messages in modal
+  let requestConfig = {
+    method: 'GET',
+    url: '/products/addProducterror',
+    contentType: 'application/json'
+  }
+  $.ajax(requestConfig).then(data => {
+    if (data.error) {
       $('#exampleModalCenter').modal('show')
-    })
-    $('#close').click(function () {
-      $('#exampleModalCenter').modal('hide')
-    })
-    $('#closebutton').click(function () {
-      $('#exampleModalCenter').modal('hide')
-    })
-    // for displaying error messages in modal
-    let requestConfig = {
-      method: 'GET',
-      url: '/products/addProducterror',
-      contentType: 'application/json'
+      $('.errorCreateProduct').removeClass('hideError')
+      $('.errorCreateProduct')
+        .text(data.error)
+        .show()
     }
-    $.ajax(requestConfig).then(data => {
-      if (data.error) {
-        $('#exampleModalCenter').modal('show')
-        $('.errorCreateProduct').removeClass('hideError')
-        $('.errorCreateProduct')
-          .text(data.error)
-          .show()
-      }
-    })
-  </script>
-  <script src="/public/js/homePage.js"></script>
-</div>
+  })
+</script>
+<script src="/public/js/homePage.js"></script>
