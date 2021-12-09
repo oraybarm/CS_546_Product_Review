@@ -117,6 +117,7 @@ router.post("/post/:id/reply", async (req, res) => {
         const { id } = req.params;
         let { reply } = req.body;
         reply = xss(reply);
+        id = xss(id);
         if (!id) throw "No postId provided";
         isValidObjectId(ObjectId(id));
 

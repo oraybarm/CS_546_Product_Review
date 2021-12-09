@@ -12,6 +12,7 @@ const {
   isValidString,
 } = require("../utils");
 const reviews = require("../data/reviews");
+const xss = require("xss");
 
 // TODO: there's a middleware to check isadmin inside middleware/private.js
 // we can use it for report user feature
@@ -106,6 +107,9 @@ router.post(
         const user = await getUser(req.session.user);
         //destructure the fields
         let { name = user.name, email = user.email, password } = req.body;
+        name=xss(name);
+        email=xss(email);
+        password=xss(password);
         isValidString(name, "username");
         isValidString(email, "email");
         if (password.length > 0) {

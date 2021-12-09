@@ -41,6 +41,7 @@
 </div>
 <div id="review">
   <h3>Product Review:</h3>
+  {{#if userLogged}}
   <div id="box">
     <div class="box_top">
       <ul>
@@ -59,6 +60,7 @@
       ></textarea>
       <button id="btn" name="{{productid}}">Submit</button>
     </div>
+    {{/if}}
     <ul id="comment_content"></ul>
   </div>
   <div id="reviewpart">

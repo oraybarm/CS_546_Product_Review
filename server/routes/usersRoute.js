@@ -8,6 +8,7 @@ const {
 } = require("../utils");
 const { authMiddleware } = require("../middlewares/auth");
 const router = express.Router();
+const xss = require("xss");
 
 router.get("/", (req, res) => {
     if (req.session.user) {
@@ -45,6 +46,9 @@ router.get("/signup", (req, res) => {
 router.post("/signup", async (req, res) => {
     try {
         let { name, email, password } = req.body;
+        name=xss(name);
+        email=xss(email);
+        password=xss(password);
         isValidString(name, "name");
         isValidString(email, "email");
         isValidString(password, "password");
@@ -90,6 +94,8 @@ router.post("/signup", async (req, res) => {
 router.post("/login", async (req, res) => {
     try {
         let { email, password } = req.body;
+        email=xss(email);
+        password=xss(password);
         isValidString(email, "email");
         isValidString(password, "password");
         email = email.toLowerCase().trim();
