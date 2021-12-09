@@ -30,17 +30,30 @@
       Like
     </button>
     {{/if}}
-    <a href="{{site}}" target="_blank" id="siteRedirection."
-      ><button class="getProd">Get Product</button></a
+    <a class="getProd" href="{{site}}" target="_blank" id="siteRedirection."
+      >Get Product</a
     >
+    <a
+      href="https://twitter.com/share?ref_src=twsrc%5Etfw"
+      class="btn btn-outline-primary"
+      data-text="Check out this cool product that I found here 👉"
+      data-hashtags="saasbook"
+      data-show-count="false"
+      ><i class="fa fa-twitter"></i
+    ></a>
   </div>
   <div class="description">
     <h3>Product Descrtiption:</h3>
     {{description}}
   </div>
 </div>
+<div class="d-flex w-75 align-items-center justify-between">
+  <div class="border-6 border-danger w-50"></div>
+  <p1 class="m-4">Reviews</p1>
+  <div class="border-6 border-danger w-50"></div>
+</div>
 <div id="reviews">
-  <h3>Product Review:</h3>
+  <h3>Reviews:</h3>
   {{#if userLogged}}
   <div id="box">
     <div class="box_top">

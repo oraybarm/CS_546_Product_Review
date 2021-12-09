@@ -26,7 +26,7 @@
 	</head>
 	<body>
 		<nav
-			class="navbar navbar-expand-md navbar-dark bg-dark w-100 display-flex align-items-baseline"
+			class="navbar navbar-expand-lg navbar-dark bg-dark w-100 display-flex align-items-baseline"
 		>
 			<button
 				class="navbar-toggler"
@@ -90,7 +90,6 @@
 							id="searchInput"
 							name="searchInput"
 							aria-label="Search bar"
-							aria-describedby="basic-addon1"
 						/>
 						<i class="fas fa-search homeSearch"></i>
 					</div>
@@ -105,37 +104,29 @@
 				</form>
 				<ul class="navbar-nav flex-row d-flex align-items-center">
 					<li class="nav-item mx-3">
-						<a href="/private/profile">
-							<button
-								class=" btn  btn-outline-danger"
-								href="/private/profile"
-							>
-								<i class="fa fa-user"></i>
-							</button>
+						<a class=" btn  btn-outline-danger" href="/private/profile">
+							<i class="fa fa-user"></i>
 						</a>
 					</li>
 					{{#if authenticated}}
 					<li class="nav-item mx-2">
-						<a class="" href="/users/logout">
-							<button
-								class="btn btn-outline-danger d-flex align-items-center"
-							>
-								Logout
-							</button>
+						<a
+							class="btn btn-outline-danger d-flex align-items-center"
+							href="/users/logout"
+						>
+							Logout
 						</a>
 					</li>
 					{{else}}
 					<li class="nav-item mx-2">
-						<a class="" href="/users/signup" type="submit">
-							<button
-								class="btn btn-outline-danger d-flex align-items-center"
-							>
-								Login
-							</button>
+						<a
+							class="btn btn-outline-danger d-flex align-items-center"
+							href="/users/signup"
+						>
+							Login
 						</a>
-
-						{{/if}}
 					</li>
+					{{/if}}
 				</ul>
 			</div>
 		</nav>

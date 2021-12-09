@@ -21,22 +21,22 @@
 <div id="reviewpart">
     <ul>
         <li>
-            <img class="userimg" src="../../public/images/guest-user.jpg" />
+            <img class="userimg" src="../../public/images/guest-user.jpg" alt="User" />
         </li>
         <li><p>This product is a very good product!</p></li>
         <li><img src="../../public/images/3.png" /></li>
         <hr />
         <li>
-            <img class="userimg" src="../../public/images/guest-user.jpg" />
+            <img class="userimg" src="../../public/images/guest-user.jpg" alt="User" />
         </li>
         <li><p>This product is a perfect product!</p></li>
-        <li><img src="../../public/images/4.png"></li>
+        <li><img src="../../public/images/4.png" alt="user" ></li>
         <hr>
         {{#if hasPost}}
         {{#each posts}}
-        <li><img class="userimg" src="{{this.image}}">{{this.username}}</li>
+        <li><img class="userimg" src="{{this.image}}" alt="user">{{this.username}} </li>
         <li><p>{{this.description}}</p></li>
-        <li><img src="../../public/images/{{this.rating}}.png"></li>
+        <li><img src="../../public/images/{{this.rating}}.png" alt="star" ></li>
         {{#if this.usernow}}
         <a href="javascript:void(0)" class="delete-info" style="font-size:17px !important;margin:0 !important;"><div onclick="DeleteInfo({{this._id}})">Delete</div></a>
         <div class="more-tjm-info" onclick="moreWhInfo()">Update</div>
@@ -62,7 +62,7 @@
                     return;
                 }
                 var newLi = document.createElement("li");
-                newLi.innerHTML = `${content}<br/><img src="../../public/images/${rateval+1}.png"><a href="javascript:void(0)" style="font-size:17px !important;margin:0 !important;"><div onclick="DeleteInfo("")">Delete</div></a><div class="more-tjm-info" onclick="moreWhInfo()">Update</div>`
+                newLi.innerHTML = `${content}<br/><img src="../../public/images/${rateval+1}.png" alt="review"><a href="javascript:void(0)" style="font-size:17px !important;margin:0 !important;"><div onclick="DeleteInfo("")">Delete</div></a><div class="more-tjm-info" onclick="moreWhInfo()">Update</div>`
                 // $("comment_content").appendChild(newLi);   //Method 1
                 $("comment_content").insertBefore(newLi,$("comment_content").children[0]);  //Method 2
 
@@ -78,7 +78,7 @@
             }
             var newLi = document.createElement('li')
             newLi.innerHTML = `${content}<br/><img src="../../public/images/${rateval +
-                1}.png"><a href="javascript:void(0)">Delete</a>`
+                1}.png" alt="review"><a href="javascript:void(0)">Delete</a>`
             // $("comment_content").appendChild(newLi);   //Method 1
             $('comment_content').insertBefore(
                 newLi,

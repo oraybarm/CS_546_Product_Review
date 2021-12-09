@@ -12,12 +12,14 @@
       data-target="#exampleModalCenter"
       id="addProductButton"
     >
-      Add  Product
+      Add Product
     </button>
   </div>
   {{/if}}
   <div>
-    <div class="d-flex flex-row flex-wrap">
+    <div
+      class="d-flex flex-row flex-wrap align-items-center justify-content-center"
+    >
       {{#each products}}
       <div
         class="card d-flex align-items-center rounded productContainer"
@@ -59,6 +61,14 @@
               {{this}}
             </button>
             {{/each}}
+            <a
+              href="https://twitter.com/share?ref_src=twsrc%5Etfw"
+              class="btn btn-outline-primary"
+              data-text="Check out this cool product that I found here 👉"
+              data-hashtags="saasbook"
+              data-show-count="false"
+              ><i class="fa fa-twitter"></i
+            ></a>
           </div>
         </div>
       </div>
@@ -72,7 +82,6 @@
     id="exampleModalCenter"
     tabindex="-1"
     role="dialog"
-    aria-labelledby="exampleModalCenterTitle"
     aria-hidden="true"
   >
     <div class="modal-dialog modal-dialog-centered" role="document">
@@ -121,7 +130,9 @@
               </div>
             </div>
             <div class="col-md-12 position-relative">
-              <label for="description" class="form-label">Description</label>
+              <label for="productDescription" class="form-label"
+                >Description</label
+              >
               <input
                 type="text"
                 class="form-control"
@@ -137,7 +148,7 @@
               </div>
             </div>
             <div class="col-md-12 position-relative">
-              <label for="url" class="form-label">Product URL</label>
+              <label for="productUrl" class="form-label">Product URL</label>
               <input
                 type="text"
                 class="form-control"
@@ -170,7 +181,7 @@
             </div>
             <!-- tags section -->
             <div class="col-md-12 position-relative">
-              <label for="tags" class="form-label">Related tags</label>
+              <label for="productTag" class="form-label">Related tags</label>
               <input
                 type="text"
                 class="form-control"

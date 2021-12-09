@@ -161,5 +161,26 @@ let exportedMethods = {
     const soredTagByLikes = productByTag.sort(productByTag.likes);
     return soredTagByLikes;
   },
+  async updateCount(prodId, liked){
+    let objId = ObjectId(prodId);
+    const productCollection = await products();
+    const product = await productCollection.findOne({_id:objId});
+    let updated_like;
+    if(product === null) throw "No Product with this ID";
+    if (liked) {
+      updated_like = parseInt(product.likes) + 1;
+    }
+     else {
+      updated_like = parseInt(product.likes) - 1;
+    }
+    const updated_detials = { likes: updated_like };
+    const updatedInfo = await productCollection.updateOne(
+      {_id: objId},
+      {$set: updated_detials}
+    );
+    if (updatedInfo.modifiedCount === 0) {
+      throw "Could not update the product because it was not found in the database";
+    }
+  },
 };
 module.exports = exportedMethods;

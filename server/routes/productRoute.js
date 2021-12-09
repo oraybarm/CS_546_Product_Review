@@ -13,18 +13,6 @@ const { getUser } = require("../data/users");
 const isValidString = require("../utils");
 const _ = require("lodash");
 
-// router.get("/", async (req, res) => {
-//   try {
-//     let prodList = await productData.getAllProducts();
-//     res.status(200).render("homePage/homePage", {
-//       products: prodList,
-//     });
-//   } catch (e) {
-//     console.log(e);
-//     res.status(404).send(e);
-//   }
-// });
-
 //Multer Functions required
 const storage = multer.diskStorage({
   //destination for files
@@ -72,10 +60,13 @@ router.post("/search", async (req, res) => {
         //console.log(search_List);
         //return only the json
         res.status(200).render("searchPage/searchPage", {
+          title: "Search",
           products: search_List,
         });
       } catch (e) {
-        return res.status(404).render("errorPage/noSearch");
+        return res.status(404).render("errorPage/noSearch", {
+          title: "Error",
+        });
       }
     }
     if (searchValue === "tag") {
@@ -83,10 +74,11 @@ router.post("/search", async (req, res) => {
         let search_List = await productData.getProductbyTag(searchTerm);
         //console.log(search_List);
         res.status(200).render("searchPage/searchPage", {
+          title: "Search",
           products: search_List,
         });
       } catch (e) {
-        return res.status(404).render("errorPage/noSearch");
+        return res.status(404).render("errorPage/noSearch", { title: "Error" });
       }
     }
   }
@@ -122,6 +114,7 @@ router.post(
         return res.status(400).json({ error: "Please provide a file" });
       let photo = req.file.filename;
       photo = xss(photo);
+      photo = photo.trim();
       console.log(productName);
 
       if (req.file && !req.file.mimetype.includes("image")) {
@@ -261,6 +254,7 @@ router.get("/:id", async (req, res) => {
       posts: posts,
       hasPost: hasPost,
       productid: req.params.id,
+      title: `${product.productName}`,
     });
     return;
   } catch (e) {
@@ -276,13 +270,14 @@ router.post("/updateLike", authMiddleware, async (req, res) => {
   }
 
   try {
-    let {
-      productId = req.body.productId,
-      liked = req.body.liked
-    } = req.body;
+    
+    let productId = req.body.productId;
+    let liked = req.body.liked;
     liked=xss(liked);
-    productId=xss(productId);
-    await productData.updateCount(productId, liked);
+    productId = xss(productId);
+    let flag = false;
+    if(liked === "true") flag = true;
+    await productData.updateCount(productId, flag);
     const user = await userData.getUser(req.session.user);
     await userData.updateLikedProducts(user._id.toString(), productId);
   } catch (e) {
