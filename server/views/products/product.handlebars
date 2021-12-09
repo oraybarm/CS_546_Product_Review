@@ -40,24 +40,54 @@
     </div>
 </div>
 <div id="review">
-    <h3>Product Review:</h3>
-    <div id="box">
-        <div class="box_top">
-            <ul>
-                <li class="rate"></li>
-                <li class="rate"></li>
-                <li class="rate"></li>
-                <li class="rate"></li>
-                <li class="rate"></li>
-            </ul>
-            <div id="rater"></div>
-            <textarea
-                id="comment"
-                cols="80"
-                rows="10"
-                placeholder="Please write your review"
-            ></textarea>
-            <button id="btn" name="{{productid}}">Submit</button>
+  <h3>Product Review:</h3>
+  {{#if userLogged}}
+  <div id="box">
+    <div class="box_top">
+      <ul>
+        <li class="rate"></li>
+        <li class="rate"></li>
+        <li class="rate"></li>
+        <li class="rate"></li>
+        <li class="rate"></li>
+      </ul>
+      <div id="rater"></div>
+      <textarea
+        id="comment"
+        cols="80"
+        rows="10"
+        placeholder="Please write your review"
+      ></textarea>
+      <button id="btn" name="{{productid}}">Submit</button>
+    </div>
+    {{/if}}
+    <ul id="comment_content"></ul>
+  </div>
+  <div id="reviewpart">
+    <ul>
+      {{#if hasPost}} {{#each posts}}
+      <li><img class="userimg" src="{{this.image}}" />{{this.username}}</li>
+      <li><p>{{this.description}}</p></li>
+      <li><img src="../../public/images/{{this.rating}}.png" /></li>
+      {{#if this.usernow}}
+      <button onclick="DeleteInfo('{{this._id}}')">Delete</button>
+      <button class="more-tjm-info" onclick="moreWhInfo('{{this._id}}')">
+        Update
+      </button>
+      <div id="MyDiv" class="white_content">
+        <div class="top-div">
+          <div
+            style="width: 270px;height: 20px;font-size: 20px;font-weight: 600;text-align:center;color: #666666;margin: 11px;"
+          >
+            Update your review:
+          </div>
+          <div
+            class="closeBtn"
+            οnclick="closeBtn()"
+            style="width: 14px;height: 14px;padding-right: 2px;font-weight: bold;color: #666666;"
+          >
+            X
+          </div>
         </div>
         <ul id="comment_content"></ul>
     </div>
