@@ -33,7 +33,7 @@
 
     $.ajax({
       type: "POST",
-      url: "/product/updateLike",
+      url: "/products/updateLike",
       data: { productId: id, liked: flag },
     });
   });

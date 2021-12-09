@@ -270,13 +270,14 @@ router.post("/updateLike", authMiddleware, async (req, res) => {
   }
 
   try {
-    let {
-      productId = req.body.productId,
-      liked = req.body.liked
-    } = req.body;
+    
+    let productId = req.body.productId;
+    let liked = req.body.liked;
     liked=xss(liked);
-    productId=xss(productId);
-    await productData.updateCount(productId, liked);
+    productId = xss(productId);
+    let flag = false;
+    if(liked === "true") flag = true;
+    await productData.updateCount(productId, flag);
     const user = await userData.getUser(req.session.user);
     await userData.updateLikedProducts(user._id.toString(), productId);
   } catch (e) {

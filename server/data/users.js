@@ -149,7 +149,7 @@ module.exports = {
   },
 
   async checkLikedProduct(id,prodId){
-    const likedProd =  await this.getLikedProductsByUser(id)
+    const likedProd =  await this.getLikedProductsByUser(id);
     if(!likedProd) return false;
     
     return likedProd.indexOf(prodId)>-1?true:false;
