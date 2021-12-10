@@ -51,7 +51,7 @@ function checkInputs(
 //
 // Just a helper function to check db id's
 //
-function checkID(id) {
+function checkId(id) {
   if (!id) throw "Error: Please provide argument id";
   //if (typeof id !== "string") throw "Error:ID is not of string type.";
   if (typeof id === "string" && id.trim().length < 1) {
@@ -90,11 +90,13 @@ let exportedMethods = {
     websiteUrl,
     logo,
     tags,
-    developer
+    developer,
+    devId
   ) {
     productName = productName.trim();
     websiteUrl = websiteUrl.trim();
     checkInputs(productName, description, websiteUrl, logo, tags, developer);
+    checkId(devId);
     const verbiateURl = addhttp(websiteUrl);
     const productList = await products();
     let newProduct = {
@@ -107,6 +109,7 @@ let exportedMethods = {
       reviews: [],
       rating: 0.0,
       likes: 0,
+      devId: devId,
     };
     const checkProd = await productList.findOne({
       productName: productName,
@@ -161,26 +164,79 @@ let exportedMethods = {
     const soredTagByLikes = productByTag.sort(productByTag.likes);
     return soredTagByLikes;
   },
-  async updateCount(prodId, liked){
+  async updateCount(prodId, liked) {
     let objId = ObjectId(prodId);
     const productCollection = await products();
-    const product = await productCollection.findOne({_id:objId});
+    const product = await productCollection.findOne({ _id: objId });
     let updated_like;
-    if(product === null) throw "No Product with this ID";
+    if (product === null) throw "No Product with this ID";
     if (liked) {
       updated_like = parseInt(product.likes) + 1;
-    }
-     else {
+    } else {
       updated_like = parseInt(product.likes) - 1;
     }
     const updated_detials = { likes: updated_like };
     const updatedInfo = await productCollection.updateOne(
-      {_id: objId},
-      {$set: updated_detials}
+      { _id: objId },
+      { $set: updated_detials }
     );
     if (updatedInfo.modifiedCount === 0) {
       throw "Could not update the product because it was not found in the database";
     }
+  },
+
+  //function to delete product from the database
+  async deleteProduct(prodId) {
+    checkId(prodId);
+    prodId = ObjectId(prodId);
+    const prodList = await products();
+    const prodCheck = prodList.findOne({ _id: prodId });
+    if (!prodCheck) {
+      throw "Error: Product to be deleted was not found in the database";
+    }
+    const delProd = prodList.deleteOne({ _id: prodId });
+    if (delProd.deletedCount == 0) {
+      throw `Product ${delProd.name} could not be deleted`;
+    }
+    return `Product ${delProd.name} has been deleted successfully`;
+  },
+
+  async updateProduct(
+    updId,
+    productName,
+    description,
+    websiteUrl,
+    logo,
+    tags,
+    developer
+  ) {
+    checkId(updId);
+    updId = ObjectId(updId);
+    productName = productName.trim();
+    websiteUrl = websiteUrl.trim();
+    checkInputs(productName, description, websiteUrl, logo, tags, developer);
+    const verbiateURl = addhttp(websiteUrl);
+    const productList = await products();
+    const checkProd = await productList.findOne({ _id: updId });
+    if (!checkProd) {
+      throw "Error: Product to be deleted was not found in the database";
+    }
+    let updProduct = {
+      productName: productName,
+      description: description,
+      websiteUrl: verbiateURl,
+      logo: logo,
+      tags: tags,
+      developer: developer,
+    };
+    const updProd = await productList.updateOne(
+      { _id: updId },
+      { $set: updProduct }
+    );
+    if (updProd.modifiedCount === 0) {
+      throw "Error: We could not update the product. Please try again";
+    }
+    return "Successfully updated";
   },
 };
 module.exports = exportedMethods;
