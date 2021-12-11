@@ -83,12 +83,11 @@ router.post("/search", async (req, res) => {
     if (searchValue === "tag") {
       try {
         let search_List = await productData.getProductbyTag(searchTerm);
-        console.log(search_List);
+        //console.log(search_List);
         res.status(200).render("searchPage/searchPage", {
           title: "Search",
           products: search_List,
         });
-        // res.json({message:"Test"});
       } catch (e) {
         return res.status(404).render("errorPage/noSearch", { title: "Error" });
       }
@@ -129,12 +128,11 @@ router.get("/search/:id", async (req, res) => {
     if (searchValue === "tag") {
       try {
         let search_List = await productData.getProductbyTag(searchTerm);
-        console.log(search_List);
+        //console.log(search_List);
         res.status(200).render("searchPage/searchPage", {
           title: "Search",
           products: search_List,
         });
-        // res.json({message:"Test"});
       } catch (e) {
         return res.status(404).render("errorPage/noSearch", { title: "Error" });
       }
