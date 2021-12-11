@@ -11,9 +11,9 @@
     <ul>
       {{#each tags}}
       <li style="float:left; margin-left:5px; margin-top:10px;">
-        <button type="button" class="btn btn-outline-info btn-sm md-2">
+        <a href="/products/search/{{this}}"><button type="button" class="btn btn-outline-info btn-sm md-2">
           {{this}}
-        </button>
+        </button></a>
       </li>
       {{/each}}
     </ul>
@@ -271,7 +271,6 @@
     $('#MyDiv').hide()
     $('.mask').hide()
   })
-
   function DeleteInfo (reviewId) {
     console.log(reviewId)
     jQuery.ajax({
@@ -289,14 +288,12 @@
     window.location.href = window.location.href
     window.location.reload
   }
-
   function UpdateInfo (reviewId) {
     console.log(reviewId)
     let des = document.getElementById('description1')
     let rat = document.getElementById('rating1')
     let newdes = des.value
     let newrate = rat.value
-
     jQuery.ajax({
       type: 'Post',
       async: true,

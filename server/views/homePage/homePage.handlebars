@@ -57,9 +57,9 @@
             class="tagContainer d-flex flex-wrap align-items-center justify-content-center"
           >
             {{#each tags}}
-            <button class="my-0 btn btn-danger h-10 tagPill">
+            <a href="/products/search/{{this}}" id="{{this}}"  class="my-0 btn btn-danger h-10 tagPill">
               {{this}}
-            </button>
+            </a>
             {{/each}}
             <a
               href="https://twitter.com/share?ref_src=twsrc%5Etfw"
@@ -248,6 +248,6 @@
         .text(data.error)
         .show()
     }
-  })
+  });
 </script>
 <script src="/public/js/homePage.js"></script>
