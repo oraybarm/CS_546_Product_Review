@@ -57,6 +57,7 @@ router.post("/search", async (req, res) => {
   //console.log(searchValue);
   if (!searchTerm || searchTerm.trim().length == 0) {
     res.status(404).render("errorPage/noSearch", {
+      title: "Search Bar",
       message: "Search bar should not be blank",
     });
     return "Error: Search term blank";
@@ -74,10 +75,13 @@ router.post("/search", async (req, res) => {
           title: "Search",
           products: search_List,
         });
+        return;
       } catch (e) {
-        return res.status(404).render("errorPage/noSearch", {
-          title: "Error",
+        res.status(404).render("errorPage/noSearch", {
+          title: "No Result",
+          message: "We did not find any product with that description",
         });
+        return;
       }
     }
     if (searchValue === "tag") {
@@ -88,8 +92,21 @@ router.post("/search", async (req, res) => {
           title: "Search",
           products: search_List,
         });
+        return;
       } catch (e) {
-        return res.status(404).render("errorPage/noSearch", { title: "Error" });
+        if (!e.code) {
+          res.status(404).render("errorPage/noSearch", {
+            title: "No Result",
+            message: "No Product found with that description",
+          });
+          return;
+        } else {
+          res.status(e.code).render("errorPage/errorHandling", {
+            title: "Error",
+            message: "Internal Server Error occured!!",
+          });
+          return;
+        }
       }
     }
   }

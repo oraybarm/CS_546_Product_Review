@@ -55,7 +55,7 @@ router.get("/product/:id", authMiddleware, async (req, res) => {
     }
     res.render("review/review", { posts: posts, hasPost: hasPost });
   } catch (e) {
-    res.status(404).json({ error: "review not found" });
+    res.status(404).json({ error: "Review not found" });
   }
 });
 
@@ -80,15 +80,22 @@ router.post("/", authMiddleware, async (req, res) => {
     //this id is productid(get from product description page,but we don't have product page now)
     result = await reviews.AddReview(productid, review, rating);
     if (!user._id) {
-      throw { message: "Unable to get user Id", code: 500 };
+      throw "Unable to get user Id";
     }
     addreviewtouser = await reviews.AddReviewToUser(
       user._id,
       result.insertedId
     );
   } catch (e) {
-    console.log(e);
-    res.status(400).render("review/review");
+    if (!e.code) {
+      console.log(e);
+      res.status(400).render("review/review");
+    } else {
+      res.status(500).render("errorPage/errorHandling", {
+        title: "OOPS!",
+        message: `Internal Server error.${e.message}`,
+      });
+    }
   }
 });
 
@@ -107,8 +114,15 @@ router.post("/update", async (req, res) => {
     result = await reviews.updateReviewbyId(reviewid, review, rating);
     console.log(result);
   } catch (e) {
-    console.log(e);
-    res.status(400).render("review/review");
+    if (!e.code) {
+      console.log(e);
+      res.status(400).render("review/review");
+    } else {
+      res.status(500).render("errorPage/errorHandling", {
+        title: "OOPS!",
+        message: `Internal Server error. ${e.message}`,
+      });
+    }
   }
 });
 
@@ -125,8 +139,15 @@ router.post("/delete", authMiddleware, async (req, res) => {
     }
     Deletereviewtouser = await reviews.DeleteReviewToUser(user._id, result);
   } catch (e) {
-    console.log(e);
-    res.status(400).render("review/review");
+    if (!e.code) {
+      console.log(e);
+      res.status(400).render("review/review");
+    } else {
+      res.status(500).render("errorPage/errorHandling", {
+        title: "OOPS!",
+        message: `Internal Server error. ${e.message}`,
+      });
+    }
   }
 });
 

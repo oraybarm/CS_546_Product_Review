@@ -119,7 +119,11 @@ let exportedMethods = {
     }
     const insertProd = await productList.insertOne(newProduct);
     if (insertProd.insertedCount === 0)
-      throw "We are sorry. An error occured while adding the product. Please try again.";
+      throw {
+        message:
+          "We are sorry. An error occured while adding the product. Please try again.",
+        code: 500,
+      };
     const dbId = await insertProd.insertedId;
     //console.log(typeof dbId);
     const addProduct = await this.getProductById(dbId.toString());
@@ -142,7 +146,8 @@ let exportedMethods = {
       })
       .toArray();
     //console.log(productByName);
-    if (productByName.length === 0) throw "Error: No Matches";
+    if (productByName.length === 0)
+      throw { message: "Error: No Matches", code: 500 };
     const sortedNameBylikes = productByName.sort(productByName.likes);
     return sortedNameBylikes;
   },
@@ -160,7 +165,8 @@ let exportedMethods = {
         tags: { $regex: query },
       })
       .toArray();
-    if (productByTag.length === 0) throw "Error: No Matches";
+    if (productByTag.length === 0)
+      throw { message: "Error: No Matches", code: 500 };
     const soredTagByLikes = productByTag.sort(productByTag.likes);
     return soredTagByLikes;
   },

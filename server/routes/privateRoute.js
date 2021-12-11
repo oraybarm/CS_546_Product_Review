@@ -65,7 +65,7 @@ router.get("/profile", authMiddleware, async (req, res) => {
       hasPost: hasPost,
     });
   } catch (error) {
-    res.render("profile/profile", {
+    res.status(404).render("profile/profile", {
       authenticated: true,
       user: req.session.user,
       title: "Profile",
@@ -107,9 +107,9 @@ router.post(
         const user = await getUser(req.session.user);
         //destructure the fields
         let { name = user.name, email = user.email, password } = req.body;
-        name=xss(name);
-        email=xss(email);
-        password=xss(password);
+        name = xss(name);
+        email = xss(email);
+        password = xss(password);
         isValidString(name, "username");
         isValidString(email, "email");
         if (password.length > 0) {
@@ -158,9 +158,16 @@ router.post(
           res.redirect("/private/profile");
         }
       } catch (error) {
-        console.log(error);
-        req.session.error = error;
-        return res.redirect("/private/profile");
+        if (!error.code) {
+          console.log(error);
+          req.session.error = error;
+          return res.redirect("/private/profile");
+        } else {
+          res.status(500).render("errorPage/errorHandling", {
+            title: "OOPS",
+            message: "Internal Server Error ",
+          });
+        }
       }
     } else {
       res.redirect("/");
