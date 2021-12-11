@@ -31,15 +31,17 @@ module.exports = {
     }
     const hash = await bcrypt.hash(password, saltRounds);
 
-    const user = await userCollection.insertOne({
+    const user ={
       name,
       email,
       password: hash,
       ...defaultNewUser,
-    });
-    if (user.insertedCount === 0)
+    };
+    const insertInfo = await userCollection.insertOne(user);
+    if (insertInfo.insertedCount === 0)
       throw { message: "Unable to add user", code: 500 };
-    return { userInserted: true };
+    return { userInserted: true, user: user };
+    
   },
 
   async checkUser(email, password) {

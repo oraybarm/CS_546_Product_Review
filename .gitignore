@@ -1,4 +1,4 @@
 .DS_Store
 server/.prettierrc
-server/public/images/upload/*
-!server/public/images/upload/test.js 
+# server/public/images/upload/*
+# !server/public/images/upload/test.js 
