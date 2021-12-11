@@ -32,21 +32,25 @@
           />
           <div class="post-content d-flex flex-column align-items-center w-100">
             {{#if authenticated}}
+            <label for="communityText" > Create a discussion</label>
             <textarea
               class="communityInput w-100 mx-10"
               rows="3"
               placeholder="Start a discussion"
+              id="communityText"
             ></textarea>
             <p class="post-error m-0 mr-5"></p>
             <button class="w-50 text-center mt-2" id="communityButton">
               Create discussion
             </button>
             {{else}}
+            <label for="communityText1" > Create a discussion</label>
             <textarea
               disabled
               class="communityInput w-100 mx-10 disabled"
               rows="3"
               placeholder="Login to create a discussion"
+              id=""
             ></textarea>
             <a class="btn btn-outline-secondary" href="/users/signup">
               Login To create a discussion</a
