@@ -154,8 +154,8 @@ router.post("/post/:id/reply", async (req, res) => {
 
     const post = await getPost(id);
     if (!post) throw "No post found";
-    if (!reply || !reply.trim().length < 1) {
-      throw "Reply cannot be blank!";
+    if (!reply) {
+      throw "Reply cannot be blank! route";
     }
     const user = await getUser(req.session.user);
     const returnedReply = await replyToPost(id, user._id, reply);
@@ -167,15 +167,8 @@ router.post("/post/:id/reply", async (req, res) => {
       replyCount: returnedReply.length,
     });
   } catch (error) {
-    if (!error.code) {
-      console.log(`error in post reply: `, error);
-      res.status(404).render("errorPage/404");
-    } else {
-      res.status(500).render("errorPage/errorHandling", {
-        title: "Error",
-        message: "Internal Server Error",
-      });
-    }
+    console.log(`error in post reply: `, error);
+    res.status(404).render("errorPage/404");
   }
 });
 

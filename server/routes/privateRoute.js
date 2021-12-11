@@ -68,7 +68,21 @@ router.get("/profile", authMiddleware, async (req, res) => {
     if (posts.length > 0) {
       hasPost = true;
     }
-
+    console.log({
+      authenticated: true,
+      user: req.session.user,
+      userId: user._id,
+      title: "Profile",
+      src,
+      name: user.name,
+      email: user.email,
+      nothingToUpdate,
+      updateSuccessful,
+      error: req.session.error,
+      toastMessage,
+      posts: posts,
+      hasPost: hasPost,
+    });
     res.render("profile/profile", {
       authenticated: true,
       user: req.session.user,

@@ -1,9 +1,11 @@
 {{#if error}}
+<h1>Homepage</h1>
 <h2>No products found!</h2>
 {{/if}}
 
 <div class="jumbotron w-100 mx-5 d-flex flex-column">
   <!-- Button trigger modal -->
+  <h1>Homepage</h1>
   {{#if authenticated}}
   <div class="d-flex align-items-center justify-content-end m-2">
     <button
@@ -36,7 +38,7 @@
             width="240"
             height="240"
           />
-          <h3>{{this.productName}}</h3>
+          <h2>{{this.productName}}</h2>
         </a>
         <div
           class="likeRating d-flex flex-row align-items-center justify-content-evenly w-75"
@@ -67,6 +69,7 @@
               data-text="Check out this cool product that I found here 👉"
               data-hashtags="saasbook"
               data-show-count="false"
+              aria-label="Twitter share"
               ><i class="fa fa-twitter"></i
             ></a>
           </div>
@@ -87,9 +90,9 @@
     <div class="modal-dialog modal-dialog-centered" role="document">
       <div class="modal-content">
         <div class="modal-header">
-          <h5 class="modal-title" id="exampleModalLongTitle">
+          <h2 class="modal-title" id="exampleModalLongTitle">
             Add Product
-          </h5>
+          </h2>
           <button
             type="button"
             class="btn btn-secondary"

@@ -24,26 +24,30 @@
 
   <div class="prodBtns">
     {{#if userLogged}}
-    <button class="like__btn">
+    <button class="like__btn btn btn-outline-info d-flex flex-row h-50 w-50 my-2  align-items-center">
       <span id="icon"><i class="far fa-thumbs-up"></i></span>
       <span id="count">{{likes}}</span>
       Like
     </button>
     {{/if}}
-    <a class="getProd" href="{{site}}" target="_blank" id="siteRedirection."
-      >Get Product</a
-    >
+    <a class="getProd btn btn-outline-info d-flex flex-row h-50 w-50 my-2 align-items-center" href="{{site}}" target="_blank" id="siteRedirection."
+      >Get Product</a>
+    <button class="btn btn-outline-info d-flex flex-row h-50 w-50 my-2 align-items-center" >
+      <span id="ratingIcon"><i class="fa fa-star"></i>{{rating}}</span>
+      
+    </button>
     <a
       href="https://twitter.com/share?ref_src=twsrc%5Etfw"
-      class="btn btn-outline-primary"
+      class="btn btn-outline-primary d-flex flex-row align-items-center h-50 "
       data-text="Check out this cool product that I found here 👉"
       data-hashtags="saasbook"
       data-show-count="false"
+      aria-label="Twitter share button"
       ><i class="fa fa-twitter"></i
     ></a>
   </div>
   <div class="description">
-    <h3>Product Descrtiption:</h3>
+    <h2>Product Descrtiption:</h2>
     {{description}}
   </div>
 </div>
@@ -53,7 +57,7 @@
   <div class="border-6 border-danger w-50"></div>
 </div>
 <div id="reviews">
-  <h3>Reviews:</h3>
+  <h2>Reviews:</h2>
   {{#if userLogged}}
   <div id="box">
     <div class="box_top">
@@ -65,6 +69,7 @@
         <li class="rate"></li>
       </ul>
       <div id="rater"></div>
+      <label for="comment">Review </label>
       <textarea
         id="comment"
         cols="80"
