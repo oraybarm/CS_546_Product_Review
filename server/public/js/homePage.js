@@ -71,6 +71,22 @@
     }
   });
 
+  profileFileField.addEventListener("onchange", function () {
+    var val = document.getElementById("file").value;
+    const validImageTypes = ["image/gif", "image/jpeg", "image/png"];
+    const fileType = this.files[0].type;
+    console.log("here :>> ", val);
+    if (
+      !fileType ||
+      !validImageTypes.includes(fileType) ||
+      this.files[0].size / 1024 / 1024 > 3
+    ) {
+      profileFileField.setCustomValidity("invalid");
+    } else {
+      profileFileField.setCustomValidity("");
+    }
+  });
+
   function checkValidString(val) {
     if (!val || val.length < 2) {
       return false;
@@ -101,6 +117,10 @@
         if (!form.checkValidity()) {
           event.preventDefault();
           event.stopPropagation();
+        } else if (profileFileField.files.length == 0) {
+          event.preventDefault();
+          event.stopPropagation();
+          profileFileField.setCustomValidity("invalid");
         }
 
         form.classList.add("was-validated");

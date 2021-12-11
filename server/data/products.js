@@ -1,7 +1,7 @@
 const mongoCollections = require("../config/mongoCollection");
 const products = mongoCollections.products;
 let { ObjectId } = require("mongodb");
-const { isValidObject, addhttp } = require("../utils.js");
+const { isValidObject, addhttp, isValidEmail } = require("../utils.js");
 
 function checkInputs(
   productName,
@@ -37,7 +37,6 @@ function checkInputs(
       error: "Website URL provided does not satisfy proper criteria (route)",
     });
   }
-  console.log("tag", tags);
   if (!Array.isArray(tags) || tags.length === 0)
     throw "Error: Tag is not of string type or tag field is empty";
   //let parsedTags = [...new Set(tags)];
@@ -51,39 +50,41 @@ function checkInputs(
 //
 // Just a helper function to check db id's
 //
-function checkId(id) {
+function isValidObjectId(id) {
   if (!id) throw "Error: Please provide argument id";
   //if (typeof id !== "string") throw "Error:ID is not of string type.";
   if (typeof id === "string" && id.trim().length < 1) {
-    //console.log(typeof id);
     throw "Error: ID is a blank string has been passed as argument";
   }
-  //console.log(ObjectId.isValid(id));
   if (!ObjectId.isValid(id))
     throw "Error: Provided ID is not valid argument (data)";
 }
 let exportedMethods = {
+  async getProductsByUserId(id) {
+    isValidObjectId(id);
+    const productCollection = await products();
+    let product = await productCollection.find({ devId: ObjectId(id) });
+    product = await product.toArray();
+    if (!product) throw "Error: No product found";
+    return await product;
+  },
+
   async getAllProducts() {
     const productCollection = await products();
     const prodList = await productCollection.find({}).toArray();
     const sorted = prodList.sort(prodList.likes);
     if (prodList.length === 0) throw "Error:No products in the database";
-    //console.log("get all test");
-    //console.log(sorted);
     return sorted;
   },
 
-  //Obtains product details using ID
   async getProductById(product_Id) {
-    checkId(product_Id);
+    isValidObjectId(product_Id);
     objId_product = ObjectId(product_Id);
     const prod_List = await products();
     const prodId = await prod_List.findOne({ _id: objId_product });
     if (prodId === null) throw "No product found";
     return prodId;
   },
-  //addProduct method
-  // Need to still check how images will be added to this
   async addProduct(
     productName,
     description,
@@ -96,7 +97,7 @@ let exportedMethods = {
     productName = productName.trim();
     websiteUrl = websiteUrl.trim();
     checkInputs(productName, description, websiteUrl, logo, tags, developer);
-    checkId(devId);
+    isValidObjectId(devId);
     const verbiateURl = addhttp(websiteUrl);
     const productList = await products();
     let newProduct = {
@@ -121,13 +122,9 @@ let exportedMethods = {
     if (insertProd.insertedCount === 0)
       throw "We are sorry. An error occured while adding the product. Please try again.";
     const dbId = await insertProd.insertedId;
-    //console.log(typeof dbId);
     const addProduct = await this.getProductById(dbId.toString());
-    //console.log(typeof addRest);
     return addProduct;
   },
-  //
-  // This function will get a product by name search
 
   async getProductByProductName(textToSearch) {
     if (typeof textToSearch !== "string")
@@ -141,7 +138,6 @@ let exportedMethods = {
         productName: { $regex: query },
       })
       .toArray();
-    //console.log(productByName);
     if (productByName.length === 0) throw "Error: No Matches";
     const sortedNameBylikes = productByName.sort(productByName.likes);
     return sortedNameBylikes;
@@ -187,7 +183,7 @@ let exportedMethods = {
 
   //function to delete product from the database
   async deleteProduct(prodId) {
-    checkId(prodId);
+    isValidObjectId(prodId);
     prodId = ObjectId(prodId);
     const prodList = await products();
     const prodCheck = prodList.findOne({ _id: prodId });
@@ -210,7 +206,8 @@ let exportedMethods = {
     tags,
     developer
   ) {
-    checkId(updId);
+    isValidObjectId(updId);
+
     updId = ObjectId(updId);
     productName = productName.trim();
     websiteUrl = websiteUrl.trim();

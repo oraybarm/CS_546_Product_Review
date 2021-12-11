@@ -379,7 +379,8 @@ textarea.communityInput {
 .disabled,
 textarea.disabled,
 button.disabled,
-input.disabled {
+input.disabled,
+input:disabled {
   background: #cacaca;
   cursor: not-allowed;
 }
@@ -613,9 +614,15 @@ div#contact a {
 div#home {
   font-size: 16px;
 }
-div#home h6 {
+div#home h6,
+.nav-link,
+.accordion-button[aria-expanded='true'] {
   display: inline;
   color: coral;
+}
+
+.accordion-button[aria-expanded='false'] {
+  color: black;
 }
 
 .getProd {
@@ -674,6 +681,10 @@ div#home h6 {
   .card-body {
     flex-direction: column !important;
     align-items: start;
+  }
+  .accordion-body button {
+    width: 100% !important;
+    margin: 1% 0%;
   }
 }
 
