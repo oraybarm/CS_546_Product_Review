@@ -33,9 +33,7 @@ function checkInputs(
   let re =
     /^(http:\/\/|https:\/\/)?(www.)?([a-zA-Z0-9]+).[a-zA-Z0-9]*.[‌​a-z]{2}\.([a-z]+)?$/gm;
   if (!re.test(websiteUrl)) {
-    return res.status(400).json({
-      error: "Website URL provided does not satisfy proper criteria (route)",
-    });
+    throw "Website URL provided does not satisfy proper criteria (route)";
   }
   console.log("tag", tags);
   if (!Array.isArray(tags) || tags.length === 0)
