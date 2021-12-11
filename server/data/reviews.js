@@ -4,7 +4,6 @@ const users = mongoCollections.users;
 const products = mongoCollections.products;
 const { ObjectId } = require("mongodb");
 const userfun = require("./users");
-const productData = require("./products");
 
 function checkString(str) {
   if (str === undefined) {
@@ -75,7 +74,8 @@ const exportedMethods = {
       product: productId,
     };
     const insertInfo = await reviewCollection.insertOne(newReview);
-    if (insertInfo.insertedCount === 0) throw "Could not add review";
+    if (insertInfo.insertedCount === 0)
+      throw { message: "Could not add review", code: 500 };
 
     let rateall = 0;
     const prodreview = await this.getReviewbyProductId(productId);
@@ -120,7 +120,7 @@ const exportedMethods = {
       { $addToSet: { reviews: newRest } }
     );
     if (!updateInfo.matchedCount && !updateInfo.modifiedCount)
-      throw "Update failed";
+      throw { message: "Update failed", code: 500 };
     return "Add review to user successfully!";
   },
 
@@ -166,7 +166,7 @@ const exportedMethods = {
     );
 
     if (updatedInfo.modifiedCount === 0) {
-      throw "could not update successfully";
+      throw { message: "Update Failed", code: 500 };
     }
 
     const rev = await this.getReviewById(id);
@@ -189,7 +189,7 @@ const exportedMethods = {
       { $set: updatedp }
     );
     if (!updatedInfop.matchedCount && !updatedInfop.modifiedCount)
-      throw "Update rating failed";
+      throw { message: "Update rating failed", code: 500 };
 
     return "update successfully";
   },
@@ -207,12 +207,13 @@ const exportedMethods = {
     const rev = await this.getReviewById(reviewId);
     let productId = rev.product;
 
-    const deletionInfo = await reviewCollection.deleteOne({
-      _id: reviewId,
-    });
+    const deletionInfo = await reviewCollection.deleteOne({ _id: reviewId });
 
     if (deletionInfo.deletedCount === 0) {
-      throw `Could not delete restaurant with id of ${reviewId}`;
+      throw {
+        message: `Could not delete restaurant with id of ${reviewId}`,
+        code: 500,
+      };
     }
 
     let rateall = 0;
@@ -273,13 +274,9 @@ const exportedMethods = {
     let review = {};
     for (let i = 0; i < reviewsid.length; i++) {
       review = await this.getReviewById(reviewsid[i]._id);
-      const product = await productData.getProductById(review.product);
-      reviewlist.push({
-        ...review,
-        productName: product.productName,
-        productImg: product.logo,
-      });
+      reviewlist.push(review);
     }
+    console.log(reviewlist);
     return reviewlist;
   },
 };

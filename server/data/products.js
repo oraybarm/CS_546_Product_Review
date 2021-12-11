@@ -33,9 +33,7 @@ function checkInputs(
   let re =
     /^(http:\/\/|https:\/\/)?(www.)?([a-zA-Z0-9]+).[a-zA-Z0-9]*.[‌​a-z]{2}\.([a-z]+)?$/gm;
   if (!re.test(websiteUrl)) {
-    return res.status(400).json({
-      error: "Website URL provided does not satisfy proper criteria (route)",
-    });
+    throw "Website URL provided does not satisfy proper criteria (route)";
   }
   if (!Array.isArray(tags) || tags.length === 0)
     throw "Error: Tag is not of string type or tag field is empty";
@@ -120,7 +118,11 @@ let exportedMethods = {
     }
     const insertProd = await productList.insertOne(newProduct);
     if (insertProd.insertedCount === 0)
-      throw "We are sorry. An error occured while adding the product. Please try again.";
+      throw {
+        message:
+          "We are sorry. An error occured while adding the product. Please try again.",
+        code: 500,
+      };
     const dbId = await insertProd.insertedId;
     const addProduct = await this.getProductById(dbId.toString());
     return addProduct;
@@ -138,7 +140,9 @@ let exportedMethods = {
         productName: { $regex: query },
       })
       .toArray();
-    if (productByName.length === 0) throw "Error: No Matches";
+    //console.log(productByName);
+    if (productByName.length === 0)
+      throw { message: "Error: No Matches", code: 500 };
     const sortedNameBylikes = productByName.sort(productByName.likes);
     return sortedNameBylikes;
   },
@@ -156,7 +160,8 @@ let exportedMethods = {
         tags: { $regex: query },
       })
       .toArray();
-    if (productByTag.length === 0) throw "Error: No Matches";
+    if (productByTag.length === 0)
+      throw { message: "Error: No Matches", code: 500 };
     const soredTagByLikes = productByTag.sort(productByTag.likes);
     return soredTagByLikes;
   },

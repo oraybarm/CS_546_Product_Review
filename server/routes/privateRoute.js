@@ -179,9 +179,16 @@ router.post(
           res.redirect("/private/profile");
         }
       } catch (error) {
-        console.log(error);
-        req.session.error = error;
-        return res.redirect("/private/profile");
+        if (!error.code) {
+          console.log(error);
+          req.session.error = error;
+          return res.redirect("/private/profile");
+        } else {
+          res.status(500).render("errorPage/errorHandling", {
+            title: "OOPS",
+            message: "Internal Server Error ",
+          });
+        }
       }
     } else {
       res.redirect("/");
