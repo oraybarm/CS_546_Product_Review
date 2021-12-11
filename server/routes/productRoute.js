@@ -69,7 +69,7 @@ router.post("/search", async (req, res) => {
         let search_List = await productData.getProductByProductName(searchTerm);
         //console.log(search_List);
         //return only the json
-        console.log(search_List);
+        //console.log(search_List);
         res.status(200).render("searchPage/searchPage", {
           title: "Search",
           products: search_List,
