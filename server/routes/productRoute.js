@@ -46,7 +46,7 @@ function checkId(id) {
 }
 router.post("/search", async (req, res) => {
   const body = req.body;
-  console.log("body", body);
+  //console.log("body", body);
   //body = xss(body);
   //console.log(option);
   let searchTerm = body.searchInput;
