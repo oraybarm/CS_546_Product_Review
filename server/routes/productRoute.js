@@ -12,6 +12,7 @@ const reviews = require("../data/reviews");
 const { getUser } = require("../data/users");
 const isValidString = require("../utils");
 const _ = require("lodash");
+const { check } = require("express-validator");
 
 //Multer Functions required
 const storage = multer.diskStorage({
@@ -33,7 +34,16 @@ const upload = multer({
     fieldSize: 1024 * 1024 * 3,
   },
 });
-
+function checkId(id) {
+  if (!id) throw "Error: Please provide argument id";
+  //if (typeof id !== "string") throw "Error:ID is not of string type.";
+  if (typeof id === "string" && id.trim().length < 1) {
+    //console.log(typeof id);
+    throw "Error: ID is a blank string has been passed as argument";
+  }
+  //console.log(ObjectId.isValid(id));
+  if (!ObjectId.isValid(id)) throw "Error: Provided ID is not valid argument ";
+}
 router.post("/search", async (req, res) => {
   const body = req.body;
   console.log("body", body);
@@ -150,77 +160,90 @@ router.post(
     if (!req.session.user) {
       res.status(401).redirect("/");
     } else {
-      req.session.addProductError = false;
-      //check what all is required after making the front end form
-      let { productName, description, websiteUrl, tags, developer } = req.body;
-      productName = xss(productName);
-      description = xss(description);
-      websiteUrl = websiteUrl.toLowerCase().trim();
-      websiteUrl = xss(websiteUrl);
-      tags = xss(tags);
-      developer = xss(developer);
-      if (!req.file)
-        return res.status(400).json({ error: "Please provide a file" });
-      let photo = req.file.filename;
-      photo = xss(photo);
-      photo = photo.trim();
-      console.log(productName);
-
-      if (req.file && !req.file.mimetype.includes("image")) {
-        return res.status(400).json({ error: "Please upload an image" });
-      }
-      //Checking if input present in the first place
-      if (!productName || !description || !websiteUrl || !tags || !developer) {
-        return res.status(400).json({
-          error: "Please provide all details of the product",
-        });
-      }
-      if (
-        productName.trim().length < 1 ||
-        description.trim().length < 1 ||
-        websiteUrl.trim().length < 1 ||
-        tags.trim().length < 1 ||
-        developer.trim().length < 1
-      ) {
-        return res.status(400).json({
-          error: "Please provide ensure there are no blank details",
-        });
-      }
-      productName = productName.trim().toLowerCase();
-      // String typecheck
-      if (
-        typeof productName !== "string" ||
-        typeof description !== "string" ||
-        typeof websiteUrl !== "string" ||
-        typeof tags !== "string" ||
-        typeof developer !== "string"
-      ) {
-        return res.status(400).json({
-          error: "Details provided are not of proper type string",
-        });
-      }
-      tags = tags.trim().toUpperCase();
-      let tagsList = tags.split(",");
-      tagsList = new Set(tagsList);
-      tagsList = Array.from(tagsList);
-      let re =
-        /^(http:\/\/|https:\/\/)?(www.)?([a-zA-Z0-9]+).[a-zA-Z0-9]*.[‌​a-z]{2}\.([a-z]+)?$/gm;
-      if (!re.test(websiteUrl)) {
-        return res.status(400).json({
-          error:
-            "Website URL provided does not satisfy proper criteria (route)",
-        });
-      }
       try {
+        req.session.addProductError = false;
+        usrId = req.session.user;
+        let devDetails = await userData.getUser(usrId);
+        let devId = devDetails._id;
+        checkId(devId);
+        //console.log(devId._id);
+        //check what all is required after making the front end form
+        let { productName, description, websiteUrl, tags, developer } =
+          req.body;
+        productName = xss(productName);
+        description = xss(description);
+        websiteUrl = websiteUrl.toLowerCase().trim();
+        websiteUrl = xss(websiteUrl);
+        tags = xss(tags);
+        developer = xss(developer);
+        if (!req.file)
+          return res.status(400).json({ error: "Please provide a file" });
+        let photo = req.file.filename;
+        photo = xss(photo);
+        photo = photo.trim();
+
+        if (req.file && !req.file.mimetype.includes("image")) {
+          return res.status(400).json({ error: "Please upload an image" });
+        }
+        //Checking if input present in the first place
+        if (
+          !productName ||
+          !description ||
+          !websiteUrl ||
+          !tags ||
+          !developer
+        ) {
+          return res.status(400).json({
+            error: "Please provide all details of the product",
+          });
+        }
+        if (
+          productName.trim().length < 1 ||
+          description.trim().length < 1 ||
+          websiteUrl.trim().length < 1 ||
+          tags.trim().length < 1 ||
+          developer.trim().length < 1
+        ) {
+          return res.status(400).json({
+            error: "Please provide ensure there are no blank details",
+          });
+        }
+        productName = productName.trim().toLowerCase();
+        // String typecheck
+        if (
+          typeof productName !== "string" ||
+          typeof description !== "string" ||
+          typeof websiteUrl !== "string" ||
+          typeof tags !== "string" ||
+          typeof developer !== "string"
+        ) {
+          return res.status(400).json({
+            error: "Details provided are not of proper type string",
+          });
+        }
+        tags = tags.trim().toUpperCase();
+        let tagsList = tags.split(",");
+        tagsList = new Set(tagsList);
+        tagsList = Array.from(tagsList);
+        let re =
+          /^(http:\/\/|https:\/\/)?(www.)?([a-zA-Z0-9]+).[a-zA-Z0-9]*.[‌​a-z]{2}\.([a-z]+)?$/gm;
+        if (!re.test(websiteUrl)) {
+          return res.status(400).json({
+            error:
+              "Website URL provided does not satisfy proper criteria (route)",
+          });
+        }
+
         const newProduct = await productData.addProduct(
           productName,
           description,
           websiteUrl,
           photo,
           tagsList,
-          developer
+          developer,
+          devId
         );
-        console.log("new", newProduct);
+        //console.log("new", newProduct);
         res.redirect("/");
       } catch (e) {
         console.log("error", e);
@@ -319,13 +342,12 @@ router.post("/updateLike", authMiddleware, async (req, res) => {
   }
 
   try {
-    
     let productId = req.body.productId;
     let liked = req.body.liked;
-    liked=xss(liked);
+    liked = xss(liked);
     productId = xss(productId);
     let flag = false;
-    if(liked === "true") flag = true;
+    if (liked === "true") flag = true;
     await productData.updateCount(productId, flag);
     const user = await userData.getUser(req.session.user);
     await userData.updateLikedProducts(user._id.toString(), productId);
@@ -334,4 +356,131 @@ router.post("/updateLike", authMiddleware, async (req, res) => {
   }
 });
 
+router.post("/delete", authMiddleware, async (req, res) => {
+  if (!req.session.user) {
+    res.redirect("users/signup");
+    return;
+  }
+  try {
+    // let usr = await userData.getUser(req.session.user);
+    let usrId = usr._id;
+    checkId(usrId);
+    let productId = req.body.productId;
+    console.log(productId);
+    checkId(productId);
+    //console.log(productId);
+    const prodList = await productData.getProductById(productId);
+    if (!prodList) {
+      res
+        .status(404)
+        .json({ error: "Product to be deleted was not found in our database" });
+    }
+    if (usrId !== prodList.devId) {
+      res.status(400).json({ error: "User cannot delete this product" });
+    }
+    productId = productId.toString();
+    const delProd = await productData.deleteProduct(productId);
+    res.status(200).json({ message: `${delProd} was deleted` });
+  } catch (e) {
+    return res.status(400).json({ error: `${e}` });
+  }
+});
+
+router.post(
+  "/update",
+  authMiddleware,
+  upload.single("photo"),
+  async (req, res) => {
+    if (req.session.user) {
+      res.redirect("users/signup");
+      return;
+    }
+    try {
+      let usr = await userData.getUser(req.session.user);
+      let usrId = usr._id;
+      checkId(usrId);
+      let productId = xss(req.body.productId);
+      let { productName, description, websiteUrl, tags, developer } = req.body;
+      let product = await productData.getProductById(productId);
+      if (!product) {
+        res.status(404).json({
+          error: "Product to be updated was not found in our database",
+        });
+      }
+      if (usrId !== product.devId) {
+        res.status(400).json({ error: "User cannot update this product" });
+      }
+      productName = xss(productName);
+      description = xss(description);
+      websiteUrl = websiteUrl.toLowerCase().trim();
+      websiteUrl = xss(websiteUrl);
+      tags = xss(tags);
+      developer = xss(developer);
+      if (!req.file)
+        return res.status(400).json({ error: "Please provide a file" });
+      let photo = req.file.filename;
+      photo = xss(photo);
+      photo = photo.trim();
+
+      if (req.file && !req.file.mimetype.includes("image")) {
+        return res.status(400).json({ error: "Please upload an image" });
+      }
+      //Checking if input present in the first place
+      if (!productName || !description || !websiteUrl || !tags || !developer) {
+        return res.status(400).json({
+          error: "Please provide all details of the product",
+        });
+      }
+      if (
+        productName.trim().length < 1 ||
+        description.trim().length < 1 ||
+        websiteUrl.trim().length < 1 ||
+        tags.trim().length < 1 ||
+        developer.trim().length < 1
+      ) {
+        return res.status(400).json({
+          error: "Please provide ensure there are no blank details",
+        });
+      }
+      productName = productName.trim().toLowerCase();
+      // String typecheck
+      if (
+        typeof productName !== "string" ||
+        typeof description !== "string" ||
+        typeof websiteUrl !== "string" ||
+        typeof tags !== "string" ||
+        typeof developer !== "string"
+      ) {
+        return res.status(400).json({
+          error: "Details provided are not of proper type string",
+        });
+      }
+      tags = tags.trim().toUpperCase();
+      let tagsList = tags.split(",");
+      tagsList = new Set(tagsList);
+      tagsList = Array.from(tagsList);
+      let re =
+        /^(http:\/\/|https:\/\/)?(www.)?([a-zA-Z0-9]+).[a-zA-Z0-9]*.[‌​a-z]{2}\.([a-z]+)?$/gm;
+      if (!re.test(websiteUrl)) {
+        return res.status(400).json({
+          error:
+            "Website URL provided does not satisfy proper criteria (route)",
+        });
+      }
+      const updProd = new productData.updateProduct(
+        productId,
+        productName,
+        description,
+        websiteUrl,
+        photo,
+        tagsList,
+        developer
+      );
+      return res.status(200).json({ message: "Details successfulyl updated!" });
+    } catch (e) {
+      console.log(e);
+      return res.status(400).json({ error: `${e}` });
+    }
+  }
+);
 module.exports = router;

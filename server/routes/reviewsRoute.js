@@ -5,10 +5,10 @@ const users = require("../data/users");
 const { authMiddleware } = require("../middlewares/auth");
 const router = express.Router();
 const {
-    isValidString,
-    isValidEmail,
-    isValidPassword,
-    isValidUsername,
+  isValidString,
+  isValidEmail,
+  isValidPassword,
+  isValidUsername,
 } = require("../utils");
 const xss = require("xss");
 router.get("/:id", async (req, res) => {
@@ -78,11 +78,7 @@ router.post("/", authMiddleware, async (req, res) => {
     isValidString(review, "review");
     isValidString(rating, "rating");
     //this id is productid(get from product description page,but we don't have product page now)
-    result = await reviews.AddReview(
-      productid,
-      review,
-      rating
-    );
+    result = await reviews.AddReview(productid, review, rating);
     if (!user._id) {
       throw { message: "Unable to get user Id", code: 500 };
     }
@@ -97,11 +93,11 @@ router.post("/", authMiddleware, async (req, res) => {
 });
 
 router.post("/update", async (req, res) => {
-  console.log(req.body);
+  //console.log(req.body);
   try {
     let review = req.body.newdes;
     let rating = req.body.newrate;
-    let reviewid =  req.body.reviewId;
+    let reviewid = req.body.reviewId;
     review = xss(review);
     rating = xss(rating);
     reviewid = xss(reviewid);
@@ -127,10 +123,7 @@ router.post("/delete", authMiddleware, async (req, res) => {
     if (!user._id) {
       throw { message: "Unable to get user Id", code: 500 };
     }
-    Deletereviewtouser = await reviews.DeleteReviewToUser(
-      user._id,
-      result
-    );
+    Deletereviewtouser = await reviews.DeleteReviewToUser(user._id, result);
   } catch (e) {
     console.log(e);
     res.status(400).render("review/review");
