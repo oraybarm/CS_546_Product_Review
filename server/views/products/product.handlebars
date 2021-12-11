@@ -11,9 +11,9 @@
     <ul>
       {{#each tags}}
       <li style="float:left; margin-left:5px; margin-top:10px;">
-        <button type="button" class="btn btn-outline-info btn-sm md-2">
+        <a href="/products/search/{{this}}"><button type="button" class="btn btn-outline-info btn-sm md-2">
           {{this}}
-        </button>
+        </button></a>
       </li>
       {{/each}}
     </ul>

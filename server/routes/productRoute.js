@@ -36,7 +36,7 @@ const upload = multer({
 
 router.post("/search", async (req, res) => {
   const body = req.body;
-  //console.log("body", body);
+  console.log("body", body);
   //body = xss(body);
   //console.log(option);
   let searchTerm = body.searchInput;
@@ -59,6 +59,7 @@ router.post("/search", async (req, res) => {
         let search_List = await productData.getProductByProductName(searchTerm);
         //console.log(search_List);
         //return only the json
+        console.log(search_List);
         res.status(200).render("searchPage/searchPage", {
           title: "Search",
           products: search_List,
@@ -72,17 +73,65 @@ router.post("/search", async (req, res) => {
     if (searchValue === "tag") {
       try {
         let search_List = await productData.getProductbyTag(searchTerm);
-        //console.log(search_List);
+        console.log(search_List);
         res.status(200).render("searchPage/searchPage", {
           title: "Search",
           products: search_List,
         });
+        // res.json({message:"Test"});
       } catch (e) {
         return res.status(404).render("errorPage/noSearch", { title: "Error" });
       }
     }
   }
 });
+
+router.get("/search/:id", async (req, res) => {
+  let searchTerm = req.params.id;
+  let searchValue = "tag";
+  searchTerm = xss(searchTerm);
+  searchValue = xss(searchValue);
+  if (!searchTerm || searchTerm.trim().length == 0) {
+    res.status(404).render("errorPage/noSearch", {
+      message: "Search bar should not be blank",
+    });
+    return "Error: Search term blank";
+  } else {
+    searchTerm = searchTerm.toLowerCase();
+    //console.log(searchTerm);
+    //console.log(searchValue);
+    if (searchValue === "name" || searchValue === "Search product by") {
+      try {
+        let search_List = await productData.getProductByProductName(searchTerm);
+        //console.log(search_List);
+        //return only the json
+        console.log(search_List);
+        res.status(200).render("searchPage/searchPage", {
+          title: "Search",
+          products: search_List,
+        });
+      } catch (e) {
+        return res.status(404).render("errorPage/noSearch", {
+          title: "Error",
+        });
+      }
+    }
+    if (searchValue === "tag") {
+      try {
+        let search_List = await productData.getProductbyTag(searchTerm);
+        console.log(search_List);
+        res.status(200).render("searchPage/searchPage", {
+          title: "Search",
+          products: search_List,
+        });
+        // res.json({message:"Test"});
+      } catch (e) {
+        return res.status(404).render("errorPage/noSearch", { title: "Error" });
+      }
+    }
+  }
+});
+
 
 router.get("/addProducterror", (req, res) => {
   const { addProductError } = req.session;
