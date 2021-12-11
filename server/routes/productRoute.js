@@ -293,8 +293,7 @@ router.get("/:id", async (req, res) => {
       usernow = user._id;
     }
 
-    let review = await reviews.getReviewbyProductId(req.params.id);
-    review = review.reverse();
+    const review = await reviews.getReviewbyProductId(req.params.id);
     const userlist = [];
     for (let i = 0; i < review.length; i++) {
       let userInfo = await reviews.getUserByReviewId(review[i]._id);

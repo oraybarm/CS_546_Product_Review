@@ -2,7 +2,7 @@ const mongoCollections = require("../config/mongoCollection");
 const products = mongoCollections.products;
 let { ObjectId } = require("mongodb");
 const { isValidObject, addhttp, isValidEmail } = require("../utils.js");
-const reviewData = require("./products");
+
 function checkInputs(
   productName,
   description,
@@ -33,10 +33,9 @@ function checkInputs(
   let re =
     /^(http:\/\/|https:\/\/)?(www.)?([a-zA-Z0-9]+).[a-zA-Z0-9]*.[‌​a-z]{2}\.([a-z]+)?$/gm;
   if (!re.test(websiteUrl)) {
-    return res.status(400).json({
-      error: "Website URL provided does not satisfy proper criteria (route)",
-    });
+    throw "Error: website url is not valid.";
   }
+  // console.log("tag", tags);
   if (!Array.isArray(tags) || tags.length === 0)
     throw "Error: Tag is not of string type or tag field is empty";
   //let parsedTags = [...new Set(tags)];
@@ -82,7 +81,7 @@ let exportedMethods = {
     objId_product = ObjectId(product_Id);
     const prod_List = await products();
     const prodId = await prod_List.findOne({ _id: objId_product });
-    if (prodId === null) throw "No product found (test)";
+    if (prodId === null) throw "No product found";
     return prodId;
   },
   async addProduct(
@@ -120,7 +119,11 @@ let exportedMethods = {
     }
     const insertProd = await productList.insertOne(newProduct);
     if (insertProd.insertedCount === 0)
-      throw "We are sorry. An error occured while adding the product. Please try again.";
+      throw {
+        message:
+          "We are sorry. An error occured while adding the product. Please try again.",
+        code: 500,
+      };
     const dbId = await insertProd.insertedId;
     const addProduct = await this.getProductById(dbId.toString());
     return addProduct;
@@ -138,7 +141,9 @@ let exportedMethods = {
         productName: { $regex: query },
       })
       .toArray();
-    if (productByName.length === 0) throw "Error: No Matches";
+    //console.log(productByName);
+    if (productByName.length === 0)
+      throw { message: "Error: No Matches", code: 500 };
     const sortedNameBylikes = productByName.sort(productByName.likes);
     return sortedNameBylikes;
   },
@@ -156,11 +161,18 @@ let exportedMethods = {
         tags: { $regex: query },
       })
       .toArray();
-    if (productByTag.length === 0) throw "Error: No Matches";
+    if (productByTag.length === 0)
+      throw { message: "Error: No Matches", code: 500 };
     const soredTagByLikes = productByTag.sort(productByTag.likes);
     return soredTagByLikes;
   },
   async updateCount(prodId, liked) {
+    if (typeof prodId === "undefined") throw "prodId is not provided";
+    if (typeof liked === "undefined") throw "liked is not provided";
+    if (typeof prodId != "string") throw "prodId is not a string";
+    if (typeof liked != "boolean") throw "liked is not a boolean value";
+    if (prodId.trim() === "") throw "prodId is blank";
+
     let objId = ObjectId(prodId);
     const productCollection = await products();
     const product = await productCollection.findOne({ _id: objId });
@@ -189,8 +201,6 @@ let exportedMethods = {
     const prodCheck = prodList.findOne({ _id: prodId });
     if (!prodCheck) {
       throw "Error: Product to be deleted was not found in the database";
-    }
-    if (prodCheck.reviews.length !== 0) {
     }
     const delProd = prodList.deleteOne({ _id: prodId });
     if (delProd.deletedCount == 0) {
