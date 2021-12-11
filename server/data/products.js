@@ -75,7 +75,7 @@ let exportedMethods = {
 
   //Obtains product details using ID
   async getProductById(product_Id) {
-    checkID(product_Id);
+    checkId(product_Id);
     objId_product = ObjectId(product_Id);
     const prod_List = await products();
     const prodId = await prod_List.findOne({ _id: objId_product });
