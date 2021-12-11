@@ -10,9 +10,11 @@ const {
   isValidEmail,
   isValidUsername,
   isValidString,
+  isValidObjectId,
 } = require("../utils");
 const reviews = require("../data/reviews");
 const xss = require("xss");
+const { getProductsByUserId } = require("../data/products");
 
 // TODO: there's a middleware to check isadmin inside middleware/private.js
 // we can use it for report user feature
@@ -22,6 +24,23 @@ router.get("/home", (req, res) => {
     user: req.session.user,
     title: "Home",
   });
+});
+
+router.get("/users/:id", async (req, res) => {
+  try {
+    let { id } = req.params;
+    id = xss(id);
+    id = id.trim();
+    isValidObjectId(id);
+    const userProducts = await getProductsByUserId(id);
+    res.json({ products: userProducts });
+  } catch (error) {
+    console.log(error);
+    return res.render("errorPage/404", {
+      title: "Error",
+      authenticated: req.session.user ? true : false,
+    });
+  }
 });
 
 router.get("/profile", authMiddleware, async (req, res) => {
@@ -49,10 +68,11 @@ router.get("/profile", authMiddleware, async (req, res) => {
     if (posts.length > 0) {
       hasPost = true;
     }
-    console.log(posts);
+
     res.render("profile/profile", {
       authenticated: true,
       user: req.session.user,
+      userId: user._id,
       title: "Profile",
       src,
       name: user.name,
@@ -65,7 +85,8 @@ router.get("/profile", authMiddleware, async (req, res) => {
       hasPost: hasPost,
     });
   } catch (error) {
-    res.status(404).render("profile/profile", {
+    console.log(error);
+    res.render("profile/profile", {
       authenticated: true,
       user: req.session.user,
       title: "Profile",

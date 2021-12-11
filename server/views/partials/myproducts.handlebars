@@ -1,0 +1,464 @@
+<div class="jumbotron w-100">
+  <div
+    class="toast"
+    role="alert"
+    aria-live="assertive"
+    aria-atomic="true"
+    id="toast"
+  >
+    <div class="toast-body"></div>
+  </div>
+  <div class="accordion" id="accordionExample"></div>
+  <div
+    class="modal fade"
+    id="myModal"
+    tabindex="-1"
+    role="dialog"
+    aria-hidden="true"
+  >
+    <div class="modal-dialog modal-dialog-centered" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLongTitle">
+            Product Details
+          </h5>
+          <button
+            type="button"
+            class="btn btn-secondary"
+            data-dismiss="modal"
+            aria-label="Close"
+            id="close"
+          >
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <p
+            class="errorCreateProduct d-flex align-items-center flex-column alert alert-danger "
+            role="alert"
+          ></p>
+          <form
+            class="row g-3 needs-validation"
+            enctype="multipart/form-data"
+            novalidate
+            id="updateProductForm"
+            action=""
+            method="post"
+          >
+            <div class="col-md-12 position-relative">
+              <label for="productName" class="form-label">Product Name</label>
+              <input
+                type="text"
+                class="form-control"
+                id="productName"
+                name="productName"
+                required
+                readonly="readonly"
+                placeholder="Product Name"
+              />
+
+              <div class="invalid-feedback">
+                Please provide a valid Name(at least two characters, no special
+                characters allowed).
+              </div>
+            </div>
+            <div class="col-md-12 position-relative">
+              <label for="productDescription" class="form-label"
+                >Description</label
+              >
+              <input
+                type="text"
+                class="form-control"
+                id="productDescription"
+                name="description"
+                required
+                placeholder="Product Description"
+              />
+
+              <div class="invalid-feedback">
+                Please provide a valid Description(at least two characters, no
+                special characters allowed).
+              </div>
+            </div>
+            <div class="col-md-12 position-relative">
+              <label for="productUrl" class="form-label">Product URL</label>
+              <input
+                type="text"
+                class="form-control"
+                id="productUrl"
+                name="websiteUrl"
+                required
+                placeholder="Please enter your products website"
+              />
+
+              <div class="invalid-feedback">
+                Please provide a valid URL.
+              </div>
+            </div>
+            <!-- developer name section -->
+            <div class="col-md-12 position-relative">
+              <label for="developer" class="form-label">Developer Name</label>
+              <input
+                type="text"
+                class="form-control"
+                id="developer"
+                name="developer"
+                required
+                placeholder="Please enter the name of the developer"
+              />
+
+              <div class="invalid-feedback">
+                Please provide a valid Name(at least two characters, no special
+                characters allowed).
+              </div>
+            </div>
+            <!-- tags section -->
+            <div class="col-md-12 position-relative">
+              <label for="productTag" class="form-label">Related tags</label>
+              <input
+                type="text"
+                class="form-control"
+                id="productTag"
+                name="tags"
+                required
+                placeholder="Please enter a tag which best suits your produc separated by commas"
+              />
+
+              <div class="invalid-feedback">
+                Please provide a valid tags for your product separated by
+                commas.
+              </div>
+            </div>
+            <!-- // file upload section -->
+            <div class="col-md-12 position-relative">
+              <label for="productfile" class="form-label"
+                >Upload a new product picture</label
+              >
+              <input
+                type="file"
+                id="productfile"
+                name="photo"
+                class="form-control"
+              />
+              <div class="invalid-feedback">
+                Files supported: jpg, jpeg, png Max file size: 2MB
+              </div>
+            </div>
+            {{!-- button to create --}}
+            <div class="col-12">
+              <button type="submit">Update Product</button>
+              {{createProductError}}
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- delete modal -->
+  <div
+    class="modal fade"
+    id="deleteProductModal"
+    data-bs-backdrop="static"
+    data-bs-keyboard="false"
+    tabindex="-1"
+    aria-labelledby="staticBackdropLabel"
+    aria-hidden="true"
+  >
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="staticBackdropLabel">
+            Delete product
+          </h5>
+          <button
+            type="button"
+            class="btn-close"
+            data-bs-dismiss="modal"
+            aria-label="Close"
+          ></button>
+        </div>
+        <div class="modal-body">
+          Are you sure you want to delete this product?
+        </div>
+        <div class="modal-footer">
+          <button
+            type="button"
+            class="btn btn-secondary"
+            data-bs-dismiss="modal"
+          >
+            Close
+          </button>
+          <button
+            type="button"
+            class="btn btn-primary"
+            id="deleteProductButton"
+          >
+            Understood
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<script>
+  var userId = '{{ userId }}'
+</script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+<script
+  src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"
+  integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p"
+  crossorigin="anonymous"
+></script>
+<script>
+  document.querySelector('.errorCreateProduct').style.display = 'none'
+  let requestConfig = {
+    method: 'GET',
+    url: `/private/users/${userId}`,
+    contentType: 'application/json'
+  }
+  console.log(`userId`, userId)
+
+  $.ajax(requestConfig)
+    .then(function (response) {
+      console.log(`response`, response)
+      const products = []
+      response.products.forEach(function (item, index) {
+        $('.accordion').append(
+          `<div class="accordion-item" id=accordion-item-${item._id}>
+                    <h2 class="accordion-header" id=${item._id}>
+                        <button
+                            class="accordion-button"
+                            type="button"
+                            data-bs-toggle="collapse"
+                            data-bs-target=#collapse${item._id}
+                            aria-controls=collapse${item._id}
+                            aria-expanded="false"
+                        >
+                            ${item.productName}
+                        </button>
+                    </h2>
+                    <div
+                        id=collapse${item._id}
+                        class="accordion-collapse collapse ${
+                          index == 0 ? 'show' : ''
+                        }"
+                        aria-labelledby=${item._id}
+                        data-bs-parent="#accordionExample"
+                    >
+                        <div class="accordion-body d-flex
+                        flex-wrap
+                        align-items-center flex-direction-column justify-content-between">
+                            <button id=${
+                              item._id
+                            } class="editProduct d-flex align-items-center justify-content-center" type="button" data-bs-toggle="modal" data-bs-target="#myModal">View/Edit Details</button>
+                            <button class="deleteProduct d-flex align-items-center justify-content-center" type="button" id=delete-${
+                              item._id
+                            } data-bs-toggle="modal" data-bs-target="#deleteProductModal">Delete</button>
+                        </div>
+                    </div>
+                </div>`
+        )
+      })
+      // $(".accordion").append(products);
+    })
+    .catch(function (err) {
+      console.log(err)
+    })
+
+  $(document).bind('click', function (event) {
+    var target = $(event.target)
+
+    if (target.is('.editProduct')) {
+      console.log('event', event)
+      const productId = event.target.id
+      console.log(`productId`, productId)
+      let productDetailsRequestConfig = {
+        method: 'GET',
+        url: `/products/${productId}/details`,
+        contentType: 'application/json'
+      }
+      $.ajax(productDetailsRequestConfig).then(function (response) {
+        $('#updateProductForm').attr('action', `/products//update/${productId}`)
+        $('#productName').val(response.name)
+        $('#productDescription').val(response.description)
+        $('#productUrl').val(response.site)
+        $('#developer').val(response.developer)
+        $('#developer').val(response.developer)
+        $('#productTag').val(response.tags.toString())
+      })
+    }
+    if (target.is('.deleteProduct')) {
+      console.log('Are you sure you want to delete this product?')
+      const productToDelete = event.target.id.split('-')[1]
+      $deleteProductButton = $('#deleteProductButton')
+      console.log(`object`, deleteProductButton, $deleteProductButton)
+      let productDetailsRequestConfig = {
+        method: 'POST',
+        url: `/products//delete/${productToDelete}`,
+        contentType: 'application/json'
+      }
+      $deleteProductButton.click(function () {
+        $.ajax(productDetailsRequestConfig).then(function (response) {
+          $(`#accordion-item-${productToDelete}`).remove()
+          console.log(`response`, response)
+          $('#deleteProductModal').modal('hide')
+          $('.modal-backdrop').remove()
+          const toastEl = document.querySelector('.toast')
+          const toast = new bootstrap.Toast(toastEl, [])
+          $('.toast-body').text('Product deleted')
+          toast.show()
+        })
+      })
+    }
+  })
+
+  var productNameField = document.getElementById('productName')
+  var productDescriptionField = document.getElementById('productDescription')
+  var productUrl = document.getElementById('productUrl')
+  var productTag = document.getElementById('productTag')
+  var profileFileField = document.getElementById('productfile')
+  var developer = document.getElementById('developer')
+
+  productNameField.addEventListener('input', function () {
+    var val = document.getElementById('productName').value
+    if (!checkValidString(val)) {
+      productNameField.setCustomValidity('invalid')
+    } else {
+      productNameField.setCustomValidity('')
+    }
+  })
+
+  developer.addEventListener('input', function () {
+    var val = document.getElementById('developer').value
+    if (!checkValidString(val)) {
+      developer.setCustomValidity('invalid')
+    } else {
+      developer.setCustomValidity('')
+    }
+  })
+
+  productDescriptionField.addEventListener('input', function () {
+    var val = document.getElementById('productDescription').value
+    if (!checkValidString(val)) {
+      productDescriptionField.setCustomValidity('invalid')
+    } else {
+      productDescriptionField.setCustomValidity('')
+    }
+  })
+
+  productUrl.addEventListener('input', function () {
+    var val = document.getElementById('productUrl').value
+    if (!checkValidWebUrl(val)) {
+      productUrl.setCustomValidity('invalid')
+    } else {
+      productUrl.setCustomValidity('')
+    }
+  })
+
+  productTag.addEventListener('input', function () {
+    var val = document.getElementById('productTag').value
+    if (!checkValidTag(val)) {
+      productTag.setCustomValidity('invalid')
+    } else {
+      productTag.setCustomValidity('')
+    }
+  })
+
+  profileFileField.addEventListener('input', function () {
+    var val = document.getElementById('file').value
+    const validImageTypes = ['image/gif', 'image/jpeg', 'image/png']
+    const fileType = this.files[0].type
+    console.log('here :>> ', val)
+    if (
+      !fileType ||
+      !validImageTypes.includes(fileType) ||
+      this.files[0].size / 1024 / 1024 > 3
+    ) {
+      profileFileField.setCustomValidity('invalid')
+    } else {
+      profileFileField.setCustomValidity('')
+    }
+  })
+
+  function checkValidString (val) {
+    if (!val || val.length < 2) {
+      return false
+    }
+    return true
+  }
+
+  function checkValidWebUrl (val) {
+    let re = /^(http:\/\/|https:\/\/)?(www.)?([a-zA-Z0-9]+).[a-zA-Z0-9]*.[‌​a-z]{3}\.([a-z]+)?$/gm
+    const data = re.test(val)
+
+    return data
+  }
+
+  function checkValidTag (val) {
+    if (!val || val.length < 2) {
+      return false
+    }
+    return true
+  }
+
+  document.forms['updateProductForm'].addEventListener('submit', event => {
+    if (!checkValidString(productNameField.value)) {
+      productNameField.setCustomValidity('invalid')
+      event.preventDefault()
+    } else if (!checkValidString(productDescriptionField.value)) {
+      productDescriptionField.setCustomValidity('invalid')
+      event.preventDefault()
+    } else if (!checkValidWebUrl(productUrl.value)) {
+      productUrl.setCustomValidity('invalid')
+      event.preventDefault()
+    } else if (!checkValidTag(productTag.value)) {
+      productTag.setCustomValidity('invalid')
+      event.preventDefault()
+    } else if (!checkValidString(developer.value)) {
+      developer.setCustomValidity('invalid')
+      event.preventDefault()
+    } else if (profileFileField.files.length < 0) {
+      document.querySelector('.errorCreateProduct').innerHTML = body.error
+      $('.errorCreateProduct').show()
+      profileFileField.setCustomValidity('invalid')
+      event.preventDefault()
+    } else {
+      event.preventDefault()
+      const formData = new FormData($('#updateProductForm')[0])
+
+      fetch(event.target.action, {
+        method: 'POST',
+        body: formData
+      })
+        .then(resp => {
+          return resp.json() // or resp.text() or whatever the server sends
+        })
+        .then(body => {
+          console.log(body.error)
+          if (body.error) {
+            document.querySelector('.errorCreateProduct').innerHTML = body.error
+            $('.errorCreateProduct').show()
+          } else {
+            $('#myModal').modal('hide')
+            $('.modal-backdrop').remove()
+            const toastEl = document.querySelector('.toast')
+            const toast = new bootstrap.Toast(toastEl, [])
+            $('.toast-body').text(body.message)
+            toast.show()
+          }
+        })
+        .catch(error => {
+          console.log(`error`, error)
+        })
+    }
+  })
+
+  $('#close').click(function () {
+    $('#myModal').modal('hide')
+    $('.modal-backdrop').remove()
+  })
+  $('#closebutton').click(function () {
+    $('#myModal').modal('hide')
+  })
+</script>

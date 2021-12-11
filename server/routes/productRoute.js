@@ -10,7 +10,7 @@ const { ObjectId } = require("mongodb");
 
 const reviews = require("../data/reviews");
 const { getUser } = require("../data/users");
-const isValidString = require("../utils");
+const { isValidObjectId } = require("../utils");
 const _ = require("lodash");
 const { check } = require("express-validator");
 
@@ -38,10 +38,8 @@ function checkId(id) {
   if (!id) throw "Error: Please provide argument id";
   //if (typeof id !== "string") throw "Error:ID is not of string type.";
   if (typeof id === "string" && id.trim().length < 1) {
-    //console.log(typeof id);
     throw "Error: ID is a blank string has been passed as argument";
   }
-  //console.log(ObjectId.isValid(id));
   if (!ObjectId.isValid(id)) throw "Error: Provided ID is not valid argument ";
 }
 router.post("/search", async (req, res) => {
@@ -157,7 +155,6 @@ router.get("/search/:id", async (req, res) => {
   }
 });
 
-
 router.get("/addProducterror", (req, res) => {
   const { addProductError } = req.session;
   const error = addProductError;
@@ -181,8 +178,6 @@ router.post(
         let devDetails = await userData.getUser(usrId);
         let devId = devDetails._id;
         checkId(devId);
-        //console.log(devId._id);
-        //check what all is required after making the front end form
         let { productName, description, websiteUrl, tags, developer } =
           req.body;
         productName = xss(productName);
@@ -258,7 +253,7 @@ router.post(
           developer,
           devId
         );
-        //console.log("new", newProduct);
+
         res.redirect("/");
       } catch (e) {
         console.log("error", e);
@@ -371,59 +366,98 @@ router.post("/updateLike", authMiddleware, async (req, res) => {
   }
 });
 
-router.post("/delete", authMiddleware, async (req, res) => {
+router.post("/delete/:productId", authMiddleware, async (req, res) => {
   if (!req.session.user) {
     res.redirect("users/signup");
     return;
   }
   try {
-    // let usr = await userData.getUser(req.session.user);
+    let { productId } = req.params;
+    productId = xss(productId);
+    productId = productId.trim();
+    isValidObjectId(productId);
+    let usr = await userData.getUser(req.session.user);
     let usrId = usr._id;
     checkId(usrId);
-    let productId = req.body.productId;
-    console.log(productId);
-    checkId(productId);
-    //console.log(productId);
     const prodList = await productData.getProductById(productId);
     if (!prodList) {
-      res
-        .status(404)
-        .json({ error: "Product to be deleted was not found in our database" });
+      return res.status(404).json({
+        error: "Product to be deleted was not found in our database",
+      });
     }
-    if (usrId !== prodList.devId) {
-      res.status(400).json({ error: "User cannot delete this product" });
+    if (usrId.toString() !== prodList.devId.toString()) {
+      return res.status(403).json({ error: "User cannot delete this product" });
     }
     productId = productId.toString();
     const delProd = await productData.deleteProduct(productId);
-    res.status(200).json({ message: `${delProd} was deleted` });
+    return res.status(200).json({ message: `${delProd} was deleted` });
   } catch (e) {
     return res.status(400).json({ error: `${e}` });
   }
 });
 
-router.post(
-  "/update",
+router.get(
+  "/:id/details",
   authMiddleware,
   upload.single("photo"),
   async (req, res) => {
-    if (req.session.user) {
-      res.redirect("users/signup");
+    if (!req.params.id) {
+      res.status(400).json({ error: "You must provide product id" });
       return;
     }
+
     try {
+      if (!ObjectId.isValid(req.params.id)) throw "id is not valid.";
+      const product = await productData.getProductById(req.params.id);
+      if (typeof product === "undefined") throw "Not found with that id";
+
+      let usernow = "";
+      if (req.session.user) {
+        const user = await getUser(req.session.user);
+        usernow = user._id;
+      }
+
+      return res.json({
+        name: product.productName,
+        logo: product.logo,
+        site: product.websiteUrl,
+        tags: product.tags,
+        developer: product.developer,
+        description: product.description,
+      });
+    } catch (e) {
+      console.log(e);
+      res.render("errorPage/404");
+    }
+  }
+);
+
+router.post(
+  "/update/:productId",
+  authMiddleware,
+  upload.single("photo"),
+  async (req, res) => {
+    try {
+      let { productId } = req.params;
+
+      productId = xss(productId);
+      productId = productId.trim();
+      isValidObjectId(productId);
       let usr = await userData.getUser(req.session.user);
       let usrId = usr._id;
-      checkId(usrId);
-      let productId = xss(req.body.productId);
+      checkId(usrId.toString());
       let { productName, description, websiteUrl, tags, developer } = req.body;
       let product = await productData.getProductById(productId);
+
       if (!product) {
-        res.status(404).json({
+        return res.status(404).json({
           error: "Product to be updated was not found in our database",
         });
       }
-      if (usrId !== product.devId) {
-        res.status(400).json({ error: "User cannot update this product" });
+      if (usrId.toString() !== product.devId.toString()) {
+        return res.status(403).json({
+          error: "User cannot update this product",
+        });
       }
       productName = xss(productName);
       description = xss(description);
@@ -431,9 +465,8 @@ router.post(
       websiteUrl = xss(websiteUrl);
       tags = xss(tags);
       developer = xss(developer);
-      if (!req.file)
-        return res.status(400).json({ error: "Please provide a file" });
-      let photo = req.file.filename;
+      console.log("test", req.file?.filename || product.logo);
+      let photo = req.file?.filename || product.logo;
       photo = xss(photo);
       photo = photo.trim();
 
@@ -482,7 +515,7 @@ router.post(
             "Website URL provided does not satisfy proper criteria (route)",
         });
       }
-      const updProd = new productData.updateProduct(
+      const updProd = productData.updateProduct(
         productId,
         productName,
         description,

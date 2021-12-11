@@ -20,80 +20,169 @@
     <div class="invalid-feedback">
         {{error}}
     </div>
-    <form
-        action="/private/profile/update"
-        method="post"
-        enctype="multipart/form-data"
-        class="needs-validation"
-        novalidate
-    >
-        <div class="col-md-12 position-relative">
-            <label for="name" class="form-label">Name</label>
-            <input
-                type="text"
-                name="name"
-                id="name"
-                value="{{name}}"
-                class="form-control"
-            />
-            <div class="invalid-feedback">
-                Please provide a valid Name(at least two characters, no special
-                characters allowed).
-            </div>
-        </div>
-        <label for="email">Email</label>
-        <input
-            type="text"
-            name="email"
-            id="email"
-            value="{{email}}"
-            class="disabled"
-            disabled
-        />
-        <label for="password">Password</label>
-        <input type="password" name="password" id="password" />
-        <div class="col-md-12 position-relative">
-            <label for="file" class="form-label"
-                >Upload a new profile picture</label
+    <nav>
+        <div class="nav nav-tabs" id="nav-tab" role="tablist">
+            <button
+                class="nav-link active"
+                id="nav-home-tab"
+                data-bs-toggle="tab"
+                data-bs-target="#nav-home"
+                type="button"
+                role="tab"
+                aria-controls="nav-home"
+                aria-selected="true"
             >
-            <input type="file" id="file" name="photo" class="form-control" />
-            <div class="invalid-feedback">
-                Files supported: jpg, jpeg, png Max file size: 2MB
+                Profile
+            </button>
+            <button
+                class="nav-link btn-danger"
+                id="nav-profile-tab"
+                data-bs-toggle="tab"
+                data-bs-target="#nav-profile"
+                type="button"
+                role="tab"
+                aria-controls="nav-profile"
+                aria-selected="false"
+            >
+                My Reviews
+            </button>
+            <button
+                class="nav-link"
+                id="nav-contact-tab"
+                data-bs-toggle="tab"
+                data-bs-target="#nav-contact"
+                type="button"
+                role="tab"
+                aria-controls="nav-contact"
+                aria-selected="false"
+            >
+                My Products
+            </button>
+        </div>
+    </nav>
+    <div class="tab-content w-75" id="nav-tabContent">
+        <div
+            class="tab-pane fade show active"
+            id="nav-home"
+            role="tabpanel"
+            aria-labelledby="nav-home-tab"
+        >
+            <form
+                action="/private/profile/update"
+                method="post"
+                enctype="multipart/form-data"
+                class="needs-validation"
+                novalidate
+            >
+                <div class="col-md-12 position-relative">
+                    <label for="name" class="form-label">Name</label>
+                    <input
+                        type="text"
+                        name="name"
+                        id="name"
+                        value="{{name}}"
+                        class="form-control"
+                    />
+                    <div class="invalid-feedback">
+                        Please provide a valid Name(at least two characters, no
+                        special characters allowed).
+                    </div>
+                </div>
+                <label for="email">Email</label>
+                <input
+                    type="text"
+                    name="email"
+                    id="email"
+                    value="{{email}}"
+                    class="disabled"
+                    disabled
+                />
+                <label for="password">Password</label>
+                <input type="password" name="password" id="password" />
+                <div class="col-md-12 position-relative">
+                    <label for="file" class="form-label"
+                        >Upload a new profile picture</label
+                    >
+                    <input
+                        type="file"
+                        id="file"
+                        name="photo"
+                        class="form-control"
+                    />
+                    <div class="invalid-feedback">
+                        Files supported: jpg, jpeg, png Max file size: 2MB
+                    </div>
+                </div>
+                <button type="submit" name="Submit">Update</button>
+            </form>
+        </div>
+        <div
+            class="tab-pane fade"
+            id="nav-profile"
+            role="tabpanel"
+            aria-labelledby="nav-profile-tab"
+        >
+            <div>
+                <form
+                    enctype="multipart/form-data"
+                    class="needs-validation"
+                    id="reviewform"
+                    novalidate
+                >
+                    <div class="col-md-12 position-relative w-100">
+                        <h3>My reviews:</h3>
+                        <hr />
+                        <ul>
+                            {{#if hasPost}} {{#each posts}}
+                            <li class="border p-2">
+                                <div>
+                                    <a
+                                        href="/products/{{this.product}}"
+                                        class="d-flex align-items-center justify-content-between w-50"
+                                    >
+                                        <img
+                                            alt="{{productName}} image"
+                                            class="userimg mx-2"
+                                            src="/public/images/upload/{{this.productImg}}"
+                                        />
+                                        <h2>{{productName}}</h2>
+                                    </a>
+                                </div>
+                                <div>
+                                    <a
+                                        href="/products/{{this.product}}"
+                                        data-id="{{this}}"
+                                        ><p>{{this.description}}</p></a
+                                    >
+                                </div>
+                                <div>
+                                    <a href="/products/{{this.product}}"
+                                        ><img
+                                            src="../../public/images/{{this.rating}}.png"
+                                            alt="review star"
+                                    /></a>
+                                </div>
+                            </li>
+
+                            {{/each}} {{else}}
+                            <li>
+                                <p class="not-found">No review right now.</p>
+                            </li>
+                            {{/if}}
+                        </ul>
+                    </div>
+                </form>
             </div>
         </div>
-        <button type="submit" name="Submit">Update</button>
-    </form>
-</div>
-
-<div class="ReviewContainer">
-    <form
-        enctype="multipart/form-data"
-        class="needs-validation"
-        id="reviewform"
-        novalidate
-    >
-        <div class="col-md-12 position-relative">
-        <h3>My reviews:</h3>
-        <hr>
-        <ul>
-        {{#if hasPost}}
-        {{#each posts}}
-        <li><a href="/products/{{this.product}}"><p>{{this.description}}</p></a></li>
-        <li><a href="/products/{{this.product}}"><img src="../../public/images/{{this.rating}}.png" alt="review star"></a></li>
-        
-        {{/each}}
-        {{else}}
-        <li>
-            <p class="not-found">No review right now.</p>
-        </li>
-        {{/if}}
-    </ul>
-
-
+        <div
+            class="tab-pane fade"
+            id="nav-contact"
+            role="tabpanel"
+            aria-labelledby="nav-contact-tab"
+        >
+            {{>myproducts}}
         </div>
-        
-    </form>
-
+    </div>
 </div>
 
 <script
