@@ -80,7 +80,11 @@ router.post("/", authMiddleware, async (req, res) => {
     //this id is productid(get from product description page,but we don't have product page now)
     result = await reviews.AddReview(productid, review, rating);
     if (!user._id) {
-      throw "Unable to get user Id";
+      throw {
+        message: "Unable to get user Id",
+        code: 500,
+        authenticated: req.session.user ? true : false,
+      };
     }
     addreviewtouser = await reviews.AddReviewToUser(
       user._id,
@@ -94,6 +98,7 @@ router.post("/", authMiddleware, async (req, res) => {
       res.status(500).render("errorPage/errorHandling", {
         title: "OOPS!",
         message: `Internal Server error.${e.message}`,
+        authenticated: req.session.user ? true : false,
       });
     }
   }
@@ -121,6 +126,7 @@ router.post("/update", async (req, res) => {
       res.status(500).render("errorPage/errorHandling", {
         title: "OOPS!",
         message: `Internal Server error. ${e.message}`,
+        authenticated: req.session.user ? true : false,
       });
     }
   }

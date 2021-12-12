@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css?family=Montserrat:400,800');
+@import url("https://fonts.googleapis.com/css?family=Montserrat:400,800");
 
 * {
   box-sizing: border-box;
@@ -9,7 +9,7 @@ body {
   display: flex;
   align-items: center;
   flex-direction: column;
-  font-family: 'Montserrat', sans-serif;
+  font-family: "Montserrat", sans-serif;
   height: 100vh;
   margin: 0px 0 20px;
   color: #212529;
@@ -22,6 +22,7 @@ body {
 h1 {
   font-weight: bold;
   margin: 0;
+  text-align: center;
 }
 
 h2 {
@@ -50,7 +51,7 @@ a {
 button {
   border-radius: 20px;
   border: 1px solid #ff4b2b;
-  background-color: #ff4b2b;
+  background-color: #df3500;
   color: #ffffff;
   font-size: 12px;
   font-weight: bold;
@@ -59,7 +60,19 @@ button {
   text-transform: uppercase;
   transition: transform 80ms ease-in;
 }
-
+.btn.btn-outline-danger {
+  color: #e65d66;
+  border-color: #e65e67;
+}
+.btn.btn-outline-danger:hover {
+  color: white;
+  border-color: #da2439;
+  background-color: #da2439;
+}
+.btn.btn-outline-info {
+  color: #007b94;
+  border-color: #007b94;
+}
 button:active {
   transform: scale(0.95);
 }
@@ -579,13 +592,9 @@ like button
 
 .like__btn {
   padding: 10px 15px;
-  background-color: coral;
   font-size: 14px;
-  font-family: 'Open Sans', sans-serif;
+  font-family: "Open Sans", sans-serif;
   border-radius: 5px;
-  color: #e8efff;
-  outline: none;
-  border: none;
   cursor: pointer;
   /* padding-left: 20px;
     margin-left:125px; */
@@ -616,25 +625,21 @@ div#home {
 }
 div#home h6,
 .nav-link,
-.accordion-button[aria-expanded='true'] {
+.accordion-button[aria-expanded="true"] {
   display: inline;
-  color: coral;
+  color: #bf4d00;
 }
 
-.accordion-button[aria-expanded='false'] {
+.accordion-button[aria-expanded="false"] {
   color: black;
 }
 
 .getProd {
   display: inline;
   padding: 10px 15px;
-  background-color: coral;
   font-size: 14px;
-  font-family: 'Open Sans', sans-serif;
+  font-family: "Open Sans", sans-serif;
   border-radius: 5px;
-  color: #e8efff;
-  outline: none;
-  border: none;
   cursor: pointer;
 }
 
@@ -670,7 +675,7 @@ div#home h6,
 }
 
 @media (max-width: 768px) {
-  #searhcForm {
+  #searchForm {
     display: flex !important;
     flex-direction: row !important;
   }
