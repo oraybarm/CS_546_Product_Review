@@ -71,7 +71,6 @@ router.post("/", authMiddleware, async (req, res) => {
     return res.json(newPost);
   } catch (error) {
     if (!error.code) {
-      console.log(`error`, error);
       res.status(404).render("errorPage/errorHandling", {
         title: "OOPS!",
         message: `${error}`,
@@ -109,7 +108,6 @@ router.get("/post/:id", async (req, res) => {
       isSameUser: req.session.user === user.email ? true : false,
     });
   } catch (error) {
-    console.log(`error`, error);
     res.status(404).render("errorPage/404");
   }
 });
@@ -128,13 +126,11 @@ router.post("/post/:id/like", async (req, res) => {
     return res.json(updatedLike);
   } catch (error) {
     if (!error.code) {
-      console.log(`error in post like`, error);
       res.status(404).render("errorPage/errorHandling", {
         title: "OOPS!",
         message: `${error}`,
       });
     } else {
-      console.log(`error in post like`, error);
       res.status(500).render("errorPage/errorHandling", {
         title: "Error",
         message: "Internal Server Error",
@@ -167,7 +163,6 @@ router.post("/post/:id/reply", async (req, res) => {
       replyCount: returnedReply.length,
     });
   } catch (error) {
-    console.log(`error in post reply: `, error);
     res.status(404).render("errorPage/404");
   }
 });
