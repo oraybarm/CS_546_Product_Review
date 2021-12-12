@@ -73,6 +73,7 @@ router.post("/", authMiddleware, async (req, res) => {
     if (!error.code) {
       res.status(404).render("errorPage/errorHandling", {
         title: "OOPS!",
+        authenticated: req.session.user ? true : false,
         message: `${error}`,
       });
     } else {
@@ -108,7 +109,11 @@ router.get("/post/:id", async (req, res) => {
       isSameUser: req.session.user === user.email ? true : false,
     });
   } catch (error) {
-    res.status(404).render("errorPage/404");
+    res.status(404).render("errorPage/404", {
+      title: "OOPS!",
+      authenticated: req.session.user ? true : false,
+      message: `${error}`,
+    });
   }
 });
 
@@ -129,11 +134,13 @@ router.post("/post/:id/like", async (req, res) => {
       res.status(404).render("errorPage/errorHandling", {
         title: "OOPS!",
         message: `${error}`,
+        authenticated: req.session.user ? true : false,
       });
     } else {
       res.status(500).render("errorPage/errorHandling", {
         title: "Error",
         message: "Internal Server Error",
+        authenticated: req.session.user ? true : false,
       });
     }
   }
@@ -163,7 +170,11 @@ router.post("/post/:id/reply", async (req, res) => {
       replyCount: returnedReply.length,
     });
   } catch (error) {
-    res.status(404).render("errorPage/404");
+    res.status(404).render("errorPage/404", {
+      title: "OOPS!",
+      message: `${error}`,
+      authenticated: req.session.user ? true : false,
+    });
   }
 });
 

@@ -1,8 +1,7 @@
 {{#if error}}
 <h1>Homepage</h1>
 <h2>No products found!</h2>
-{{/if}}
-
+{{/if}} {{> error}}
 <div class="jumbotron w-100 mx-5 d-flex flex-column">
   <!-- Button trigger modal -->
   <h1>Homepage</h1>
@@ -59,7 +58,11 @@
             class="tagContainer d-flex flex-wrap align-items-center justify-content-center"
           >
             {{#each tags}}
-            <a href="/products/search/{{this}}" id="{{this}}"  class="my-0 btn btn-danger h-10 tagPill">
+            <a
+              href="/products/search/{{this}}"
+              id="{{this}}"
+              class="my-0 btn btn-danger h-10 tagPill"
+            >
               {{this}}
             </a>
             {{/each}}
@@ -251,6 +254,6 @@
         .text(data.error)
         .show()
     }
-  });
+  })
 </script>
 <script src="/public/js/homePage.js"></script>

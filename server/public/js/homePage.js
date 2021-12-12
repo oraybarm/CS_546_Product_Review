@@ -59,7 +59,6 @@
     var val = document.getElementById("file").value;
     const validImageTypes = ["image/gif", "image/jpeg", "image/png"];
     const fileType = this.files[0].type;
-    console.log("here :>> ", val);
     if (
       !fileType ||
       !validImageTypes.includes(fileType) ||
@@ -75,7 +74,6 @@
     var val = document.getElementById("file").value;
     const validImageTypes = ["image/gif", "image/jpeg", "image/png"];
     const fileType = this.files[0].type;
-    console.log("here :>> ", val);
     if (
       !fileType ||
       !validImageTypes.includes(fileType) ||

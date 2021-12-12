@@ -44,31 +44,23 @@ function checkId(id) {
 }
 router.post("/search", async (req, res) => {
   const body = req.body;
-  //console.log("body", body);
-  //body = xss(body);
-  //console.log(option);
   let searchTerm = body.searchInput;
   let searchValue = body.searchSelect;
   searchTerm = xss(searchTerm);
   searchValue = xss(searchValue);
-  //console.log(searchTerm);
-  //console.log(searchValue);
   if (!searchTerm || searchTerm.trim().length == 0) {
     res.status(404).render("errorPage/noSearch", {
       title: "Search Bar",
       message: "Search bar should not be blank",
+      authenticated: req.session.user ? true : false,
     });
     return "Error: Search term blank";
   } else {
     searchTerm = searchTerm.toLowerCase();
-    //console.log(searchTerm);
-    //console.log(searchValue);
     if (searchValue === "name" || searchValue === "Search product by") {
       try {
         let search_List = await productData.getProductByProductName(searchTerm);
-        //console.log(search_List);
-        //return only the json
-        //console.log(search_List);
+
         res.status(200).render("searchPage/searchPage", {
           title: "Search",
           products: search_List,
@@ -78,6 +70,7 @@ router.post("/search", async (req, res) => {
         res.status(404).render("errorPage/noSearch", {
           title: "No Result",
           message: "We did not find any product with that description",
+          authenticated: req.session.user ? true : false,
         });
         return;
       }
@@ -85,7 +78,6 @@ router.post("/search", async (req, res) => {
     if (searchValue === "tag") {
       try {
         let search_List = await productData.getProductbyTag(searchTerm);
-        //console.log(search_List);
         res.status(200).render("searchPage/searchPage", {
           title: "Search",
           products: search_List,
@@ -96,6 +88,7 @@ router.post("/search", async (req, res) => {
           res.status(404).render("errorPage/noSearch", {
             title: "No Result",
             message: "No Product found with that description",
+            authenticated: req.session.user ? true : false,
           });
           return;
         } else {
@@ -118,18 +111,15 @@ router.get("/search/:id", async (req, res) => {
   if (!searchTerm || searchTerm.trim().length == 0) {
     res.status(404).render("errorPage/noSearch", {
       message: "Search bar should not be blank",
+      authenticated: req.session.user ? true : false,
+      title: "Search",
     });
     return "Error: Search term blank";
   } else {
     searchTerm = searchTerm.toLowerCase();
-    //console.log(searchTerm);
-    //console.log(searchValue);
     if (searchValue === "name" || searchValue === "Search product by") {
       try {
         let search_List = await productData.getProductByProductName(searchTerm);
-        //console.log(search_List);
-        //return only the json
-        console.log(search_List);
         res.status(200).render("searchPage/searchPage", {
           title: "Search",
           products: search_List,
@@ -137,19 +127,22 @@ router.get("/search/:id", async (req, res) => {
       } catch (e) {
         return res.status(404).render("errorPage/noSearch", {
           title: "Error",
+          authenticated: req.session.user ? true : false,
         });
       }
     }
     if (searchValue === "tag") {
       try {
         let search_List = await productData.getProductbyTag(searchTerm);
-        //console.log(search_List);
         res.status(200).render("searchPage/searchPage", {
           title: "Search",
           products: search_List,
         });
       } catch (e) {
-        return res.status(404).render("errorPage/noSearch", { title: "Error" });
+        return res.status(404).render("errorPage/noSearch", {
+          title: "Error",
+          authenticated: req.session.user ? true : false,
+        });
       }
     }
   }
@@ -341,7 +334,10 @@ router.get("/:id", async (req, res) => {
     return;
   } catch (e) {
     console.log(e);
-    res.render("errorPage/404");
+    res.render("errorPage/404", {
+      authenticated: req.session.user ? true : false,
+      title: "404",
+    });
   }
 });
 
@@ -427,7 +423,10 @@ router.get(
       });
     } catch (e) {
       console.log(e);
-      res.render("errorPage/404");
+      res.render("errorPage/404", {
+        authenticated: req.session.user ? true : false,
+        title: "404",
+      });
     }
   }
 );
@@ -465,7 +464,6 @@ router.post(
       websiteUrl = xss(websiteUrl);
       tags = xss(tags);
       developer = xss(developer);
-      console.log("test", req.file?.filename || product.logo);
       let photo = req.file?.filename || product.logo;
       photo = xss(photo);
       photo = photo.trim();
