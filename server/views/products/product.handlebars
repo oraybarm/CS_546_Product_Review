@@ -58,6 +58,7 @@
 <div id="reviews">
   <h3>Reviews:</h3>
   {{#if userLogged}}
+  {{#if IsDeveloper}}
   <div id="box">
     <div class="box_top">
       <ul>
@@ -78,6 +79,7 @@
         Submit
       </button>
     </div>
+    {{/if}}
     {{/if}}
     <ul id="comment_content"></ul>
   </div>
@@ -124,12 +126,24 @@
             <label for="rating" style="color:rgb(32, 21, 4);text-align:center;"
               >Rating</label
             >
-            <input
+            {{!-- <input
               type="text"
               id="rating1"
               name="rating"
               value="{{this.rating}}"
-            />
+            /> --}}
+            <select
+								class="form-select"
+								id="rating1"
+								name="rating"            
+							>
+                <option value="{{this.rating}}" disabled="value">{{this.rating}}</option>
+								<option value="1">1</option>
+								<option value="2">2</option>
+                <option value="3">3</option>
+                <option value="4">4</option>
+                <option value="5">5</option>
+							</select>
             <br />
             <br />
             <button
