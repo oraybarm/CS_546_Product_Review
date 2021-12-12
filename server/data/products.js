@@ -42,7 +42,6 @@ function checkInputs(
   //let parsedTags = [...new Set(tags)];
   for (let i = 0; i < tags.length; i++) {
     tags[i] = tags[i].trim();
-    tags[i] = tags[i].split(" ").join("");
     if (typeof tags[i] !== "string" || tags[i].trim().length < 1) {
       throw "Error: Tag is not of string type or tag field is empty";
     }
