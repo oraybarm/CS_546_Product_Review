@@ -100,10 +100,7 @@ const exportedMethods = {
     );
     if (!updatedInfo.matchedCount && !updatedInfo.modifiedCount)
       throw "Update rating failed";
-    //Changes to be made before running seed file.
-    // Please un-comment the below line before runnning the seed file and comment line 108
-    //return newReview;
-    //Please un-comment the below line before testing the webapp and comment line 105
+    
     return insertInfo;
   },
 

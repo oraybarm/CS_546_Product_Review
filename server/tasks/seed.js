@@ -1,14 +1,5 @@
-// NOTE:
-// 1) Go to /data/reviews.js
-// 2)
-//
-//
-//
-//
-//
-//
-//
-//
+//Seed file to populate databse
+//npm run seed
 
 const dbConnection = require("../config/mongoConnection");
 const { users } = require("../data");
@@ -23,7 +14,14 @@ const main = async () => {
     //common password for all the users
     const password = "password";
 
+
     //creating develoeprs
+
+    console.log("Creating Users :");
+    console.log("To login with email and password");
+    console.log("email: username@xyz.com");
+    console.log("I've added password for all users the same");
+    console.log("password: password");
 
     const dev1 = await users.createUser("Levi Szabo", "levi@xyz.com", password);
     const dev2 = await users.createUser(
@@ -116,8 +114,12 @@ const main = async () => {
     const user6 = await users.createUser("Erik", "erik@xyz.com", password);
     const user7 = await users.createUser("Emma", "emma@xyz.com", password);
     const user8 = await users.createUser("Lucas", "lucas@xyz.com", password);
-    //users uploading profile picture using update dbfunction
 
+    console.log("All the users are added.");
+    console.log("#################################################################");
+    //users uploading profile picture using update dbfunction
+     
+    console.log("users uploading profile picture");
     await users.updateUser({
       password: password,
       photo: "sophia.jpeg",
@@ -166,69 +168,16 @@ const main = async () => {
       name: "Lucas",
       email: "lucas@xyz.com",
     });
+
     //creating products
 
-    const prod1 = await products.addProduct(
-      "NeuralCam 5",
-      "NeuralCam 5 is the most advanced Computational Photography Camera App for the iPhone for both Night and Day photos. Capture better photos with AI powered 48MP Super-resolution, Macro-Mode and NeuralHDR.",
-      "https://neural.cam",
-      "neuralCam.png",
-      ["Photography", "IPhone", "Artificial Intelligence"],
-      "Levi Szabo",
-      dev1.user._id.toString()
-    );
+    console.log("#################################################################");
+    console.log("Creating Products");
 
-    // {"_id":{"$oid":"61b462c2ea8741b8257eb915"},"productName":"NeuralCam 5","description":"NeuralCam 5 is the most advanced Computational Photography Camera App for the iPhone for both Night and Day photos. Capture better photos with AI powered 48MP Super-resolution, Macro-Mode and NeuralHDR.","websiteUrl":"https://neural.cam","logo":"neuralCam.png","tags":["Photography","IPhone","Artificial Intelligence"],"developer":"Levi Szabo","reviews":[],"rating":"5.00","likes":0,"devId":"61b462c2ea8741b8257eb914"}
 
-    const prod2 = await products.addProduct(
-      "Break",
-      "See when your friends are available and signal when you need a break - to live your social life in full. Send a signal to a group of people you choose and have a spontaneous audio chat, grab a cup of coffee together or meet for lunch to catch up.",
-      "https://www.break.is",
-      "break.jpeg",
-      ["Free", "Social Media Tools"],
-      "Bjoggi Gudmundsson",
-      dev2.user._id.toString()
-    );
 
-    const prod3 = await products.addProduct(
-      "PogChat",
-      "PogChat is a Twitch extension that provides a place to talk about streamers, games, esports, and more in a fun way. Login with Twitch, see popular topics, and engage with the community!",
-      "https://www.pogchat.gg",
-      "PogChat.png",
-      ["Chrome Extension", "Messaging", "Social Media Tools", "Games"],
-      "Aaron Vontell",
-      dev3.user._id.toString()
-    );
-
-    const prod4 = await products.addProduct(
-      "Grasshopper",
-      "Grasshopper is the coding app for beginners. With fun, quick lessons on your phone, the app teaches adult learners to write real JavaScript. It’s currently available for free on Android and iOS. Grasshopper is built by a team within Area 120, a workshop for experimental projects.",
-      "https://grasshopper.app",
-      "Grasshopper.png",
-      ["Puzzle Games", "Free", "Education"],
-      "Laura Holmes",
-      dev4.user._id.toString()
-    );
-
-    const prod5 = await products.addProduct(
-      "JSRobot",
-      "Control a robot to collect coins and reach the end of a level by learning to code in JavaScript",
-      "https://lab.reaal.me",
-      "JSRobot.jpeg",
-      ["Free", "Education", "Games"],
-      "Reaal Khalil",
-      dev5.user._id.toString()
-    );
-
-    const prod6 = await products.addProduct(
-      "AutoDraw",
-      "Autocorrect for drawing, by Google",
-      "https://www.autodraw.com",
-      "AutoDraw.png",
-      ["Art", "Artificial Intelligence"],
-      "Glenn Cochon",
-      dev6.user._id.toString()
-    );
+    
+   
 
     const prod7 = await products.addProduct(
       "What's Next",
@@ -326,41 +275,113 @@ const main = async () => {
       "Mikael Cho",
       dev16.user._id.toString()
     );
+    
+    const prod3 = await products.addProduct(
+        "PogChat",
+        "PogChat is a Twitch extension that provides a place to talk about streamers, games, esports, and more in a fun way. Login with Twitch, see popular topics, and engage with the community!",
+        "https://www.pogchat.gg",
+        "PogChat.png",
+        ["Chrome Extension", "Messaging", "Social Media Tools", "Games"],
+        "Aaron Vontell",
+        dev3.user._id.toString()
+      );
+  
+      const prod4 = await products.addProduct(
+        "Grasshopper",
+        "Grasshopper is the coding app for beginners. With fun, quick lessons on your phone, the app teaches adult learners to write real JavaScript. It’s currently available for free on Android and iOS. Grasshopper is built by a team within Area 120, a workshop for experimental projects.",
+        "https://grasshopper.app",
+        "Grasshopper.png",
+        ["Puzzle Games", "Free", "Education"],
+        "Laura Holmes",
+        dev4.user._id.toString()
+      );
+  
+      const prod5 = await products.addProduct(
+        "JSRobot",
+        "Control a robot to collect coins and reach the end of a level by learning to code in JavaScript",
+        "https://lab.reaal.me",
+        "JSRobot.jpeg",
+        ["Free", "Education", "Games"],
+        "Reaal Khalil",
+        dev5.user._id.toString()
+      );
+  
+      const prod6 = await products.addProduct(
+        "AutoDraw",
+        "Autocorrect for drawing, by Google",
+        "https://www.autodraw.com",
+        "AutoDraw.png",
+        ["Art", "Artificial Intelligence"],
+        "Glenn Cochon",
+        dev6.user._id.toString()
+      );
 
-    //Users adding Reviews for Product1
+    const prod1 = await products.addProduct(
+        "NeuralCam 5",
+        "NeuralCam 5 is the most advanced Computational Photography Camera App for the iPhone for both Night and Day photos. Capture better photos with AI powered 48MP Super-resolution, Macro-Mode and NeuralHDR.",
+        "https://neural.cam",
+        "neuralCam.png",
+        ["Photography", "IPhone", "Artificial Intelligence"],
+        "Levi Szabo",
+        dev1.user._id.toString()
+      );
+  
+      // {"_id":{"$oid":"61b462c2ea8741b8257eb915"},"productName":"NeuralCam 5","description":"NeuralCam 5 is the most advanced Computational Photography Camera App for the iPhone for both Night and Day photos. Capture better photos with AI powered 48MP Super-resolution, Macro-Mode and NeuralHDR.","websiteUrl":"https://neural.cam","logo":"neuralCam.png","tags":["Photography","IPhone","Artificial Intelligence"],"developer":"Levi Szabo","reviews":[],"rating":"5.00","likes":0,"devId":"61b462c2ea8741b8257eb914"}
+  
+      const prod2 = await products.addProduct(
+        "Break",
+        "See when your friends are available and signal when you need a break - to live your social life in full. Send a signal to a group of people you choose and have a spontaneous audio chat, grab a cup of coffee together or meet for lunch to catch up.",
+        "https://www.break.is",
+        "break.jpeg",
+        ["Free", "Social Media Tools"],
+        "Bjoggi Gudmundsson",
+        dev2.user._id.toString()
+      );
+      
+  
+
+
+    //Adding Reviews for few products
+ 
+    console.log("#################################################################");
+    console.log("Adding Reviews");
+
+       //Users adding Reviews for Product1
 
     const prod1_review1 = await reviews.AddReview(
       prod1._id,
       "Awesome, very useful",
       "5"
     );
-    await reviews.AddReviewToUser(user1.user._id, prod1_review1._id);
+
+    await reviews.AddReviewToUser(user1.user._id, prod1_review1.insertedId);
 
     const prod1_review2 = await reviews.AddReview(
       prod1._id,
       "Great, I like it so far",
       "4"
     );
-    await reviews.AddReviewToUser(user2.user._id, prod1_review2._id);
+    await reviews.AddReviewToUser(user2.user._id, prod1_review2.insertedId);
 
     //Users adding Reviews for Product2
+
     const prod2_review1 = await reviews.AddReview(prod2._id, "I like it", "5");
-    await reviews.AddReviewToUser(user2.user._id, prod2_review1._id);
+    await reviews.AddReviewToUser(user2.user._id, prod2_review1.insertedId);
 
     const prod2_review2 = await reviews.AddReview(
       prod2._id,
       "Mind Blowing",
       "5"
     );
-    await reviews.AddReviewToUser(user3.user._id, prod2_review2._id);
+    await reviews.AddReviewToUser(user3.user._id, prod2_review2.insertedId);
 
     //Users adding Reviews for Product3
 
     const prod3_review1 = await reviews.AddReview(prod3._id, "So good", "5");
-    await reviews.AddReviewToUser(user7.user._id, prod3_review1._id);
+    await reviews.AddReviewToUser(user7.user._id, prod3_review1.insertedId);
 
     const prod3_review2 = await reviews.AddReview(prod3._id, "Nice", "4");
-    await reviews.AddReviewToUser(user8.user._id, prod3_review2._id);
+    await reviews.AddReviewToUser(user8.user._id, prod3_review2.insertedId);
 
     //Users adding Reviews for Product4
 
@@ -369,10 +390,10 @@ const main = async () => {
       "Can't be better than this",
       "5"
     );
-    await reviews.AddReviewToUser(user4.user._id, prod4_review1._id);
+    await reviews.AddReviewToUser(user4.user._id, prod4_review1.insertedId);
 
     const prod4_review2 = await reviews.AddReview(prod4._id, "Great", "5");
-    await reviews.AddReviewToUser(user5.user._id, prod4_review2._id);
+    await reviews.AddReviewToUser(user5.user._id, prod4_review2.insertedId);
 
     //Users adding Reviews for Product5
 
@@ -381,10 +402,10 @@ const main = async () => {
       "Positive Review",
       "5"
     );
-    await reviews.AddReviewToUser(user8.user._id, prod5_review1._id);
+    await reviews.AddReviewToUser(user8.user._id, prod5_review1.insertedId);
 
     const prod5_review2 = await reviews.AddReview(prod5._id, "Good", "3");
-    await reviews.AddReviewToUser(user6.user._id, prod5_review2._id);
+    await reviews.AddReviewToUser(user6.user._id, prod5_review2.insertedId);
 
     //Users adding Reviews for Product10
 
@@ -393,10 +414,33 @@ const main = async () => {
       "Positive Review",
       "5"
     );
-    await reviews.AddReviewToUser(user3.user._id, prod10_review1._id);
+    await reviews.AddReviewToUser(user3.user._id, prod10_review1.insertedId);
 
     const prod10_review2 = await reviews.AddReview(prod10._id, "Good", "3");
-    await reviews.AddReviewToUser(user5.user._id, prod10_review2._id);
+    await reviews.AddReviewToUser(user5.user._id, prod10_review2.insertedId);
+
+
+    //Users adding Reviews for Product6
+
+    const prod6_review1 = await reviews.AddReview(
+        prod6._id,
+        "Positive Review",
+        "5"
+      );
+      await reviews.AddReviewToUser(user4.user._id, prod6_review1.insertedId);
+  
+      const prod6_review2 = await reviews.AddReview(prod6._id, "Negative Review", "2");
+      await reviews.AddReviewToUser(user5.user._id, prod6_review2.insertedId);
+      
+  
+      const prod6_review3 = await reviews.AddReview(
+        prod6._id,
+        "Decent",
+        "3"
+      );
+      await reviews.AddReviewToUser(user6.user._id, prod6_review3.insertedId);
+
+
 
     //Users adding likes for Product1
 
@@ -521,6 +565,71 @@ const main = async () => {
 
     await users.updateLikedProducts(user8.user._id.toString());
     await products.updateCount(prod4._id.toString(), true);
+
+
+    //Creating community
+    console.log("#################################################################");
+    console.log("Creating community posts");
+
+    //post1
+    const post1 = await community.createPost(user1.user._id,"My first post");
+    await community.replyToPost(post1._id,user2.user._id,"You will like it here");
+    await community.replyToPost(post1._id,user3.user._id,"Explore stuff");
+    await community.likePost(post1._id,user2.user._id);
+    await community.likePost(post1._id,user3.user._id);
+
+
+    //post2
+    const post2 = await community.createPost(user2.user._id,"How are you guys doing?");
+    await community.replyToPost(post2._id,user3.user._id,"I am doing great! How about you?");
+
+
+
+
+    //post3
+    const post3 = await community.createPost(user4.user._id,"I'm pretty new here");
+    await community.replyToPost(post1._id,user5.user._id,"Welcome");
+    await community.replyToPost(post1._id,user6.user._id,"Great");
+    await community.replyToPost(post1._id,user7.user._id,"Nice");
+    await community.replyToPost(post1._id,user8.user._id,"Lmk if you need anything. I would be happy to help");
+    await community.likePost(post3._id,user2.user._id);
+    await community.likePost(post3._id,user3.user._id);
+    await community.likePost(post3._id,user4.user._id);
+    await community.likePost(post3._id,user5.user._id);
+
+
+    //post4
+    const post4 = await community.createPost(user5.user._id,"Can anyone suggest some good saas product");
+    await community.replyToPost(post4._id,user2.user._id,"Yeah.");
+    await community.replyToPost(post4._id,user3.user._id,"Nope");
+    await community.likePost(post4._id,user2.user._id);
+    await community.likePost(post4._id,user3.user._id);
+
+
+    //post5
+    const post5 = await community.createPost(user7.user._id,"My first post");
+
+    await community.replyToPost(post5._id,user2.user._id,"You will like it here");
+    await community.replyToPost(post5._id,user3.user._id,"Explore stuff");
+    await community.likePost(post5._id,user2.user._id);
+    await community.likePost(post5._id,user3.user._id);
+
+    
+
+    //post6
+    const post6 = await community.createPost(user8.user._id,"Do you think AI will takeover the world in the near future");
+
+    await community.replyToPost(post6._id,user6.user._id,"No, that's never going to happen. They can't be as smart as human");
+    await community.replyToPost(post6._id,user5.user._id,"I have to disagree with you here.");
+    await community.replyToPost(post6._id,user4.user._id,"I'm interested in AI");
+    await community.likePost(post6._id,user6.user._id);
+    await community.likePost(post6._id,user5.user._id);
+
+
+
+    console.log("#################################################################");
+    console.log("Done Seeding");
+
   } catch (e) {
     console.log("Error : ", e);
   }
