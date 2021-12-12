@@ -25,13 +25,14 @@ module.exports = {
     isValidEmail(email);
     isValidPassword(password);
     const userCollection = await users();
+    userCollection.createIndex({ email: 1 }, { unique: true });
     const userData = await userCollection.findOne({ email });
     if (userData) {
       throw "User already exists";
     }
     const hash = await bcrypt.hash(password, saltRounds);
 
-    const user ={
+    const user = {
       name,
       email,
       password: hash,
@@ -41,7 +42,6 @@ module.exports = {
     if (insertInfo.insertedCount === 0)
       throw { message: "Unable to add user", code: 500 };
     return { userInserted: true, user: user };
-    
   },
 
   async checkUser(email, password) {
@@ -52,6 +52,7 @@ module.exports = {
     isValidEmail(email);
     isValidPassword(password);
     const userCollection = await users();
+    userCollection.createIndex({ email: 1 }, { unique: true });
     const user = await userCollection.findOne({ email });
     if (!user) throw "Either the email or password is invalid";
     const passwordCorrect = await bcrypt.compare(password, user.password);
