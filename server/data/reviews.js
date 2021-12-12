@@ -29,8 +29,7 @@ function myDBfunction(id) {
   if (typeof id !== "string") throw "Id must be a string";
   //Now we check if it's a valid ObjectId so we attempt to convert a value to a valid object ID,
   let parsedId = ObjectId(id);
-  //this console.log will not get executed if Object(id) fails, as it will throw an error
-  //console.log('Parsed it correctly, now I can pass parsedId into my query.');
+
   return parsedId;
 }
 
@@ -101,9 +100,10 @@ const exportedMethods = {
     );
     if (!updatedInfo.matchedCount && !updatedInfo.modifiedCount)
       throw "Update rating failed";
-    //Fix to show reviews
-    // Fix to run seed file change to
+    //Changes to be made before running seed file.
+    // Please un-comment the below line before runnning the seed file and comment line 108
     //return newReview;
+    //Please un-comment the below line before testing the webapp and comment line 105
     return insertInfo;
   },
 
@@ -181,7 +181,6 @@ const exportedMethods = {
     let productId = rev.product;
     let rateall = 0;
     const prodreview = await this.getReviewbyProductId(productId);
-    console.log(prodreview);
     let averagerate = 0;
     if (prodreview.length != 0) {
       averagerate = rateall / prodreview.length;
@@ -225,7 +224,6 @@ const exportedMethods = {
 
     let rateall = 0;
     const prodreview = await this.getReviewbyProductId(productId);
-    console.log(prodreview);
     let averagerate = 0;
     if (prodreview.length != 0) {
       averagerate = rateall / prodreview.length;
@@ -284,7 +282,6 @@ const exportedMethods = {
     let review = {};
     for (let i = 0; i < reviewsid.length; i++) {
       review = await this.getReviewById(reviewsid[i]._id);
-      console.log(review);
       const product = await productData.getProductById(review.product);
       reviewlist.push({
         ...review,

@@ -30,13 +30,13 @@
             <img class="userimg" src="../../public/images/guest-user.jpg" alt="User" />
         </li>
         <li><p>This product is a perfect product!</p></li>
-        <li><img src="../../public/images/4.png" alt="user" ></li>
+        <li><img src="../../public/images/4.png" alt="4 star" ></li>
         <hr>
         {{#if hasPost}}
         {{#each posts}}
         <li><img class="userimg" src="{{this.image}}" alt="user">{{this.username}} </li>
         <li><p>{{this.description}}</p></li>
-        <li><img src="../../public/images/{{this.rating}}.png" alt="star" ></li>
+        <li><img src="../../public/images/{{this.rating}}.png" alt="rating star" ></li>
         {{#if this.usernow}}
         <a href="javascript:void(0)" class="delete-info" style="font-size:17px !important;margin:0 !important;"><div onclick="DeleteInfo({{this._id}})">Delete</div></a>
         <div class="more-tjm-info" onclick="moreWhInfo()">Update</div>
@@ -77,8 +77,7 @@
                 return
             }
             var newLi = document.createElement('li')
-            newLi.innerHTML = `${content}<br/><img src="../../public/images/${rateval +
-                1}.png" alt="review"><a href="javascript:void(0)">Delete</a>`
+            newLi.innerHTML = `${content}<br/><img src="../../public/images/${rateval +1}.png" alt="review"><a href="javascript:void(0)">Delete</a>`
             // $("comment_content").appendChild(newLi);   //Method 1
             $('comment_content').insertBefore(
                 newLi,

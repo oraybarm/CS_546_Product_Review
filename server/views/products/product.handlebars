@@ -86,7 +86,7 @@
   <div id="reviewpart">
     <ul>
       {{#if hasPost}} {{#each posts}}
-      <li><img class="userimg" src="{{this.image}}" />{{this.username}}</li>
+      <li><img class="userimg" src="{{this.image}}" alt="{{this.username}}"/>{{this.username}}</li>
       <li><p>{{this.description}}</p></li>
       <li><img src="../../public/images/{{this.rating}}.png" /></li>
       {{#if this.usernow}}

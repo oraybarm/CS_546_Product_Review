@@ -169,14 +169,10 @@ let exportedMethods = {
     return soredTagByLikes;
   },
   async updateCount(prodId, liked) {
-    //This was used to populate using seed file
-
-    // if (typeof prodId === "undefined") throw "prodId is not provided";
-    // if (typeof liked === "undefined") throw "liked is not provided";
-    // if (typeof prodId != "string") throw "prodId is not a string";
-    // if (typeof liked != "boolean") throw "liked is not a boolean value";
-    // if (prodId.trim() === "") throw "prodId is blank";
-
+    if (!prodId || !liked) throw "Error: Empty product_id & liked product";
+    if (typeof prodId != "string") throw "prodId is not a string";
+    if (typeof liked != "boolean") throw "liked is not a boolean value";
+    if (prodId.trim().length < 1) throw "Product_id is blank";
     let objId = ObjectId(prodId);
     const productCollection = await products();
     const product = await productCollection.findOne({ _id: objId });
@@ -207,10 +203,6 @@ let exportedMethods = {
     if (!prodCheck) {
       throw "Error: Product to be deleted was not found in the database";
     }
-    //giving all reviews for product to be deleted
-
-    //console.log("Shilin");
-
     const delProd = prodList.deleteOne({ _id: prodId });
     if (delProd.deletedCount == 0) {
       throw `Product ${delProd.name} could not be deleted`;
