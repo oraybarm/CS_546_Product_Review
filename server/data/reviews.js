@@ -282,11 +282,16 @@ const exportedMethods = {
     let review = {};
     for (let i = 0; i < reviewsid.length; i++) {
       review = await this.getReviewById(reviewsid[i]._id);
-      const product = await productData.getProductById(review.product);
+      let product;
+      try {
+        product = await productData.getProductById(review.product);
+      } catch (error) {
+        product = null;
+      }
       reviewlist.push({
         ...review,
-        productName: product.productName || "",
-        productImg: product.logo || " ",
+        productName: product?.productName || "",
+        productImg: product?.logo || " ",
       });
     }
     return reviewlist;
