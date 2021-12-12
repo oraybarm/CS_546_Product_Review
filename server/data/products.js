@@ -41,6 +41,8 @@ function checkInputs(
     throw "Error: Tag is not of string type or tag field is empty";
   //let parsedTags = [...new Set(tags)];
   for (let i = 0; i < tags.length; i++) {
+    tags[i] = tags[i].trim();
+    tags[i] = tags[i].split(" ").join("");
     if (typeof tags[i] !== "string" || tags[i].trim().length < 1) {
       throw "Error: Tag is not of string type or tag field is empty";
     }
@@ -196,7 +198,7 @@ let exportedMethods = {
     isValidObjectId(prodId);
     prodId = ObjectId(prodId);
     const prodList = await products();
-    const reviewList = await reviews();
+    const userList = await users();
     const prodCheck = prodList.findOne({ _id: prodId });
     if (!prodCheck) {
       throw "Error: Product to be deleted was not found in the database";
