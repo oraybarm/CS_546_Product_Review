@@ -101,7 +101,7 @@ router.get("/post/:id", async (req, res) => {
     res.render("community/post", {
       title: `${post.name}`,
       authenticated: req.session.user ? true : false,
-      user: req.session.user || "",
+      user: user.name || "",
       src,
       post,
       replies: replies.reverse(),
