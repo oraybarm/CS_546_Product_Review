@@ -63,6 +63,7 @@ router.post("/search", async (req, res) => {
 
         res.status(200).render("searchPage/searchPage", {
           title: "Search",
+          searchBy: searchTerm,
           products: search_List,
         });
         return;
@@ -80,6 +81,7 @@ router.post("/search", async (req, res) => {
         let search_List = await productData.getProductbyTag(searchTerm);
         res.status(200).render("searchPage/searchPage", {
           title: "Search",
+          searchBy: searchTerm,
           products: search_List,
         });
         return;
@@ -116,6 +118,8 @@ router.get("/search/:id", async (req, res) => {
     });
     return "Error: Search term blank";
   } else {
+    searchTerm = searchTerm.split("-").join(" ");
+    console.log("searchTerm", searchTerm);
     searchTerm = searchTerm.toLowerCase();
     if (searchValue === "name" || searchValue === "Search product by") {
       try {
@@ -123,6 +127,7 @@ router.get("/search/:id", async (req, res) => {
         res.status(200).render("searchPage/searchPage", {
           title: "Search",
           products: search_List,
+          searchBy: searchTerm,
         });
       } catch (e) {
         return res.status(404).render("errorPage/noSearch", {
@@ -137,6 +142,7 @@ router.get("/search/:id", async (req, res) => {
         res.status(200).render("searchPage/searchPage", {
           title: "Search",
           products: search_List,
+          searchBy: searchTerm,
         });
       } catch (e) {
         return res.status(404).render("errorPage/noSearch", {
@@ -247,6 +253,8 @@ router.post(
           devId
         );
 
+        console.log(`newProduct`, newProduct);
+
         res.redirect("/");
       } catch (e) {
         console.log("error", e);
@@ -325,6 +333,7 @@ router.get("/:id", async (req, res) => {
       logo: product.logo,
       site: product.websiteUrl,
       tags: product.tags,
+      tagAlias: product.tagAlias,
       developer: product.developer,
       rating: product.rating,
       likes: product.likes,

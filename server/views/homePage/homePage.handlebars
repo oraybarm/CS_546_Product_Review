@@ -57,13 +57,12 @@
           <div
             class="tagContainer d-flex flex-wrap align-items-center justify-content-center"
           >
-            {{#each tags}}
+            {{#each tagAlias}}
             <a
-              href="/products/search/{{this}}"
-              id="{{this}}"
+              href="/products/search/{{this.alias}}"
               class="my-0 btn btn-danger h-10 tagPill"
             >
-              {{this}}
+              {{this.name}}
             </a>
             {{/each}}
             <a

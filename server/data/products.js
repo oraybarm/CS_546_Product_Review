@@ -47,6 +47,20 @@ function checkInputs(
   }
 }
 
+const createTagAlias = (tags) => {
+  let tagAlias = [];
+  tagAlias = tags.reduce((acc, tag) => {
+    const newtag =
+      tag.trim().split(" ").length > 1
+        ? tag.trim().split(" ").join("-")
+        : tag.trim();
+
+    const newElem = { name: tag.trim(), alias: newtag };
+    acc.push(newElem);
+    return acc;
+  }, []);
+  return tagAlias;
+};
 //
 // Just a helper function to check db id's
 //
@@ -111,6 +125,7 @@ let exportedMethods = {
       rating: 0.0,
       likes: 0,
       devId: devId,
+      tagAlias: createTagAlias(tags),
     };
     const checkProd = await productList.findOne({
       productName: productName,
