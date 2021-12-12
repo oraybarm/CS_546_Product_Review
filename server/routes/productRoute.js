@@ -5,6 +5,7 @@ const { authMiddleware } = require("../middlewares/auth");
 const session = require("express-session");
 const xss = require("xss");
 const multer = require("multer");
+const reviewData = require("../data/reviews");
 const userData = require("../data/users");
 const { ObjectId } = require("mongodb");
 
@@ -322,9 +323,9 @@ router.get("/:id", async (req, res) => {
     if (posts.length > 0) {
       hasPost = true;
     }
-    let IsDeveloper=true;
-    if(product.devId.toString()==usernow){
-      IsDeveloper=false;
+    let IsDeveloper = true;
+    if (product.devId.toString() == usernow) {
+      IsDeveloper = false;
     }
     res.render("products/product", {
       authenticated: req.session.user ? true : false,
@@ -343,7 +344,7 @@ router.get("/:id", async (req, res) => {
       hasPost: hasPost,
       productid: req.params.id,
       title: `${product.productName}`,
-      IsDeveloper
+      IsDeveloper,
     });
     return;
   } catch (e) {
@@ -399,7 +400,18 @@ router.post("/delete/:productId", authMiddleware, async (req, res) => {
       return res.status(403).json({ error: "User cannot delete this product" });
     }
     productId = productId.toString();
+    const reviewArr = await reviewData.getReviewbyProductId(productId);
+    console.log(reviewArr);
+    for (let i = 0; i < reviewArr.length; i++) {
+      const usrDataDel = await reviewData.DeleteOneReviewToUser(
+        reviewArr[i]._id.toString()
+      );
+      const revDataDel = await reviewData.deleteReview(
+        reviewArr[i]._id.toString()
+      );
+    }
     const delProd = await productData.deleteProduct(productId);
+
     return res.status(200).json({ message: `${delProd} was deleted` });
   } catch (e) {
     return res.status(400).json({ error: `${e}` });

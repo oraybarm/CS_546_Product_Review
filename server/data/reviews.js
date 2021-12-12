@@ -100,7 +100,7 @@ const exportedMethods = {
     );
     if (!updatedInfo.matchedCount && !updatedInfo.modifiedCount)
       throw "Update rating failed";
-    
+
     return insertInfo;
   },
 
@@ -300,10 +300,11 @@ const exportedMethods = {
     checkString(reviewId);
     reviewId = myDBfunction(reviewId);
     const reviewCollection = await users();
-    const updateInfo = await reviewCollection.updateOne(
+    const updateInfo = await reviewCollection.updateMany(
       {},
       { $pull: { reviews: { _id: reviewId } } }
     );
+    console.log(updateInfo);
     if (!updateInfo.matchedCount && !updateInfo.modifiedCount)
       throw "Update failed";
     return "Delete review to user successfully!";
