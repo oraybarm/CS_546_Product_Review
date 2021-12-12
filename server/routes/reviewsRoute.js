@@ -85,7 +85,6 @@ router.post("/", authMiddleware, async (req, res) => {
         authenticated: req.session.user ? true : false,
       };
     }
-    console.log(result);
     addreviewtouser = await reviews.AddReviewToUser(
       user._id,
       result.insertedId
