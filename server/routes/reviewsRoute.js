@@ -64,7 +64,6 @@ router.get("/", async (req, res) => {
 });
 
 router.post("/", authMiddleware, async (req, res) => {
-  console.log(req.body);
   try {
     let user = await getUser(req.session.user);
     let review = req.body.content;
@@ -80,7 +79,11 @@ router.post("/", authMiddleware, async (req, res) => {
     //this id is productid(get from product description page,but we don't have product page now)
     result = await reviews.AddReview(productid, review, rating);
     if (!user._id) {
-      throw "Unable to get user Id";
+      throw {
+        message: "Unable to get user Id",
+        code: 500,
+        authenticated: req.session.user ? true : false,
+      };
     }
     console.log(result);
     addreviewtouser = await reviews.AddReviewToUser(
@@ -95,13 +98,13 @@ router.post("/", authMiddleware, async (req, res) => {
       res.status(500).render("errorPage/errorHandling", {
         title: "OOPS!",
         message: `Internal Server error.${e.message}`,
+        authenticated: req.session.user ? true : false,
       });
     }
   }
 });
 
 router.post("/update", async (req, res) => {
-  //console.log(req.body);
   try {
     let review = req.body.newdes;
     let rating = req.body.newrate;
@@ -113,15 +116,21 @@ router.post("/update", async (req, res) => {
     isValidString(review, "review");
     isValidString(rating, "rating");
     result = await reviews.updateReviewbyId(reviewid, review, rating);
-    console.log(result);
   } catch (e) {
     if (!e.code) {
       console.log(e);
-      res.status(400).render("review/review");
+      res.status(400).render("review/review", {
+        title: "OOPS!",
+        message: `Internal Server error.${e.message}`,
+        authenticated: req.session.user ? true : false,
+        error: e,
+      });
     } else {
       res.status(500).render("errorPage/errorHandling", {
         title: "OOPS!",
         message: `Internal Server error. ${e.message}`,
+        authenticated: req.session.user ? true : false,
+        error: e,
       });
     }
   }

@@ -4,6 +4,7 @@ const users = mongoCollections.users;
 const products = mongoCollections.products;
 const { ObjectId } = require("mongodb");
 const userfun = require("./users");
+const productData = require("./products");
 
 function checkString(str) {
   if (str === undefined) {
@@ -28,8 +29,7 @@ function myDBfunction(id) {
   if (typeof id !== "string") throw "Id must be a string";
   //Now we check if it's a valid ObjectId so we attempt to convert a value to a valid object ID,
   let parsedId = ObjectId(id);
-  //this console.log will not get executed if Object(id) fails, as it will throw an error
-  //console.log('Parsed it correctly, now I can pass parsedId into my query.');
+
   return parsedId;
 }
 
@@ -74,31 +74,38 @@ const exportedMethods = {
       product: productId,
     };
     const insertInfo = await reviewCollection.insertOne(newReview);
-    if (insertInfo.insertedCount === 0)
-      throw { message: "Could not add review", code: 500 };
+    if (insertInfo.insertedCount === 0) throw "Could not add review";
 
     let rateall = 0;
     const prodreview = await this.getReviewbyProductId(productId);
+    let arr = [];
     for (let i = 0; i < prodreview.length; i++) {
       rateall = parseInt(prodreview[i].rating) + rateall;
+      arr.push({ _id: prodreview[i]._id });
     }
-    let averagerate = rateall / prodreview.length;
+    let averagerate = 0;
+    if (prodreview.length != 0) {
+      averagerate = rateall / prodreview.length;
+    }
     averagerate = averagerate.toFixed(2);
     const prodCollection = await products();
+
     const updated = {
       rating: averagerate,
+      reviews: arr,
     };
-
     const updatedInfo = await prodCollection.updateOne(
       { _id: productId },
       { $set: updated }
     );
     if (!updatedInfo.matchedCount && !updatedInfo.modifiedCount)
-      throw 'Update rating failed'; 
-  
+      throw "Update rating failed";
+    //Changes to be made before running seed file.
+    // Please un-comment the below line before runnning the seed file and comment line 108
     //return newReview;
+    //Please un-comment the below line before testing the webapp and comment line 105
     return insertInfo;
-    },
+  },
 
   async AddReviewToUser(userid, reviewId) {
     if (!userid) throw "You must provide an id";
@@ -121,7 +128,7 @@ const exportedMethods = {
       { $addToSet: { reviews: newRest } }
     );
     if (!updateInfo.matchedCount && !updateInfo.modifiedCount)
-      throw { message: "Update failed", code: 500 };
+      throw "Update failed";
     return "Add review to user successfully!";
   },
 
@@ -167,19 +174,15 @@ const exportedMethods = {
     );
 
     if (updatedInfo.modifiedCount === 0) {
-      throw { message: "Update Failed", code: 500 };
+      throw "could not update successfully";
     }
 
     const rev = await this.getReviewById(id);
     let productId = rev.product;
     let rateall = 0;
     const prodreview = await this.getReviewbyProductId(productId);
-    console.log(prodreview);
-    for (let i = 0; i < prodreview.length; i++) {
-      rateall = parseInt(prodreview[i].rating) + rateall;
-    }
-    let averagerate=0;
-    if(prodreview.length!=0){
+    let averagerate = 0;
+    if (prodreview.length != 0) {
       averagerate = rateall / prodreview.length;
     }
     averagerate = averagerate.toFixed(2);
@@ -193,7 +196,7 @@ const exportedMethods = {
       { $set: updatedp }
     );
     if (!updatedInfop.matchedCount && !updatedInfop.modifiedCount)
-      throw { message: "Update rating failed", code: 500 };
+      throw "Update rating failed";
 
     return "update successfully";
   },
@@ -211,25 +214,22 @@ const exportedMethods = {
     const rev = await this.getReviewById(reviewId);
     let productId = rev.product;
 
-    const deletionInfo = await reviewCollection.deleteOne({ _id: reviewId });
+    const deletionInfo = await reviewCollection.deleteOne({
+      _id: reviewId,
+    });
 
     if (deletionInfo.deletedCount === 0) {
-      throw {
-        message: `Could not delete restaurant with id of ${reviewId}`,
-        code: 500,
-      };
+      throw `Could not delete restaurant with id of ${reviewId}`;
     }
 
     let rateall = 0;
     const prodreview = await this.getReviewbyProductId(productId);
-    console.log(prodreview);
+    let averagerate = 0;
+    if (prodreview.length != 0) {
+      averagerate = rateall / prodreview.length;
+    }
     for (let i = 0; i < prodreview.length; i++) {
       rateall = parseInt(prodreview[i].rating) + rateall;
-    }
-    
-    let averagerate=0;
-    if(prodreview.length!=0){
-      averagerate = rateall / prodreview.length;
     }
     averagerate = averagerate.toFixed(2);
     const prodCollection = await products();
@@ -297,10 +297,34 @@ const exportedMethods = {
     let review = {};
     for (let i = 0; i < reviewsid.length; i++) {
       review = await this.getReviewById(reviewsid[i]._id);
-      reviewlist.push(review);
+      let product;
+      try {
+        product = await productData.getProductById(review.product);
+      } catch (error) {
+        product = null;
+      }
+      reviewlist.push({
+        ...review,
+        productName: product?.productName || "",
+        productImg: product?.logo || " ",
+      });
     }
-    console.log(reviewlist);
     return reviewlist;
+  },
+
+  async DeleteOneReviewToUser(reviewId) {
+    if (!reviewId) throw "You must provide an id";
+    reviewId = reviewId.toString();
+    checkString(reviewId);
+    reviewId = myDBfunction(reviewId);
+    const reviewCollection = await users();
+    const updateInfo = await reviewCollection.updateOne(
+      {},
+      { $pull: { reviews: { _id: reviewId } } }
+    );
+    if (!updateInfo.matchedCount && !updateInfo.modifiedCount)
+      throw "Update failed";
+    return "Delete review to user successfully!";
   },
 };
 

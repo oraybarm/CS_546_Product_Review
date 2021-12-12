@@ -29,7 +29,6 @@ router.get("/", async (req, res) => {
 router.get("/home", async (req, res) => {
   try {
     let prodList = await productData.getAllProducts();
-    //console.log(prodList);
     res.status(200).render("homePage/homePage", {
       title: "Home",
       authenticated: req.session.user ? true : false,
@@ -57,7 +56,11 @@ router.get("/home/chart", async (req, res) => {
       title: "Statistics",
     });
   } catch (e) {
-    res.status(404).render("/errorPage/404", { title: "Error" });
+    res.status(404).render("/errorPage/404", {
+      title: "Error",
+      error: e,
+      authenticated: req.session.user ? true : false,
+    });
   }
 });
 
@@ -66,7 +69,13 @@ router.get("/home/getchartdata", async (req, res) => {
     const chart = await charts.getVisualData();
     res.json(chart);
   } catch (e) {
-    res.status(404).render("/errorPage/404", { title: "Error" });
+    res
+      .status(404)
+      .render("/errorPage/404", {
+        title: "Error",
+        error: e,
+        authenticated: req.session.user ? true : false,
+      });
   }
 });
 

@@ -35,7 +35,6 @@ router.get("/users/:id", async (req, res) => {
     const userProducts = await getProductsByUserId(id);
     res.json({ products: userProducts });
   } catch (error) {
-    console.log(error);
     return res.render("errorPage/404", {
       title: "Error",
       authenticated: req.session.user ? true : false,
@@ -85,7 +84,6 @@ router.get("/profile", authMiddleware, async (req, res) => {
       hasPost: hasPost,
     });
   } catch (error) {
-    console.log(error);
     res.render("profile/profile", {
       authenticated: true,
       user: req.session.user,
@@ -180,7 +178,6 @@ router.post(
         }
       } catch (error) {
         if (!error.code) {
-          console.log(error);
           req.session.error = error;
           return res.redirect("/private/profile");
         } else {

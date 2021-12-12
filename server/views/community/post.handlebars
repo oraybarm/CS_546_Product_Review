@@ -1,4 +1,5 @@
 <div class="jumbotronq w-75 d-flex flex-column align-items-center">
+  {{> error}}
   <div
     class="toast"
     role="alert"
@@ -14,7 +15,7 @@
   <div class="scontainer w-75" data-id="{{post._id}}">
     <div class="card">
       <div class="header d-flex flex-row align-items-center px-4">
-        <img src="{{src}}" class="rounded-circle avatar h-10" alt="{{name}}" />
+        <img src="{{src}}" class="rounded-circle avatar h-10" alt="{{user}}" />
         <div class="post-content d-flex flex-column align-items-start w-100">
           <h3 offset="3" class="p-3">{{title}}</h3>
         </div>
@@ -96,11 +97,7 @@
     <div
       class="user d-flex w-10 flex-column align-items-center justify-content-between mx-4"
     >
-      <img
-        src="/public/images/upload/{{user.photo}}"
-        class="absolute-avatar"
-        alt="{{user.photo}}"
-      />
+      <img src="{{user.photo}}" class="absolute-avatar" alt="{{user.photo}}" />
       <p class="name my-0">{{user.name}}</p>
     </div>
     <h3 class="reply">{{reply}}</h3>
