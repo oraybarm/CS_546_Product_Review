@@ -314,6 +314,10 @@ router.get("/:id", async (req, res) => {
     if (posts.length > 0) {
       hasPost = true;
     }
+    let IsDeveloper=true;
+    if(product.devId.toString()==usernow){
+      IsDeveloper=false;
+    }
     res.render("products/product", {
       authenticated: req.session.user ? true : false,
       prodLiked: prodLiked,
@@ -330,6 +334,7 @@ router.get("/:id", async (req, res) => {
       hasPost: hasPost,
       productid: req.params.id,
       title: `${product.productName}`,
+      IsDeveloper
     });
     return;
   } catch (e) {

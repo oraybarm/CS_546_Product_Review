@@ -444,129 +444,129 @@ const main = async () => {
 
     //Users adding likes for Product1
 
-    await users.updateLikedProducts(user1.user._id.toString());
+    await users.updateLikedProducts(user1.user._id.toString(), prod1._id.toString());
     await products.updateCount(prod1._id.toString(), true);
 
-    await users.updateLikedProducts(user2.user._id.toString());
+    await users.updateLikedProducts(user2.user._id.toString(), prod1._id.toString());
     await products.updateCount(prod1._id.toString(), true);
 
-    await users.updateLikedProducts(user3.user._id.toString());
+    await users.updateLikedProducts(user3.user._id.toString(), prod1._id.toString());
     await products.updateCount(prod1._id.toString(), true);
 
     //Users adding likes for Product2
-    await users.updateLikedProducts(user2.user._id.toString());
+    await users.updateLikedProducts(user2.user._id.toString(), prod2._id.toString());
     await products.updateCount(prod2._id.toString(), true);
 
-    await users.updateLikedProducts(user3.user._id.toString());
+    await users.updateLikedProducts(user3.user._id.toString(), prod2._id.toString());
     await products.updateCount(prod2._id.toString(), true);
 
-    await users.updateLikedProducts(user4.user._id.toString());
+    await users.updateLikedProducts(user4.user._id.toString(), prod2._id.toString());
     await products.updateCount(prod2._id.toString(), true);
 
-    await users.updateLikedProducts(user5.user._id.toString());
+    await users.updateLikedProducts(user5.user._id.toString(), prod2._id.toString());
     await products.updateCount(prod2._id.toString(), true);
 
-    await users.updateLikedProducts(user6.user._id.toString());
+    await users.updateLikedProducts(user6.user._id.toString(), prod2._id.toString());
     await products.updateCount(prod2._id.toString(), true);
 
-    await users.updateLikedProducts(user7.user._id.toString());
+    await users.updateLikedProducts(user7.user._id.toString(), prod2._id.toString());
     await products.updateCount(prod2._id.toString(), true);
 
     //Users adding likes for Product10
 
-    await users.updateLikedProducts(user2.user._id.toString());
+    await users.updateLikedProducts(user2.user._id.toString(), prod10._id.toString());
     await products.updateCount(prod10._id.toString(), true);
 
-    await users.updateLikedProducts(user3.user._id.toString());
+    await users.updateLikedProducts(user3.user._id.toString(),prod10._id.toString());
     await products.updateCount(prod10._id.toString(), true);
 
-    await users.updateLikedProducts(user4.user._id.toString());
+    await users.updateLikedProducts(user4.user._id.toString(),prod10._id.toString());
     await products.updateCount(prod10._id.toString(), true);
 
-    await users.updateLikedProducts(user5.user._id.toString());
+    await users.updateLikedProducts(user5.user._id.toString(),prod10._id.toString());
     await products.updateCount(prod10._id.toString(), true);
 
-    await users.updateLikedProducts(user6.user._id.toString());
+    await users.updateLikedProducts(user6.user._id.toString(),prod10._id.toString());
     await products.updateCount(prod10._id.toString(), true);
 
     //Users adding likes for Product16
 
-    await users.updateLikedProducts(user2.user._id.toString());
+    await users.updateLikedProducts(user2.user._id.toString(),prod16._id.toString());
     await products.updateCount(prod16._id.toString(), true);
 
-    await users.updateLikedProducts(user3.user._id.toString());
+    await users.updateLikedProducts(user3.user._id.toString(),prod16._id.toString());
     await products.updateCount(prod16._id.toString(), true);
 
-    await users.updateLikedProducts(user4.user._id.toString());
+    await users.updateLikedProducts(user4.user._id.toString(),prod16._id.toString());
     await products.updateCount(prod16._id.toString(), true);
 
-    await users.updateLikedProducts(user5.user._id.toString());
+    await users.updateLikedProducts(user5.user._id.toString(),prod16._id.toString());
     await products.updateCount(prod16._id.toString(), true);
 
     //Users adding likes for Product12
 
-    await users.updateLikedProducts(user6.user._id.toString());
+    await users.updateLikedProducts(user6.user._id.toString(),prod12._id.toString());
     await products.updateCount(prod12._id.toString(), true);
 
-    await users.updateLikedProducts(user7.user._id.toString());
+    await users.updateLikedProducts(user7.user._id.toString(),prod12._id.toString());
     await products.updateCount(prod12._id.toString(), true);
 
-    await users.updateLikedProducts(user8.user._id.toString());
+    await users.updateLikedProducts(user8.user._id.toString(),prod12._id.toString());
     await products.updateCount(prod12._id.toString(), true);
 
     //Users adding likes for Product3
 
-    await users.updateLikedProducts(user1.user._id.toString());
+    await users.updateLikedProducts(user1.user._id.toString(),prod3._id.toString());
     await products.updateCount(prod3._id.toString(), true);
 
-    await users.updateLikedProducts(user2.user._id.toString());
+    await users.updateLikedProducts(user2.user._id.toString(),prod3._id.toString());
     await products.updateCount(prod3._id.toString(), true);
 
-    await users.updateLikedProducts(user3.user._id.toString());
+    await users.updateLikedProducts(user3.user._id.toString(),prod3._id.toString());
     await products.updateCount(prod3._id.toString(), true);
 
-    await users.updateLikedProducts(user4.user._id.toString());
+    await users.updateLikedProducts(user4.user._id.toString(),prod3._id.toString());
     await products.updateCount(prod3._id.toString(), true);
 
-    await users.updateLikedProducts(user5.user._id.toString());
+    await users.updateLikedProducts(user5.user._id.toString(),prod3._id.toString());
     await products.updateCount(prod3._id.toString(), true);
 
-    await users.updateLikedProducts(user6.user._id.toString());
+    await users.updateLikedProducts(user6.user._id.toString(),prod3._id.toString());
     await products.updateCount(prod3._id.toString(), true);
 
-    await users.updateLikedProducts(user7.user._id.toString());
+    await users.updateLikedProducts(user7.user._id.toString(),prod3._id.toString());
     await products.updateCount(prod3._id.toString(), true);
 
-    await users.updateLikedProducts(user8.user._id.toString());
+    await users.updateLikedProducts(user8.user._id.toString(),prod3._id.toString());
     await products.updateCount(prod3._id.toString(), true);
 
     //Users adding likes for Product 4
 
-    await users.updateLikedProducts(user1.user._id.toString());
+    await users.updateLikedProducts(user1.user._id.toString(),prod4._id.toString());
     await products.updateCount(prod4._id.toString(), true);
 
-    await users.updateLikedProducts(user2.user._id.toString());
+    await users.updateLikedProducts(user2.user._id.toString(),prod4._id.toString());
     await products.updateCount(prod4._id.toString(), true);
 
-    await users.updateLikedProducts(user3.user._id.toString());
+    await users.updateLikedProducts(user3.user._id.toString(),prod4._id.toString());
     await products.updateCount(prod4._id.toString(), true);
 
-    await users.updateLikedProducts(user4.user._id.toString());
+    await users.updateLikedProducts(user4.user._id.toString(),prod4._id.toString());
     await products.updateCount(prod4._id.toString(), true);
 
-    await users.updateLikedProducts(user5.user._id.toString());
+    await users.updateLikedProducts(user5.user._id.toString(),prod4._id.toString());
     await products.updateCount(prod4._id.toString(), true);
 
-    await users.updateLikedProducts(user6.user._id.toString());
+    await users.updateLikedProducts(user6.user._id.toString(),prod4._id.toString());
     await products.updateCount(prod4._id.toString(), true);
 
-    await users.updateLikedProducts(user7.user._id.toString());
+    await users.updateLikedProducts(user7.user._id.toString(),prod4._id.toString());
     await products.updateCount(prod4._id.toString(), true);
 
-    await users.updateLikedProducts(user8.user._id.toString());
+    await users.updateLikedProducts(user8.user._id.toString(),prod4._id.toString());
     await products.updateCount(prod4._id.toString(), true);
 
-
+        
     //Creating community
     console.log("#################################################################");
     console.log("Creating community posts");
