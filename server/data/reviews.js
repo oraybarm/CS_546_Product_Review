@@ -79,25 +79,33 @@ const exportedMethods = {
 
     let rateall = 0;
     const prodreview = await this.getReviewbyProductId(productId);
+    let arr = [];
     for (let i = 0; i < prodreview.length; i++) {
       rateall = parseInt(prodreview[i].rating) + rateall;
+      arr.push({ _id: prodreview[i]._id });
     }
-    let averagerate = rateall / prodreview.length;
+    let averagerate = 0;
+    if (prodreview.length != 0) {
+      averagerate = rateall / prodreview.length;
+    }
     averagerate = averagerate.toFixed(2);
     const prodCollection = await products();
+
     const updated = {
       rating: averagerate,
+      reviews: arr,
     };
-
     const updatedInfo = await prodCollection.updateOne(
       { _id: productId },
       { $set: updated }
     );
     if (!updatedInfo.matchedCount && !updatedInfo.modifiedCount)
-      throw 'Update rating failed'; 
-  
-    return newReview;
-    },
+      throw "Update rating failed";
+    //Fix to show reviews
+    // Fix to run seed file change to
+    //return newReview;
+    return insertInfo;
+  },
 
   async AddReviewToUser(userid, reviewId) {
     if (!userid) throw "You must provide an id";
@@ -174,10 +182,10 @@ const exportedMethods = {
     let rateall = 0;
     const prodreview = await this.getReviewbyProductId(productId);
     console.log(prodreview);
-    for (let i = 0; i < prodreview.length; i++) {
-      rateall = parseInt(prodreview[i].rating) + rateall;
+    let averagerate = 0;
+    if (prodreview.length != 0) {
+      averagerate = rateall / prodreview.length;
     }
-    let averagerate = rateall / prodreview.length;
     averagerate = averagerate.toFixed(2);
     const prodCollection = await products();
     const updatedp = {
@@ -218,10 +226,13 @@ const exportedMethods = {
     let rateall = 0;
     const prodreview = await this.getReviewbyProductId(productId);
     console.log(prodreview);
+    let averagerate = 0;
+    if (prodreview.length != 0) {
+      averagerate = rateall / prodreview.length;
+    }
     for (let i = 0; i < prodreview.length; i++) {
       rateall = parseInt(prodreview[i].rating) + rateall;
     }
-    let averagerate = rateall / prodreview.length;
     averagerate = averagerate.toFixed(2);
     const prodCollection = await products();
     const updatedp = {
@@ -282,6 +293,21 @@ const exportedMethods = {
       });
     }
     return reviewlist;
+  },
+
+  async DeleteOneReviewToUser(reviewId) {
+    if (!reviewId) throw "You must provide an id";
+    reviewId = reviewId.toString();
+    checkString(reviewId);
+    reviewId = myDBfunction(reviewId);
+    const reviewCollection = await users();
+    const updateInfo = await reviewCollection.updateOne(
+      {},
+      { $pull: { reviews: { _id: reviewId } } }
+    );
+    if (!updateInfo.matchedCount && !updateInfo.modifiedCount)
+      throw "Update failed";
+    return "Delete review to user successfully!";
   },
 };
 
