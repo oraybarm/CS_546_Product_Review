@@ -21,96 +21,116 @@
 <div id="reviewpart">
     <ul>
         <li>
-            <img class="userimg" src="../../public/images/guest-user.jpg" alt="User" />
+            <img
+                class="userimg"
+                src="../../public/images/guest-user.jpg"
+                alt="User"
+            />
         </li>
         <li><p>This product is a very good product!</p></li>
         <li><img src="../../public/images/3.png" /></li>
         <hr />
         <li>
-            <img class="userimg" src="../../public/images/guest-user.jpg" alt="User" />
+            <img
+                class="userimg"
+                src="../../public/images/guest-user.jpg"
+                alt="User"
+            />
         </li>
         <li><p>This product is a perfect product!</p></li>
-        <li><img src="../../public/images/4.png" alt="4 star" ></li>
-        <hr>
-        {{#if hasPost}}
-        {{#each posts}}
-        <li><img class="userimg" src="{{this.image}}" alt="user">{{this.username}} </li>
+        <li><img src="../../public/images/4.png" alt="4 star" /></li>
+        <hr />
+        {{#if hasPost}} {{#each posts}}
+        <li>
+            <img
+                class="userimg"
+                src="{{this.image}}"
+                alt="user"
+            />{{this.username}}
+        </li>
         <li><p>{{this.description}}</p></li>
-        <li><img src="../../public/images/{{this.rating}}.png" alt="rating star" ></li>
+        <li>
+            <img
+                src="../../public/images/{{this.rating}}.png"
+                alt="rating star"
+            />
+        </li>
         {{#if this.usernow}}
-        <a href="javascript:void(0)" class="delete-info" style="font-size:17px !important;margin:0 !important;"><div onclick="DeleteInfo({{this._id}})">Delete</div></a>
+        <a
+            href="javascript:void(0)"
+            class="delete-info"
+            style="font-size:17px !important;margin:0 !important;"
+            ><div onclick="DeleteInfo({{this._id}})">Delete</div></a
+        >
         <div class="more-tjm-info" onclick="moreWhInfo()">Update</div>
         {{/if}}
-        <hr>
-        {{/each}}
-        {{else}}
+        <hr />
+        {{/each}} {{else}}
         <li>
             <p class="not-found">No review right now.</p>
         </li>
         {{/if}}
     </ul>
-</div> 
-    <script type="text/javascript">
-        window.onload = function () {
-            // listen
-            $('btn').onclick = function (){
-                // get input content 
-                var content = $("comment").value;
-                console.log(content);
-                if (content.length===0){
-                    alert("Please Write your review!");
-                    return;
-                }
-                var newLi = document.createElement("li");
-                newLi.innerHTML = `${content}<br/><img src="../../public/images/${rateval+1}.png" alt="review"><a href="javascript:void(0)" style="font-size:17px !important;margin:0 !important;"><div onclick="DeleteInfo("")">Delete</div></a><div class="more-tjm-info" onclick="moreWhInfo()">Update</div>`
-                // $("comment_content").appendChild(newLi);   //Method 1
-                $("comment_content").insertBefore(newLi,$("comment_content").children[0]);  //Method 2
+</div>
 
 <script type="text/javascript">
     window.onload = function () {
         // listen
-        $('btn').onclick = function () {
-            // get input content
-            var content = $('comment').value
+        $("btn").onclick = function () {
+            // get input contentvar content = $("comment").value;
             if (content.length === 0) {
-                alert('Please Write your review!')
+                alert("Please Write your review!")
                 return
             }
-            var newLi = document.createElement('li')
-            newLi.innerHTML = `${content}<br/><img src="../../public/images/${rateval +1}.png" alt="review"><a href="javascript:void(0)">Delete</a>`
+            var newLi = document.createElement("li")
+            newLi.innerHTML = `${content}<br/><img src="../../public/images/${rateval +
+                1}.png" alt="review"><a href="javascript:void(0)" style="font-size:17px !important;margin:0 !important;"><div onclick="DeleteInfo("")">Delete</div></a><div class="more-tjm-info" onclick="moreWhInfo()">Update</div>`
             // $("comment_content").appendChild(newLi);   //Method 1
-            $('comment_content').insertBefore(
+            $("comment_content").insertBefore(
                 newLi,
-                $('comment_content').children[0]
+                $("comment_content").children[0]
+            )
+            var content = $("comment").value
+            if (content.length === 0) {
+                alert("Please Write your review!")
+                return
+            }
+            var newLi = document.createElement("li")
+            newLi.innerHTML = `${content}<br/><img src="../../public/images/${rateval +
+                1}.png" alt="review"><a href="javascript:void(0)">Delete</a>`
+            // $("comment_content").appendChild(newLi);   //Method 1
+            $("comment_content").insertBefore(
+                newLi,
+                $("comment_content").children[0]
             ) //Method 2
 
             // clear the input
-            $('comment').value = ''
+            $("comment").value = ""
             // Delete review
-            var delBtns = document.getElementsByTagName('a')
+            var delBtns = document.getElementsByTagName("a")
             for (var i = 0; i < delBtns.length; i++) {
                 delBtns[i].onclick = function () {
                     this.parentNode.remove()
                 }
                 jQuery.ajax({
-                type : "Post",
-                async : true,            
-                url : "http://localhost:3000/reviews/",    
-                data : {content,rateval},
-                dataType : "json",       
-                success : function(result) {
-                if (result) {
-                    console.log("Add review successfully.");
-                    location.reload();
+                    type: "Post",
+                    async: true,
+                    url: "http://localhost:3000/reviews/",
+                    data: { content, rateval },
+                    dataType: "json",
+                    success: function (result) {
+                        if (result) {
+                            console.log("Add review successfully.")
+                            location.reload()
+                        }
                     }
-                }
-            })
+                })
             }
         }
 
         // get event
         function $ (id) {
-            return typeof id === 'string' ? document.getElementById(id) : null
+            return typeof id === "string" ? document.getElementById(id) : null
         }
     }
 </script>
@@ -160,102 +180,129 @@
             rateval = i
             oDiv.innerHTML = data[index]
         }
-    
-    </script>
-	<script type="text/javascript">
-		var oLi = document.getElementsByClassName("rate");
-		var oDiv = document.getElementById("rater");
-		var data = ["Very Negative","Negative","Mixed","Positive","Very Positive"];
-		var flag = false;
-		var index = 0;
-		var rateval=0;	
-		for(let i = 0;i < oLi.length;i++){
-			oLi[i].onmouseover = ()=>{//hover
-				//clear and add
-				for(let j = 0;j < oLi.length;j++){
-					oLi[j].style.backgroundPosition = "0 0";
-				}
-				for(let j = 0;j <= i;j++){
-					oLi[j].style.backgroundPosition = "0 -28px";
-				}
-			oDiv.innerHTML = data[i];
-			}
-			//mouse click event
-			oLi[i].onmouseout = ()=>{
-				//clear style
-				for(let j = 0;j < oLi.length;j++){
-					oLi[j].style.backgroundPosition = "0 0";
-				}
-				oDiv.innerHTML = "";
-				if(flag){//if clicked
-					for(let j = 0;j <= index;j++){
-					oLi[j].style.backgroundPosition = "0 -28px";
-				}
-				oDiv.innerHTML = data[index];
-				}
-					
-			}
-			oLi[i].onclick = function(){
-				flag =true;
-				index = i;
-                rateval=i;
-                oDiv.innerHTML = data[index];
-			}
-		}			
-	</script>
+</script>
+<script type="text/javascript">
+    var oLi = document.getElementsByClassName("rate")
+    var oDiv = document.getElementById("rater")
+    var data = [
+        "Very Negative",
+        "Negative",
+        "Mixed",
+        "Positive",
+        "Very Positive"
+    ]
+    var flag = false
+    var index = 0
+    var rateval = 0
+    for (let i = 0; i < oLi.length; i++) {
+        oLi[i].onmouseover = () => {
+            //hover
+            //clear and add
+            for (let j = 0; j < oLi.length; j++) {
+                oLi[j].style.backgroundPosition = "0 0"
+            }
+            for (let j = 0; j <= i; j++) {
+                oLi[j].style.backgroundPosition = "0 -28px"
+            }
+            oDiv.innerHTML = data[i]
+        }
+        //mouse click event
+        oLi[i].onmouseout = () => {
+            //clear style
+            for (let j = 0; j < oLi.length; j++) {
+                oLi[j].style.backgroundPosition = "0 0"
+            }
+            oDiv.innerHTML = ""
+            if (flag) {
+                //if clicked
+                for (let j = 0; j <= index; j++) {
+                    oLi[j].style.backgroundPosition = "0 -28px"
+                }
+                oDiv.innerHTML = data[index]
+            }
+        }
+        oLi[i].onclick = function () {
+            flag = true
+            index = i
+            rateval = i
+            oDiv.innerHTML = data[index]
+        }
+    }
+</script>
 
- 
 <div id="MyDiv" class="white_content">
     <div class="top-div">
-        <div style="width: 270px;height: 20px;font-size: 20px;font-weight: 600;text-align:center;color: #666666;margin: 11px;">
+        <div
+            style="width: 270px;height: 20px;font-size: 20px;font-weight: 600;text-align:center;color: #666666;margin: 11px;"
+        >
             Update your review:
         </div>
-        <div class="closeBtn" οnclick="closeBtn()"
-             style="width: 14px;height: 14px;padding-right: 2px;font-weight: bold;color: #666666;">
+        <div
+            class="closeBtn"
+            οnclick="closeBtn()"
+            style="width: 14px;height: 14px;padding-right: 2px;font-weight: bold;color: #666666;"
+        >
             X
         </div>
     </div>
-    <div style="display:flex;width: 400px;height: 400px;font-size: 16px;font-family: Titillium Web;font-weight: 400;color: #666666;opacity: 0.9;margin-top: 20px;text-align: center;">
-    <form action="/update" method="POST" id="update-form" style="margin-left: 10%;">
-      <label for="review" style="color:rgb(27, 18, 4);text-align:center;">Review</label>
-      <input type="text" id="description" name="description" value="{{description}}">
-      <br>
-      <label for="rating" style="color:rgb(32, 21, 4);text-align:center;">Rating</label>
-      <input type="text" id="rating" name="rating" value="{{rating}}">
-      <br>
-      <br>
-      <button type="submit" id="update">Update</button>
-    </form>
+    <div
+        style="display:flex;width: 400px;height: 400px;font-size: 16px;font-family: Titillium Web;font-weight: 400;color: #666666;opacity: 0.9;margin-top: 20px;text-align: center;"
+    >
+        <form
+            action="/update"
+            method="POST"
+            id="update-form"
+            style="margin-left: 10%;"
+        >
+            <label for="review" style="color:rgb(27, 18, 4);text-align:center;"
+                >Review</label
+            >
+            <input
+                type="text"
+                id="description"
+                name="description"
+                value="{{description}}"
+            />
+            <br />
+            <label for="rating" style="color:rgb(32, 21, 4);text-align:center;"
+                >Rating</label
+            >
+            <input type="text" id="rating" name="rating" value="{{rating}}" />
+            <br />
+            <br />
+            <button type="submit" id="update">Update</button>
+        </form>
     </div>
- 
 </div>
- 
-<div  class="mask" style="position: fixed;left: 0;top: 0;width: 100%;height: 100%;background-color: rgba(0,0,0,0.5);display: none;z-index: 999;"></div>
+
+<div
+    class="mask"
+    style="position: fixed;left: 0;top: 0;width: 100%;height: 100%;background-color: rgba(0,0,0,0.5);display: none;z-index: 999;"
+></div>
 
 <script type="text/javascript">
-function moreWhInfo() {
-    $("#MyDiv").show();
-    $(".mask").show(); 
-};
- 
-$(".closeBtn").click(function () {
+    function moreWhInfo () {
+        $("#MyDiv").show()
+        $(".mask").show()
+    }
 
-    $("#MyDiv").hide();
-    $(".mask").hide();
-});
+    $(".closeBtn").click(function () {
+        $("#MyDiv").hide()
+        $(".mask").hide()
+    })
 
-function DeleteInfo(reviewId) {
-    jQuery.ajax({
-                type : "Post",
-                async : true,            
-                url : "http://localhost:3000/reviews/delete",    
-                data : {reviewId},
-                dataType : "json",       
-                success : function(result) {
+    function DeleteInfo (reviewId) {
+        jQuery.ajax({
+            type: "Post",
+            async: true,
+            url: "http://localhost:3000/reviews/delete",
+            data: { reviewId },
+            dataType: "json",
+            success: function (result) {
                 if (result) {
-                    console.log("Delete review successfully.");
-                    }
+                    console.log("Delete review successfully.")
                 }
-            })
-};
+            }
+        })
+    }
 </script>

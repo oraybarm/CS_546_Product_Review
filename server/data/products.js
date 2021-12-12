@@ -37,7 +37,6 @@ function checkInputs(
   if (!re.test(websiteUrl)) {
     throw "Error: website url is not valid.";
   }
-  // console.log("tag", tags);
   if (!Array.isArray(tags) || tags.length === 0)
     throw "Error: Tag is not of string type or tag field is empty";
   //let parsedTags = [...new Set(tags)];
@@ -143,7 +142,6 @@ let exportedMethods = {
         productName: { $regex: query },
       })
       .toArray();
-    //console.log(productByName);
     if (productByName.length === 0)
       throw { message: "Error: No Matches", code: 500 };
     const sortedNameBylikes = productByName.sort(productByName.likes);

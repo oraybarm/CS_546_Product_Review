@@ -217,7 +217,6 @@
     url: `/private/users/${userId}`,
     contentType: 'application/json'
   }
-  console.log(`userId`, userId)
 
   $.ajax(requestConfig)
     .then(function (response) {
@@ -270,9 +269,7 @@
     var target = $(event.target)
 
     if (target.is('.editProduct')) {
-      console.log('event', event)
       const productId = event.target.id
-      console.log(`productId`, productId)
       let productDetailsRequestConfig = {
         method: 'GET',
         url: `/products/${productId}/details`,
@@ -292,7 +289,6 @@
       console.log('Are you sure you want to delete this product?')
       const productToDelete = event.target.id.split('-')[1]
       $deleteProductButton = $('#deleteProductButton')
-      console.log(`object`, deleteProductButton, $deleteProductButton)
       let productDetailsRequestConfig = {
         method: 'POST',
         url: `/products//delete/${productToDelete}`,
@@ -301,7 +297,6 @@
       $deleteProductButton.click(function () {
         $.ajax(productDetailsRequestConfig).then(function (response) {
           $(`#accordion-item-${productToDelete}`).remove()
-          console.log(`response`, response)
           $('#deleteProductModal').modal('hide')
           $('.modal-backdrop').remove()
           const toastEl = document.querySelector('.toast')
@@ -369,7 +364,6 @@
     var val = document.getElementById('file').value
     const validImageTypes = ['image/gif', 'image/jpeg', 'image/png']
     const fileType = this.files[0].type
-    console.log('here :>> ', val)
     if (
       !fileType ||
       !validImageTypes.includes(fileType) ||
@@ -435,7 +429,7 @@
           return resp.json() // or resp.text() or whatever the server sends
         })
         .then(body => {
-          console.log(body.error)
+          console.log(body?.error)
           if (body.error) {
             document.querySelector('.errorCreateProduct').innerHTML = body.error
             $('.errorCreateProduct').show()

@@ -13,7 +13,11 @@ const constructorMethod = (app) => {
   app.use("/products", productRoute);
   app.use("/reviews", ReviewRoute);
   app.get("/*", (req, res) => {
-    res.render("errorPage/404");
+    res.render("errorPage/404", {
+      title: "404",
+      errorMessage: "Page not found",
+      authenticated: req.session.user ? true : false,
+    });
   });
 };
 
