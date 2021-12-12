@@ -247,21 +247,6 @@ const exportedMethods = {
     return reviewId;
   },
 
-  async DeleteOneReviewToUser(reviewId) {
-    if (!reviewId) throw "You must provide an id";
-    reviewId = reviewId.toString();
-    checkString(reviewId);
-    reviewId = myDBfunction(reviewId);
-    const reviewCollection = await users();
-    const updateInfo = await reviewCollection.updateOne(
-      {  },
-      { $pull: { reviews: { _id: reviewId } } }
-    );
-    if (!updateInfo.matchedCount && !updateInfo.modifiedCount)
-      throw "Update failed";
-    return "Delete review to user successfully!";
-  },
-
   async DeleteReviewToUser(userid, reviewId) {
     if (!userid) throw "You must provide an id";
     userid = userid.toString();
