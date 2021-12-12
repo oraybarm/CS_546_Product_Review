@@ -1,8 +1,9 @@
 <div class="productContainer">
+  {{> error}}
   <div class="logo">
     <img
       src="/public/images/upload/{{logo}}"
-      alt="logo"
+      alt="product logo"
       class="img-thumbnail"
     />
   </div>
@@ -11,9 +12,11 @@
     <ul>
       {{#each tags}}
       <li style="float:left; margin-left:5px; margin-top:10px;">
-        <a href="/products/search/{{this}}"><button type="button" class="btn btn-outline-info btn-sm md-2">
-          {{this}}
-        </button></a>
+        <a href="/products/search/{{this}}"
+          ><button type="button" class="btn btn-outline-info btn-sm md-2">
+            {{this}}
+          </button></a
+        >
       </li>
       {{/each}}
     </ul>
@@ -24,17 +27,25 @@
 
   <div class="prodBtns">
     {{#if userLogged}}
-    <button class="like__btn btn btn-outline-info d-flex flex-row h-50 w-50 my-2  align-items-center">
+    <button
+      class="like__btn btn btn-outline-info d-flex flex-row h-50 w-50 my-2  align-items-center"
+    >
       <span id="icon"><i class="far fa-thumbs-up"></i></span>
       <span id="count">{{likes}}</span>
       Like
     </button>
     {{/if}}
-    <a class="getProd btn btn-outline-info d-flex flex-row h-50 w-50 my-2 align-items-center" href="{{site}}" target="_blank" id="siteRedirection."
-      >Get Product</a>
-    <button class="btn btn-outline-info d-flex flex-row h-50 w-50 my-2 align-items-center" >
+    <a
+      class="getProd btn btn-outline-info d-flex flex-row h-50 w-50 my-2 align-items-center"
+      href="{{site}}"
+      target="_blank"
+      id="siteRedirection."
+      >Get Product</a
+    >
+    <button
+      class="btn btn-outline-info d-flex flex-row h-50 w-50 my-2 align-items-center"
+    >
       <span id="ratingIcon"><i class="fa fa-star"></i>{{rating}}</span>
-      
     </button>
     <a
       href="https://twitter.com/share?ref_src=twsrc%5Etfw"
@@ -86,7 +97,13 @@
   <div id="reviewpart">
     <ul>
       {{#if hasPost}} {{#each posts}}
-      <li><img class="userimg" src="{{this.image}}" alt="{{this.username}}"/>{{this.username}}</li>
+      <li>
+        <img
+          class="userimg"
+          src="{{this.image}}"
+          alt="{{this.username}}"
+        />{{this.username}}
+      </li>
       <li><p>{{this.description}}</p></li>
       <li><img src="../../public/images/{{this.rating}}.png" /></li>
       {{#if this.usernow}}
@@ -202,7 +219,6 @@
         data: { content, rateval, productid },
         dataType: 'json',
         success: function (result) {
-          console.log(result)
           if (result) {
             console.log('Add review successfully.')
           }
@@ -277,7 +293,6 @@
     $('.mask').hide()
   })
   function DeleteInfo (reviewId) {
-    console.log(reviewId)
     jQuery.ajax({
       type: 'Post',
       async: true,
@@ -294,7 +309,6 @@
     window.location.reload
   }
   function UpdateInfo (reviewId) {
-    console.log(reviewId)
     let des = document.getElementById('description1')
     let rat = document.getElementById('rating1')
     let newdes = des.value

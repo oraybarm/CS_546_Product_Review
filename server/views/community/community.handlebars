@@ -1,6 +1,7 @@
 <div
   class="jumbotron d-flex align-items-center flex-column justify-content-center w-100 p-2"
 >
+  {{> error}}
   <div
     class="toast"
     role="alert"
@@ -32,7 +33,7 @@
           />
           <div class="post-content d-flex flex-column align-items-center w-100">
             {{#if authenticated}}
-            <label for="communityText" > Create a discussion</label>
+            <label for="communityText"> Create a discussion</label>
             <textarea
               class="communityInput w-100 mx-10"
               rows="3"
@@ -44,7 +45,7 @@
               Create discussion
             </button>
             {{else}}
-            <label for="communityText1" > Create a discussion</label>
+            <label for="communityText1"> Create a discussion</label>
             <textarea
               disabled
               class="communityInput w-100 mx-10 disabled"

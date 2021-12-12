@@ -4,11 +4,9 @@
     url: `/private/users/${userId}`,
     contentType: "application/json",
   };
-  console.log(`userId`, userId);
 
   $.ajax(requestConfig)
     .then(function (response) {
-      console.log(`response`, response);
       const products = [];
       response.products.forEach(function (item, index) {
         $(".accordion").append(
@@ -54,7 +52,6 @@
   $(document).bind("click", function (event) {
     var target = $(event.target);
     if (target.is(".editProduct")) {
-      console.log("event", event);
       const productId = event.target.id;
       console.log(`productId`, productId);
       let productDetailsRequestConfig = {
@@ -63,7 +60,6 @@
         contentType: "application/json",
       };
       $.ajax(productDetailsRequestConfig).then(function (response) {
-        console.log(`response for get`, response);
         $("#updateProductForm").attr(
           "action",
           `/products//update/${productId}`
@@ -82,12 +78,6 @@
   document.forms["updateProductForm"].addEventListener("submit", (event) => {
     event.preventDefault();
     const formData = new FormData($("#updateProductForm")[0]);
-    console.log("formData :>> ", formData);
-    // console.log(`event.target`, event.target);
-    // for (const name in event.target) {
-    //     console.log(`name`, name);
-    //     formData.append(name, data[name]);
-    // }
 
     fetch(event.target.action, {
       method: "POST",
@@ -101,7 +91,7 @@
         if (body.error) {
           document.querySelector(".errorCreateProduct").innerHTML = body.error;
         } else {
-          console.log(body);
+          resa = 1;
         }
       })
       .catch((error) => {
