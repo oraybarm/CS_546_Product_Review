@@ -96,7 +96,8 @@ const exportedMethods = {
     if (!updatedInfo.matchedCount && !updatedInfo.modifiedCount)
       throw 'Update rating failed'; 
   
-    return newReview;
+    //return newReview;
+    return insertInfo;
     },
 
   async AddReviewToUser(userid, reviewId) {
@@ -177,7 +178,10 @@ const exportedMethods = {
     for (let i = 0; i < prodreview.length; i++) {
       rateall = parseInt(prodreview[i].rating) + rateall;
     }
-    let averagerate = rateall / prodreview.length;
+    let averagerate=0;
+    if(prodreview.length!=0){
+      averagerate = rateall / prodreview.length;
+    }
     averagerate = averagerate.toFixed(2);
     const prodCollection = await products();
     const updatedp = {
@@ -222,7 +226,11 @@ const exportedMethods = {
     for (let i = 0; i < prodreview.length; i++) {
       rateall = parseInt(prodreview[i].rating) + rateall;
     }
-    let averagerate = rateall / prodreview.length;
+    
+    let averagerate=0;
+    if(prodreview.length!=0){
+      averagerate = rateall / prodreview.length;
+    }
     averagerate = averagerate.toFixed(2);
     const prodCollection = await products();
     const updatedp = {
@@ -237,6 +245,21 @@ const exportedMethods = {
       throw "Update rating failed";
 
     return reviewId;
+  },
+
+  async DeleteOneReviewToUser(reviewId) {
+    if (!reviewId) throw "You must provide an id";
+    reviewId = reviewId.toString();
+    checkString(reviewId);
+    reviewId = myDBfunction(reviewId);
+    const reviewCollection = await users();
+    const updateInfo = await reviewCollection.updateOne(
+      {  },
+      { $pull: { reviews: { _id: reviewId } } }
+    );
+    if (!updateInfo.matchedCount && !updateInfo.modifiedCount)
+      throw "Update failed";
+    return "Delete review to user successfully!";
   },
 
   async DeleteReviewToUser(userid, reviewId) {

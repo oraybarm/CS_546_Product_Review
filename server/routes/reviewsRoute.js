@@ -82,6 +82,7 @@ router.post("/", authMiddleware, async (req, res) => {
     if (!user._id) {
       throw "Unable to get user Id";
     }
+    console.log(result);
     addreviewtouser = await reviews.AddReviewToUser(
       user._id,
       result.insertedId

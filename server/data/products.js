@@ -2,6 +2,9 @@ const mongoCollections = require("../config/mongoCollection");
 const products = mongoCollections.products;
 let { ObjectId } = require("mongodb");
 const { isValidObject, addhttp, isValidEmail } = require("../utils.js");
+const reviews = mongoCollections.reviews;
+const review = require("./reviews");
+
 
 function checkInputs(
   productName,
@@ -197,6 +200,12 @@ let exportedMethods = {
     isValidObjectId(prodId);
     prodId = ObjectId(prodId);
     const prodList = await products();
+    const delreview = await review.getReviewbyProductId(prodId);
+    console.log(delreview);
+    for(let i=0;i<delreview.length;i++){
+      await review.deleteReview(delreview[i]._id);
+      await review.DeleteOneReviewToUser(delreview[i]._id);
+    }
     const prodCheck = prodList.findOne({ _id: prodId });
     if (!prodCheck) {
       throw "Error: Product to be deleted was not found in the database";
