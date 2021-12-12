@@ -11,6 +11,7 @@ const {
 const community = mongoCollection.community;
 const users = mongoCollection.users;
 const { ObjectId } = require("mongodb");
+const _ = require("lodash");
 
 // community collection
 // [
@@ -204,7 +205,9 @@ module.exports = {
         const parsedUser = {
           name: user.name,
           email: user.email,
-          photo: user.photo,
+          photo: _.isEmpty(user.photo)
+            ? `/public/images/guest-user.jpg`
+            : `/public/images/upload/${user.photo}`,
         };
         return { ...reply, user: parsedUser };
       })
