@@ -178,6 +178,9 @@ const exportedMethods = {
     let productId = rev.product;
     let rateall = 0;
     const prodreview = await this.getReviewbyProductId(productId);
+    for (let i = 0; i < prodreview.length; i++) {
+      rateall = parseInt(prodreview[i].rating) + rateall;
+    }
     let averagerate = 0;
     if (prodreview.length != 0) {
       averagerate = rateall / prodreview.length;
@@ -222,11 +225,11 @@ const exportedMethods = {
     let rateall = 0;
     const prodreview = await this.getReviewbyProductId(productId);
     let averagerate = 0;
-    if (prodreview.length != 0) {
-      averagerate = rateall / prodreview.length;
-    }
     for (let i = 0; i < prodreview.length; i++) {
       rateall = parseInt(prodreview[i].rating) + rateall;
+    }
+    if (prodreview.length != 0) {
+      averagerate = rateall / prodreview.length;
     }
     averagerate = averagerate.toFixed(2);
     const prodCollection = await products();
