@@ -19,9 +19,9 @@ const main = async () => {
 
     console.log("Creating Users :");
     console.log("To login with email and password");
-    console.log("email: username@xyz.com");
-    console.log("I've added password for all users the same");
-    console.log("password: password");
+    console.log("email: {username}@xyz.com");
+    console.log("Password for all the users is password.");
+    console.log("Password: password");
 
     const dev1 = await users.createUser("Levi Szabo", "levi@xyz.com", password);
     const dev2 = await users.createUser(
@@ -186,7 +186,7 @@ const main = async () => {
       "WhatsNext.jpeg",
       ["Chrome Extension", "Free"],
       "Priyanshu Nayan",
-      dev7.user._id.toString()
+      dev7.user._id
     );
 
     const prod8 = await products.addProduct(
@@ -196,7 +196,7 @@ const main = async () => {
       "SuperDMs.jpeg",
       ["Productivity", "Free", "Marketing"],
       "Kshitij Singh",
-      dev8.user._id.toString()
+      dev8.user._id
     );
     const prod9 = await products.addProduct(
       "Fathom",
@@ -205,7 +205,7 @@ const main = async () => {
       "Fathom.png",
       ["Productivity", "Free", "Artificial Intelligence"],
       "Richard White",
-      dev9.user._id.toString()
+      dev9.user._id
     );
     const prod10 = await products.addProduct(
       "Bookstash",
@@ -214,7 +214,7 @@ const main = async () => {
       "Bookstash.png",
       ["Productivity", "Free", "Books"],
       "Adrian Pascu",
-      dev10.user._id.toString()
+      dev10.user._id
     );
     const prod11 = await products.addProduct(
       "Spirit",
@@ -223,7 +223,7 @@ const main = async () => {
       "Spirit.jpeg",
       ["Productivity", "Design Tools", "Developer Tools"],
       "Patrick Brouwer",
-      dev11.user._id.toString()
+      dev11.user._id
     );
 
     const prod12 = await products.addProduct(
@@ -233,7 +233,7 @@ const main = async () => {
       "ZeroBalance.jpeg",
       ["Productivity", "Free"],
       "Parth Shah",
-      dev12.user._id.toString()
+      dev12.user._id
     );
 
     const prod13 = await products.addProduct(
@@ -243,7 +243,7 @@ const main = async () => {
       "ImageExtractor.png",
       ["Productivity", "Free", "Marketing", "Developer Tools"],
       "Pascal Burkle",
-      dev13.user._id.toString()
+      dev13.user._id
     );
 
     const prod14 = await products.addProduct(
@@ -253,7 +253,7 @@ const main = async () => {
       "Remotely.png",
       ["Productivity", "Free"],
       "Duncan Hall",
-      dev14.user._id.toString()
+      dev14.user._id
     );
 
     const prod15 = await products.addProduct(
@@ -263,7 +263,7 @@ const main = async () => {
       "Marble.png",
       ["Social Media Tools", "Free", "Marketing"],
       "Mike Simpson",
-      dev15.user._id.toString()
+      dev15.user._id
     );
 
     const prod16 = await products.addProduct(
@@ -273,7 +273,7 @@ const main = async () => {
       "Unsplash.jpeg",
       ["Free", "Design Tools", "Photography"],
       "Mikael Cho",
-      dev16.user._id.toString()
+      dev16.user._id
     );
     
     const prod3 = await products.addProduct(
@@ -283,7 +283,7 @@ const main = async () => {
         "PogChat.png",
         ["Chrome Extension", "Messaging", "Social Media Tools", "Games"],
         "Aaron Vontell",
-        dev3.user._id.toString()
+        dev3.user._id
       );
   
       const prod4 = await products.addProduct(
@@ -293,7 +293,7 @@ const main = async () => {
         "Grasshopper.png",
         ["Puzzle Games", "Free", "Education"],
         "Laura Holmes",
-        dev4.user._id.toString()
+        dev4.user._id
       );
   
       const prod5 = await products.addProduct(
@@ -303,7 +303,7 @@ const main = async () => {
         "JSRobot.jpeg",
         ["Free", "Education", "Games"],
         "Reaal Khalil",
-        dev5.user._id.toString()
+        dev5.user._id
       );
   
       const prod6 = await products.addProduct(
@@ -313,7 +313,7 @@ const main = async () => {
         "AutoDraw.png",
         ["Art", "Artificial Intelligence"],
         "Glenn Cochon",
-        dev6.user._id.toString()
+        dev6.user._id
       );
 
     const prod1 = await products.addProduct(
@@ -323,7 +323,7 @@ const main = async () => {
         "neuralCam.png",
         ["Photography", "IPhone", "Artificial Intelligence"],
         "Levi Szabo",
-        dev1.user._id.toString()
+        dev1.user._id
       );
   
       // {"_id":{"$oid":"61b462c2ea8741b8257eb915"},"productName":"NeuralCam 5","description":"NeuralCam 5 is the most advanced Computational Photography Camera App for the iPhone for both Night and Day photos. Capture better photos with AI powered 48MP Super-resolution, Macro-Mode and NeuralHDR.","websiteUrl":"https://neural.cam","logo":"neuralCam.png","tags":["Photography","IPhone","Artificial Intelligence"],"developer":"Levi Szabo","reviews":[],"rating":"5.00","likes":0,"devId":"61b462c2ea8741b8257eb914"}
@@ -335,7 +335,7 @@ const main = async () => {
         "break.jpeg",
         ["Free", "Social Media Tools"],
         "Bjoggi Gudmundsson",
-        dev2.user._id.toString()
+        dev2.user._id
       );
       
   
@@ -566,7 +566,7 @@ const main = async () => {
     await users.updateLikedProducts(user8.user._id.toString(),prod4._id.toString());
     await products.updateCount(prod4._id.toString(), true);
 
-        
+
     //Creating community
     console.log("#################################################################");
     console.log("Creating community posts");
