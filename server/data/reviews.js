@@ -18,7 +18,7 @@ function checkString(str) {
   }
   let strremovespace = str.replace(/\s*/g, "");
   if (strremovespace.length === 0) {
-    throw `Don't fool me! The string you input are all empty!`;
+    throw `The string you input are all empty!`;
   }
 }
 
