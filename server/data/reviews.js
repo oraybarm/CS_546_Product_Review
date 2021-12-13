@@ -304,7 +304,6 @@ const exportedMethods = {
       {},
       { $pull: { reviews: { _id: reviewId } } }
     );
-    console.log(updateInfo);
     if (!updateInfo.matchedCount && !updateInfo.modifiedCount)
       throw "Update failed";
     return "Delete review to user successfully!";

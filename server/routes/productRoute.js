@@ -120,7 +120,6 @@ router.get("/search/:id", async (req, res) => {
     return "Error: Search term blank";
   } else {
     searchTerm = searchTerm.split("-").join(" ");
-    console.log("searchTerm", searchTerm);
     searchTerm = searchTerm.toLowerCase();
     if (searchValue === "name" || searchValue === "Search product by") {
       try {
@@ -253,8 +252,6 @@ router.post(
           developer,
           devId
         );
-
-        console.log(`newProduct`, newProduct);
 
         res.redirect("/");
       } catch (e) {
@@ -401,7 +398,6 @@ router.post("/delete/:productId", authMiddleware, async (req, res) => {
     }
     productId = productId.toString();
     const reviewArr = await reviewData.getReviewbyProductId(productId);
-    console.log(reviewArr);
     for (let i = 0; i < reviewArr.length; i++) {
       const usrDataDel = await reviewData.DeleteOneReviewToUser(
         reviewArr[i]._id.toString()

@@ -53,7 +53,6 @@
     var target = $(event.target);
     if (target.is(".editProduct")) {
       const productId = event.target.id;
-      console.log(`productId`, productId);
       let productDetailsRequestConfig = {
         method: "GET",
         url: `/products/${productId}/details`,
@@ -87,7 +86,7 @@
         return resp.json(); // or resp.text() or whatever the server sends
       })
       .then((body) => {
-        console.log(body.error);
+        console.log(body?.error);
         if (body.error) {
           document.querySelector(".errorCreateProduct").innerHTML = body.error;
         } else {
