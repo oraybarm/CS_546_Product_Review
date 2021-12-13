@@ -42,7 +42,6 @@ module.exports = {
   },
 
   async createPost(userId, name) {
-    // test the userid name
     if (!userId) throw "No userId provided";
     isValidObjectId(userId);
     isValidString(name, "postName", 1);

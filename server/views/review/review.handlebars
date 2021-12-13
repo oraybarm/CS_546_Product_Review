@@ -75,52 +75,48 @@
 
 <script type="text/javascript">
     window.onload = function () {
-        // listen
-        $("btn").onclick = function () {
+        $('btn').onclick = function () {
             // get input contentvar content = $("comment").value;
             if (content.length === 0) {
-                alert("Please Write your review!")
+                alert('Please Write your review!')
                 return
             }
-            var newLi = document.createElement("li")
+            var newLi = document.createElement('li')
             newLi.innerHTML = `${content}<br/><img src="../../public/images/${rateval +
                 1}.png" alt="review"><a href="javascript:void(0)" style="font-size:17px !important;margin:0 !important;"><div onclick="DeleteInfo("")">Delete</div></a><div class="more-tjm-info" onclick="moreWhInfo()">Update</div>`
-            // $("comment_content").appendChild(newLi);   //Method 1
-            $("comment_content").insertBefore(
+            $('comment_content').insertBefore(
                 newLi,
-                $("comment_content").children[0]
+                $('comment_content').children[0]
             )
-            var content = $("comment").value
+            var content = $('comment').value
             if (content.length === 0) {
-                alert("Please Write your review!")
+                alert('Please Write your review!')
                 return
             }
-            var newLi = document.createElement("li")
+            var newLi = document.createElement('li')
             newLi.innerHTML = `${content}<br/><img src="../../public/images/${rateval +
                 1}.png" alt="review"><a href="javascript:void(0)">Delete</a>`
-            // $("comment_content").appendChild(newLi);   //Method 1
-            $("comment_content").insertBefore(
+            $('comment_content').insertBefore(
                 newLi,
-                $("comment_content").children[0]
-            ) //Method 2
+                $('comment_content').children[0]
+            )
 
             // clear the input
-            $("comment").value = ""
+            $('comment').value = ''
             // Delete review
-            var delBtns = document.getElementsByTagName("a")
+            var delBtns = document.getElementsByTagName('a')
             for (var i = 0; i < delBtns.length; i++) {
                 delBtns[i].onclick = function () {
                     this.parentNode.remove()
                 }
                 jQuery.ajax({
-                    type: "Post",
+                    type: 'Post',
                     async: true,
-                    url: "http://localhost:3000/reviews/",
+                    url: 'http://localhost:3000/reviews/',
                     data: { content, rateval },
-                    dataType: "json",
+                    dataType: 'json',
                     success: function (result) {
                         if (result) {
-                            console.log("Add review successfully.")
                             location.reload()
                         }
                     }
@@ -130,7 +126,7 @@
 
         // get event
         function $ (id) {
-            return typeof id === "string" ? document.getElementById(id) : null
+            return typeof id === 'string' ? document.getElementById(id) : null
         }
     }
 </script>
@@ -182,14 +178,14 @@
         }
 </script>
 <script type="text/javascript">
-    var oLi = document.getElementsByClassName("rate")
-    var oDiv = document.getElementById("rater")
+    var oLi = document.getElementsByClassName('rate')
+    var oDiv = document.getElementById('rater')
     var data = [
-        "Very Negative",
-        "Negative",
-        "Mixed",
-        "Positive",
-        "Very Positive"
+        'Very Negative',
+        'Negative',
+        'Mixed',
+        'Positive',
+        'Very Positive'
     ]
     var flag = false
     var index = 0
@@ -199,10 +195,10 @@
             //hover
             //clear and add
             for (let j = 0; j < oLi.length; j++) {
-                oLi[j].style.backgroundPosition = "0 0"
+                oLi[j].style.backgroundPosition = '0 0'
             }
             for (let j = 0; j <= i; j++) {
-                oLi[j].style.backgroundPosition = "0 -28px"
+                oLi[j].style.backgroundPosition = '0 -28px'
             }
             oDiv.innerHTML = data[i]
         }
@@ -210,13 +206,13 @@
         oLi[i].onmouseout = () => {
             //clear style
             for (let j = 0; j < oLi.length; j++) {
-                oLi[j].style.backgroundPosition = "0 0"
+                oLi[j].style.backgroundPosition = '0 0'
             }
-            oDiv.innerHTML = ""
+            oDiv.innerHTML = ''
             if (flag) {
                 //if clicked
                 for (let j = 0; j <= index; j++) {
-                    oLi[j].style.backgroundPosition = "0 -28px"
+                    oLi[j].style.backgroundPosition = '0 -28px'
                 }
                 oDiv.innerHTML = data[index]
             }
@@ -282,27 +278,23 @@
 
 <script type="text/javascript">
     function moreWhInfo () {
-        $("#MyDiv").show()
-        $(".mask").show()
+        $('#MyDiv').show()
+        $('.mask').show()
     }
 
-    $(".closeBtn").click(function () {
-        $("#MyDiv").hide()
-        $(".mask").hide()
+    $('.closeBtn').click(function () {
+        $('#MyDiv').hide()
+        $('.mask').hide()
     })
 
     function DeleteInfo (reviewId) {
         jQuery.ajax({
-            type: "Post",
+            type: 'Post',
             async: true,
-            url: "http://localhost:3000/reviews/delete",
+            url: 'http://localhost:3000/reviews/delete',
             data: { reviewId },
-            dataType: "json",
-            success: function (result) {
-                if (result) {
-                    console.log("Delete review successfully.")
-                }
-            }
+            dataType: 'json',
+            success: function (result) {}
         })
     }
 </script>

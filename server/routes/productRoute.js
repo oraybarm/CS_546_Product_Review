@@ -37,7 +37,6 @@ const upload = multer({
 });
 function checkId(id) {
   if (!id) throw "Error: Please provide argument id";
-  //if (typeof id !== "string") throw "Error:ID is not of string type.";
   if (typeof id === "string" && id.trim().length < 1) {
     throw "Error: ID is a blank string has been passed as argument";
   }
@@ -120,7 +119,6 @@ router.get("/search/:id", async (req, res) => {
     return "Error: Search term blank";
   } else {
     searchTerm = searchTerm.split("-").join(" ");
-    console.log("searchTerm", searchTerm);
     searchTerm = searchTerm.toLowerCase();
     if (searchValue === "name" || searchValue === "Search product by") {
       try {
@@ -254,15 +252,11 @@ router.post(
           devId
         );
 
-        console.log(`newProduct`, newProduct);
-
         res.redirect("/");
       } catch (e) {
         console.log("error", e);
         req.session.addProductError = e;
         res.redirect("/");
-        // res.redirect("/products/addProducterror");
-        // return res.status(500).json({ message: e, errorMessage: e });
       }
     }
   }
@@ -305,7 +299,6 @@ router.get("/:id", async (req, res) => {
     let hasPost = false;
     for (let i = 0; i < review.length; i++) {
       let output = review[i];
-      //output["username"] = userlist[i].firstName.concat(userlist[i].lastName);
       output["username"] = userlist[i].name;
       output["image"] = !_.isEmpty(userlist[i].img)
         ? `/public/images/upload/${userlist[i].img}`
@@ -401,7 +394,6 @@ router.post("/delete/:productId", authMiddleware, async (req, res) => {
     }
     productId = productId.toString();
     const reviewArr = await reviewData.getReviewbyProductId(productId);
-    console.log(reviewArr);
     for (let i = 0; i < reviewArr.length; i++) {
       const usrDataDel = await reviewData.DeleteOneReviewToUser(
         reviewArr[i]._id.toString()

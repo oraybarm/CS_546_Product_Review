@@ -5,7 +5,6 @@ const communityRoute = require("./routes/community");
 const ReviewRoute = require("./routes/reviewsRoute");
 const productRoute = require("./routes/productRoute");
 const constructorMethod = (app) => {
-  // Landing page '/' route
   app.use("/", homePageRoute);
   app.use("/users", userRoutes);
   app.use("/private", privateRoutes);

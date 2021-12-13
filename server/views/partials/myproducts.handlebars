@@ -218,7 +218,6 @@
 
   $.ajax(requestConfig)
     .then(function (response) {
-      console.log(`response`, response)
       const products = []
       response.products.forEach(function (item, index) {
         $('.accordion').append(
@@ -284,7 +283,6 @@
       })
     }
     if (target.is('.deleteProduct')) {
-      console.log('Are you sure you want to delete this product?')
       const productToDelete = event.target.id.split('-')[1]
       $deleteProductButton = $('#deleteProductButton')
       let productDetailsRequestConfig = {
@@ -424,10 +422,9 @@
         body: formData
       })
         .then(resp => {
-          return resp.json() // or resp.text() or whatever the server sends
+          return resp.json()
         })
         .then(body => {
-          console.log(body?.error)
           if (body.error) {
             document.querySelector('.errorCreateProduct').innerHTML = body.error
             $('.errorCreateProduct').show()

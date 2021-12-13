@@ -59,7 +59,7 @@
       ><i class="fa fa-twitter"></i
     ></a>
   </div>
-  <div id="developer">
+  <div id="developer" class="alert alert-info">
     Developed By {{developer}}
   </div>
   <div class="description">
@@ -308,11 +308,7 @@
       url: 'http://localhost:3000/reviews/delete',
       data: { reviewId },
       dataType: 'json',
-      success: function (result) {
-        if (result) {
-          console.log('Delete review successfully.')
-        }
-      }
+      success: function (result) {}
     })
     window.location.href = window.location.href
     window.location.reload
@@ -328,11 +324,7 @@
       url: 'http://localhost:3000/reviews/update',
       data: { reviewId, newdes, newrate },
       dataType: 'json',
-      success: function (result) {
-        if (result) {
-          console.log('Update review successfully.')
-        }
-      }
+      success: function (result) {}
     })
     $('#MyDiv').hide()
     $('.mask').hide()

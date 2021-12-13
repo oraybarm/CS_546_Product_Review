@@ -13,8 +13,6 @@
   }
 
   $(".like__btn").click(function (event) {
-    //event.preventDefault();
-
     if (!flag) {
       flag = true;
       likeIcon.innerHTML = `<i class="fas fa-thumbs-up"></i>`;

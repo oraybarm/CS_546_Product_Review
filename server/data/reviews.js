@@ -18,7 +18,7 @@ function checkString(str) {
   }
   let strremovespace = str.replace(/\s*/g, "");
   if (strremovespace.length === 0) {
-    throw `Don't fool me! The string you input are all empty!`;
+    throw `The string you input are all empty!`;
   }
 }
 
@@ -304,7 +304,6 @@ const exportedMethods = {
       {},
       { $pull: { reviews: { _id: reviewId } } }
     );
-    console.log(updateInfo);
     if (!updateInfo.matchedCount && !updateInfo.modifiedCount)
       throw "Update failed";
     return "Delete review to user successfully!";
