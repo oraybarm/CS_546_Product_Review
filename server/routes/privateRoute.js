@@ -16,8 +16,6 @@ const reviews = require("../data/reviews");
 const xss = require("xss");
 const { getProductsByUserId } = require("../data/products");
 
-// TODO: there's a middleware to check isadmin inside middleware/private.js
-// we can use it for report user feature
 router.get("/home", (req, res) => {
   res.render("homePage/homePage", {
     authenticated: true,
@@ -168,10 +166,6 @@ router.post(
             error: "An error occured could not update user",
           });
         } else {
-          // res.render("profile/profile", {
-          //   authenticated: true,
-          //   successMessage: "Successfully updated user",
-          // });
           req.session.updateSuccessful = true;
           req.session.nothingToUpdate = false;
           res.redirect("/private/profile");

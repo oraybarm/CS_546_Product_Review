@@ -423,7 +423,7 @@
         body: formData
       })
         .then(resp => {
-          return resp.json() // or resp.text() or whatever the server sends
+          return resp.json()
         })
         .then(body => {
           if (body.error) {

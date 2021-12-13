@@ -75,7 +75,6 @@
 
 <script type="text/javascript">
     window.onload = function () {
-        // listen
         $('btn').onclick = function () {
             // get input contentvar content = $("comment").value;
             if (content.length === 0) {
@@ -85,7 +84,6 @@
             var newLi = document.createElement('li')
             newLi.innerHTML = `${content}<br/><img src="../../public/images/${rateval +
                 1}.png" alt="review"><a href="javascript:void(0)" style="font-size:17px !important;margin:0 !important;"><div onclick="DeleteInfo("")">Delete</div></a><div class="more-tjm-info" onclick="moreWhInfo()">Update</div>`
-            // $("comment_content").appendChild(newLi);   //Method 1
             $('comment_content').insertBefore(
                 newLi,
                 $('comment_content').children[0]

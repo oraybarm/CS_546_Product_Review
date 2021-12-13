@@ -50,7 +50,6 @@ router.get("/home", async (req, res) => {
 router.get("/home/chart", async (req, res) => {
   try {
     const chart = await charts.getVisualData();
-    //res.json(chart);
     res.render("statistic/statistic", {
       authenticated: req.session.user ? true : false,
       title: "Statistics",
@@ -69,13 +68,11 @@ router.get("/home/getchartdata", async (req, res) => {
     const chart = await charts.getVisualData();
     res.json(chart);
   } catch (e) {
-    res
-      .status(404)
-      .render("/errorPage/404", {
-        title: "Error",
-        error: e,
-        authenticated: req.session.user ? true : false,
-      });
+    res.status(404).render("/errorPage/404", {
+      title: "Error",
+      error: e,
+      authenticated: req.session.user ? true : false,
+    });
   }
 });
 

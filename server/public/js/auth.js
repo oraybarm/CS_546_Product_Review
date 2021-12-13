@@ -29,12 +29,6 @@
 
   // signUp form validation and code
   const signInForm = document.getElementById("signInForm");
-  // signUpForm.addEventListener('submit', (e) => {
-  // 	e.preventDefault();
-  // 	const name = signUpname.value.trim();
-  // 	const email = signUpEmail.value.trim();
-  // 	const password = signUpPassword.value.trim();
-  // });
 
   var signUpNameField = document.getElementById("validationNameField");
   var signUpEmailField = document.getElementById("validationEmailField");

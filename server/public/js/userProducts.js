@@ -43,7 +43,6 @@
                 </div>`
         );
       });
-      // $(".accordion").append(products);
     })
     .catch(function (err) {
       console.log(err);
